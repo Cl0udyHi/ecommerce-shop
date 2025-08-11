@@ -122,7 +122,7 @@ const TestimonialsContainer = () => {
       "(prefers-reduced-motion: reduce)"
     ).matches;
 
-    let duration = prefersReducedMotion ? 0 : 500;
+    const duration = prefersReducedMotion ? 0 : 500;
 
     if (direction === "LEFT") {
       flushSync(() => {

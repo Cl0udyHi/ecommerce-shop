@@ -52,7 +52,9 @@ const Dropdown = ({
           {listItems.map((item, index) => {
             if (!React.isValidElement(item)) return null;
 
-            const li = item as React.ReactElement<any>;
+            const li = item as React.ReactElement<{
+              children: React.ReactNode;
+            }>;
             const content = li.props.children;
 
             return (
