@@ -9,7 +9,6 @@ import CurrencyDropDown from "./components/CurrencyDropdown";
 import Navigation from "./components/Navigation";
 import MenuIcon from "@/public/icons/menu.svg";
 import CloseIcon from "@/public/icons/close.svg";
-import Menu from "./components/Menu";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
