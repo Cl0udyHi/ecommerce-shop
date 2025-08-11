@@ -31,7 +31,7 @@ const Footer = () => {
   return (
     <footer
       className={classNames(
-        "w-full flex justify-between gap-4 items-center px-16 py-8 z-50 bg-primary-400"
+        "sm:px-16 w-full flex justify-between gap-4 items-center px-8 py-8 z-50 bg-primary-400"
       )}
     >
       <div className="w-full flex flex-col gap-4">
