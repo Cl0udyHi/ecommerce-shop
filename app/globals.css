@@ -1,0 +1,53 @@
+@import "tailwindcss";
+
+@theme {
+  --color-*: initial;
+
+  --color-natural-100: #f1f2f4;
+  --color-natural-200: #e3e5e8;
+  --color-natural-300: #c7cad1;
+  --color-natural-400: #abb0bb;
+  --color-natural-500: #737a8c;
+  --color-natural-600: #30333b;
+  --color-natural-700: #191b1f;
+
+  --color-primary-100: #d8dcf4;
+  --color-primary-200: #b0b7e8;
+  --color-primary-300: #717ed5;
+  --color-primary-400: #394cc6;
+  --color-primary-500: #222e77;
+
+  --color-accent-100: #ff9d2e;
+  --color-accent-200: #fa8500;
+  --color-accent-300: #c76a00;
+  --color-accent-400: #944f00;
+  --color-accent-500: #613400;
+
+  --color-shadow-100: #00000020;
+}
+
+@layer utilities {
+  .infinite {
+    animation-iteration-count: infinite;
+  }
+}
+
+@font-face {
+  font-family: "Satoshi";
+  src:
+    url("/fonts/Satoshi.ttf") format("truetype"),
+    url("/fonts/Satoshi-Italic.ttf") format("truetype");
+  font-weight: 100, 200, 300, 400, 500, 600, 700, 800, 900;
+  font-style: normal, italic;
+  font-display: swap;
+}
+
+body {
+  font-family: "Satoshi", sans-serif;
+  background-color: var(--color-natural-200);
+  color: var(--color-natural-700);
+}
+
+* {
+  interpolate-size: allow-keywords;
+}

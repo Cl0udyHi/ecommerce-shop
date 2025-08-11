@@ -1,0 +1,45 @@
+"use client";
+
+import React from "react";
+import Person from "@/public/icons/person.svg";
+import Star_Full from "@/public/icons/star_full.svg";
+import Star_Half from "@/public/icons/star_half.svg";
+import Star_Empty from "@/public/icons/star_empty.svg";
+import type { Testimonial } from "@/app/Testimonials";
+
+const TestimonialCard = (props: {
+  testimonial: Testimonial;
+  width: number;
+}) => {
+  const rating = props.testimonial.rating;
+
+  return (
+    <div
+      className="flex flex-col shrink-0 gap-4 p-4 snap-start bg-natural-100 rounded-lg"
+      style={{ width: `${props.width / 16}rem` }}
+    >
+      <div className="flex gap-2">
+        <div className="flex gap-2 items-center">
+          <div className="p-2 bg-primary-100 rounded-full">
+            <Person className="w-6 h-auto fill-primary-400" />
+          </div>
+          <h1 className="text-base font-medium">{props.testimonial.name}</h1>
+        </div>
+      </div>
+      <p className="text-sm font-normal">{props.testimonial.text}</p>
+      <div className="flex mt-auto items-center gap-1">
+        {[...Array(Math.trunc(rating))].map((_, index) => (
+          <Star_Full key={index} className="w-6 h-auto fill-accent-300" />
+        ))}
+        {!Number.isInteger(rating) && (
+          <Star_Half className="w-6 h-auto fill-accent-300" />
+        )}
+        {[...Array(5 - Math.ceil(rating))].map((_, index) => (
+          <Star_Empty key={index} className="w-6 h-auto fill-accent-300" />
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default TestimonialCard;
