@@ -3,7 +3,7 @@
 import classNames from "classnames";
 import Link from "next/link";
 import React from "react";
-import { links } from "./page";
+import { links } from "@/app/utils/data";
 import { usePathname } from "next/navigation";
 
 const Footer = () => {

@@ -3,7 +3,7 @@
 import classNames from "classnames";
 import React, { Dispatch, RefObject, SetStateAction, useRef } from "react";
 
-import { links } from "@/app/page";
+import { links } from "@/app/utils/data";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useOnClickOutside } from "usehooks-ts";

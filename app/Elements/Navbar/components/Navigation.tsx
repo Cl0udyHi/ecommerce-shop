@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { links } from "@/app/page";
+import { links } from "@/app/utils/data";
 import classNames from "classnames";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
