@@ -5,7 +5,7 @@ import Person from "@/public/icons/person.svg";
 import Star_Full from "@/public/icons/star_full.svg";
 import Star_Half from "@/public/icons/star_half.svg";
 import Star_Empty from "@/public/icons/star_empty.svg";
-import type { Testimonial } from "@/app/Testimonials";
+import type { Testimonial } from "@/app/Elements/Testimonials/Testimonials";
 
 const TestimonialCard = (props: {
   testimonial: Testimonial;
@@ -15,15 +15,15 @@ const TestimonialCard = (props: {
 
   return (
     <div
-      className="flex flex-col shrink-0 gap-4 p-4 snap-start bg-natural-100 rounded-lg"
+      className="flex flex-col shrink-0 gap-4 p-4 snap-start bg-natural-200 rounded-lg"
       style={{ width: `${props.width / 16}rem` }}
     >
       <div className="flex gap-2">
         <div className="flex gap-2 items-center">
-          <div className="p-2 bg-primary-100 rounded-full">
+          <div className="p-2 bg-primary-200 rounded-full">
             <Person className="w-6 h-auto fill-primary-400" />
           </div>
-          <h1 className="text-base font-medium">{props.testimonial.name}</h1>
+          <h1 className="text-base font-bold">{props.testimonial.name}</h1>
         </div>
       </div>
       <p className="text-sm font-normal">{props.testimonial.text}</p>

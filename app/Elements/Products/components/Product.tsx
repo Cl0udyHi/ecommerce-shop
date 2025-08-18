@@ -4,22 +4,24 @@ import React from "react";
 import Link from "next/link";
 import Add from "@/public/icons/add.svg";
 
-const Product = (params: {
+const Product = (props: {
   name: string;
   id: number;
   price: string;
+  width: number;
   colors: string[];
   image: StaticImageData;
 }) => {
   return (
     <Link
-      className="flex flex-col gap-4 group hover:cursor-pointer"
-      href={"/products/" + params.id}
+      className="flex flex-col gap-4 group hover:cursor-pointer snap-start"
+      href={"/products/" + props.id}
+      style={{ width: `${props.width / 16}rem` }}
     >
       {/* Image */}
       <div className="relative w-full flex justify-center items-start aspect-[201/230] rounded-lg overflow-hidden">
         <Image
-          src={params.image}
+          src={props.image}
           alt="Product Picture"
           placeholder="blur"
           className="object-cover"
@@ -30,16 +32,16 @@ const Product = (params: {
       <div className="flex flex-col">
         <div className="sm:grid-cols-2 grid grid-cols-1 grid-rows-1 gap-1 h-max">
           <h2 className="sm:row-start-1 row-start-2 col-start-1 text-base font-bold group-hover:underline">
-            {params.name}
+            {props.name}
           </h2>
           {/* Colors */}
           <div className="sm:col-start-2 row-start-1 col-start-1 flex shrink-0 justify-end gap-2">
-            {params.colors.length > 3 && (
+            {props.colors.length > 3 && (
               <div className="w-5 h-5 flex justify-center items-center rounded-full border-1 border-natural-700 bg-natural-200">
                 <Add className="w-5 h-auto fill-natural-700" />
               </div>
             )}
-            {params.colors.slice(0, 3).map((color, index) => (
+            {props.colors.slice(0, 3).map((color, index) => (
               <div
                 key={index}
                 className={`shrink-0 w-5 h-5 rounded-full border-1 border-natural-700`}
@@ -68,10 +70,20 @@ const Product = (params: {
             />
           </svg>
           <h3 className="text-sm text-natural-600 font-medium">
-            {params.price}
+            {props.price}
           </h3>
         </div>
       </div>
+
+      {/* Buttons */}
+      {/* <div className="flex gap-4 mt-auto">
+        <button className="text-sm font-semibold w-full py-2 bg-primary-400 rounded text-natural-100 cursor-pointer">
+          Add to Cart
+        </button>
+        <button className="text-sm font-semibold w-full py-2 bg-natural-200 rounded text-natural-700 cursor-pointer">
+          Details
+        </button>
+      </div> */}
     </Link>
   );
 };

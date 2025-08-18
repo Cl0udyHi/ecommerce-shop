@@ -30,6 +30,18 @@
   .infinite {
     animation-iteration-count: infinite;
   }
+
+  .scrollbar-invisible {
+    /* Firefox */
+    scrollbar-width: none;
+    /* IE & Edge */
+    -ms-overflow-style: none;
+  }
+
+  .scrollbar-invisible::-webkit-scrollbar {
+    width: 0px;
+    height: 0px;
+  }
 }
 
 @font-face {

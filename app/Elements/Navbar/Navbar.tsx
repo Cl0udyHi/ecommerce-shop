@@ -31,7 +31,7 @@ const Navbar = () => {
   return (
     <nav
       className={classNames(
-        "w-full grid grid-rows-1 gap-4 items-center sm:px-16 px-8 py-4 sticky top-0 z-50 bg-natural-200",
+        "w-full grid grid-rows-1 gap-4 items-center sm:px-16 px-8 py-4 sticky top-0 z-50 bg-natural-100",
         "grid-cols-2 lg:grid-cols-3",
         {
           "shadow-shadow-100 shadow-sm transition-shadow": isScrolled,
@@ -66,7 +66,7 @@ const Navbar = () => {
       <button
         onClick={() => setIsMenuOpen((prev) => !prev)}
         className={classNames(
-          "col-start-2 ml-auto w-max row-start-1 p-2 rounded-sm cursor-pointer bg-natural-300 hover:bg-natural-400",
+          "col-start-2 ml-auto w-max row-start-1 p-2 rounded-sm cursor-pointer bg-natural-200 hover:bg-natural-300",
           "lg:hidden!"
         )}
       >

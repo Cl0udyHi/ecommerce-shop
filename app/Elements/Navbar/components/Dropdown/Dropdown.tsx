@@ -44,7 +44,7 @@ const Dropdown = ({
       })}
       <div
         className={classNames(
-          "absolute top-[calc(100%+0.25rem)] w-max flex flex-col justify-end bg-natural-300 rounded-sm transition-[height] overflow-hidden",
+          "absolute top-[calc(100%+0.25rem)] w-max flex flex-col justify-end bg-natural-200 rounded-sm transition-[height] overflow-hidden",
           { "h-0 pointer-events-none": open == false }
         )}
       >
@@ -65,8 +65,8 @@ const Dropdown = ({
                     setOpen(false);
                   }}
                   className={classNames(
-                    "flex w-full justify-between gap-4 items-center px-4 py-2 hover:bg-natural-400 cursor-pointer text-base text-natural-700",
-                    { "bg-natural-400": selected === index }
+                    "flex w-full justify-between gap-4 items-center px-4 py-2 hover:bg-natural-300 cursor-pointer text-base text-natural-700",
+                    { "bg-natural-300": selected === index }
                   )}
                 >
                   {content}

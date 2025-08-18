@@ -5,6 +5,7 @@ import Arrow from "@/public/icons/arrow.svg";
 import classNames from "classnames";
 import Testimonial from "./components/Testimonial";
 import { flushSync } from "react-dom";
+import { calcWidth } from "@/app/utils/CalcWidth";
 
 type ScrollDirection = "LEFT" | "RIGHT";
 
@@ -82,20 +83,13 @@ const TestimonialsContainer = () => {
   // Calculate the width of each testimonial card based on the parent container size
   useEffect(() => {
     const updateWidth = () => {
-      const container = parent.current;
-      if (!container) return;
-
-      colsSize = 2; // default
-      const width = window.innerWidth;
-
-      if (width >= 768) {
-        colsSize = 3; //md
-      }
-
-      const Width = container.clientWidth || 0;
-      const Gap = 16;
-
-      setChildWidth((Width - Gap * (colsSize - 1)) / colsSize);
+      setChildWidth(
+        calcWidth({
+          container: parent.current,
+          colsSize: { base: 1, sm: 2, lg: 3 },
+          gap: 16,
+        })
+      );
     };
 
     const resizeObserver = new ResizeObserver(updateWidth);
@@ -191,21 +185,47 @@ const TestimonialsContainer = () => {
   }, [childWidth, isHovered]);
 
   return (
-    <div className="py-8">
+    <div
+      className="flex flex-col gap-y-4 sm:px-16 px-8"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <div className="flex justify-between">
+        <h1 className="font-bold text-2xl">Client Testimonials</h1>
+        <div className="lg:hidden flex gap-2">
+          <button
+            onClick={() => scroll("LEFT")}
+            disabled={isAnimating}
+            className={classNames(
+              "w-fit h-fit aspect-square grow-0 bg-primary-100 rounded cursor-pointer"
+            )}
+          >
+            <Arrow className="w-8 h-auto fill-primary-500" />
+          </button>
+          <button
+            onClick={() => scroll("RIGHT")}
+            disabled={isAnimating}
+            className={classNames(
+              "w-fit h-fit aspect-square grow-0 bg-primary-100 rounded cursor-pointer"
+            )}
+          >
+            <Arrow className="w-8 h-auto fill-primary-500 rotate-180" />
+          </button>
+        </div>
+      </div>
+
       <div
         ref={parent}
         className={classNames(
           "max-w-full w-full relative flex rounded-lg overflow-hidden z-10"
         )}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
       >
-        <div className="w-full h-full absolute flex justify-between gap-x-4">
+        <div className="lg:flex hidden w-full h-full absolute justify-between gap-x-4">
           <button
             onClick={() => scroll("LEFT")}
             disabled={isAnimating}
             className={classNames(
-              "md:flex hidden shrink-0 items-center justify-center bg-gradient-to-r to-[#b0b7e800] from-natural-200 transition-opacity cursor-pointer z-20"
+              "md:flex hidden shrink-0 items-center justify-center bg-gradient-to-r to-[#b0b7e800] from-natural-100 transition-opacity cursor-pointer z-20"
             )}
             style={{ width: `${childWidth / 16}rem` }}
           >
@@ -215,7 +235,7 @@ const TestimonialsContainer = () => {
             onClick={() => scroll("RIGHT")}
             disabled={isAnimating}
             className={classNames(
-              "ml-auto shrink-0 flex items-center justify-center bg-gradient-to-r to-natural-200 from-[#b0b7e800] transition-opacity cursor-pointer z-20"
+              "ml-auto shrink-0 flex items-center justify-center bg-gradient-to-r to-natural-100 from-[#b0b7e800] transition-opacity cursor-pointer z-20"
             )}
             style={{ width: `${childWidth / 16}rem` }}
           >

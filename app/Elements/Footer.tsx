@@ -31,7 +31,7 @@ const Footer = () => {
   return (
     <footer
       className={classNames(
-        "sm:px-16 w-full flex justify-between gap-4 items-center px-8 py-8 z-50 bg-primary-400"
+        "sm:px-16 w-full flex justify-between sm:flex-nowrap flex-wrap gap-x-4 gap-y-8 items-center px-8 py-8 z-50 bg-primary-400"
       )}
     >
       <div className="w-full flex flex-col gap-4">
@@ -51,7 +51,7 @@ const Footer = () => {
           </p>
         </div>
       </div>
-      <div className="md:flex hidden w-full flex-col gap-4">
+      <div className="lg:flex hidden w-full flex-col gap-4">
         <h1 className="text-base text-natural-100 font-bold">Navigation</h1>
         <ul className="w-full flex flex-col justify-between gap-2">
           {links.map((link, index) => (

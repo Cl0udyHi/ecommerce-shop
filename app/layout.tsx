@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "./Elements/Navbar/Navbar";
-import Footer from "./Footer";
+import Footer from "./Elements/Footer";
 
 export const metadata: Metadata = {
   title: "Wavin",

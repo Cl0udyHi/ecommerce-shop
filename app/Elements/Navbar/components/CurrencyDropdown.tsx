@@ -1,6 +1,6 @@
 "use client";
 
-import Dropdown from "@/app/components/Dropdown/Dropdown";
+import Dropdown from "@/app/Elements/Navbar/components/Dropdown/Dropdown";
 import Emoji from "@/app/components/Emoji";
 import DropdownArrow from "@/public/icons/dropdown_arrow.svg";
 import classNames from "classnames";
@@ -38,7 +38,7 @@ const CurrencyDropDown = () => {
     >
       <button
         className={classNames(
-          "relative flex justify-end p-2 rounded-sm cursor-pointer bg-natural-300 hover:bg-natural-400"
+          "relative flex justify-end p-2 rounded-sm cursor-pointer bg-natural-200 hover:bg-natural-300"
         )}
       >
         <span className="px-1 text-sm text-natural-700 font-semibold">
