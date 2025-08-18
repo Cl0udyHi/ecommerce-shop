@@ -1,5 +1,4 @@
 import heroBanner from "@/public/images/Banner.png";
-import Product from "./Elements/Products/components/Product";
 import Image from "next/image";
 import Testomonials from "./Elements/Testimonials/Testimonials";
 import Products from "./Elements/Products/Products";

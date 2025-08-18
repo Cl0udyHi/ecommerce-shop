@@ -68,8 +68,6 @@ const Testimonials: Testimonial[] = [
   },
 ];
 
-let colsSize = 2;
-
 const TestimonialsContainer = () => {
   const testimonials: RefObject<HTMLDivElement | null> = useRef(null);
   const parent: RefObject<HTMLDivElement | null> = useRef(null);

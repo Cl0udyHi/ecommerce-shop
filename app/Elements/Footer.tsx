@@ -1,14 +1,9 @@
-"use client";
-
 import classNames from "classnames";
 import Link from "next/link";
 import React from "react";
 import { links } from "@/app/utils/data";
-import { usePathname } from "next/navigation";
 
 const Footer = () => {
-  const pathname = usePathname();
-
   const socialMedia = [
     {
       name: "Instagram",
