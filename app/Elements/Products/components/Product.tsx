@@ -14,7 +14,7 @@ const Product = (props: {
 }) => {
   return (
     <Link
-      className="flex flex-col gap-4 group hover:cursor-pointer snap-start"
+      className="flex flex-col gap-4 group hover:cursor-pointer snap-start snap-always"
       href={"/products/" + props.id}
       style={{ width: `${props.width / 16}rem` }}
     >
