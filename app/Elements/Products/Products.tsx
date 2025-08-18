@@ -51,7 +51,7 @@ const Products = () => {
           {/* <div className="sm:grid-cols-3 grid grid-cols-2 gap-x-4 gap-y-8"> */}
           <div
             className={classNames(
-              "w-full overflow-scroll overflow-y-hidden scroll-smooth sm:scroll-px-16 scroll-px-8 scrollbar-invisible snap-x snap-mandatory",
+              "w-full overflow-scroll overflow-y-hidden snap-always scroll-smooth sm:scroll-px-16 scroll-px-8 scrollbar-invisible snap-x snap-mandatory",
               "sm:w-auto sm:overflow-visible sm:scroll-auto sm:scrollbar-auto sm:snap-none"
             )}
           >
