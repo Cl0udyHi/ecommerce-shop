@@ -19,14 +19,15 @@ const Product = (props: {
       style={{ width: `${props.width / 16}rem` }}
     >
       {/* Image */}
-      <div className="relative w-full flex justify-center items-start aspect-[201/230] rounded-lg overflow-hidden">
-        <Image
-          src={props.image}
-          alt="Product Picture"
-          placeholder="blur"
-          className="object-cover"
-        />
-      </div>
+      <Image
+        src={props.image}
+        blurDataURL={props.image.blurDataURL}
+        alt="Product Picture"
+        width={201}
+        height={230}
+        placeholder="blur"
+        className="object-cover w-full aspect-[201/230] rounded-lg"
+      />
 
       {/* Info */}
       <div className="flex flex-col">

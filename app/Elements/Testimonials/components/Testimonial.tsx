@@ -5,10 +5,10 @@ import Person from "@/public/icons/person.svg";
 import Star_Full from "@/public/icons/star_full.svg";
 import Star_Half from "@/public/icons/star_half.svg";
 import Star_Empty from "@/public/icons/star_empty.svg";
-import type { Testimonial } from "@/app/Elements/Testimonials/Testimonials";
+import { TestimonialType } from "@/app/utils/types";
 
 const TestimonialCard = (props: {
-  testimonial: Testimonial;
+  testimonial: TestimonialType;
   width: number;
 }) => {
   const rating = props.testimonial.rating;
