@@ -43,12 +43,11 @@ const Products = () => {
           )}
         >
           <div className="w-full">
-            <h1 className="sm:ml-16 ml-8 font-bold text-[1.75rem]">
+            <h1 className="sm:mx-16 mx-8 font-bold text-[1.75rem]">
               {collection.name}
             </h1>
             <div ref={parent} className="sm:mx-16 mx-8 overflow-hidden"></div>
           </div>
-          {/* <div className="sm:grid-cols-3 grid grid-cols-2 gap-x-4 gap-y-8"> */}
           <div
             className={classNames(
               "w-full overflow-scroll overflow-y-hidden snap-always scroll-smooth sm:scroll-px-16 scroll-px-8 scrollbar-invisible snap-x snap-mandatory",

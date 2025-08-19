@@ -4,7 +4,6 @@ import React, { RefObject, useEffect, useRef, useState } from "react";
 import Arrow from "@/public/icons/arrow.svg";
 import classNames from "classnames";
 import Testimonial from "./components/Testimonial";
-import { flushSync } from "react-dom";
 import { calcWidth } from "@/app/utils/CalcWidth";
 
 type ScrollDirection = "LEFT" | "RIGHT";
@@ -74,11 +73,7 @@ const TestimonialsContainer = () => {
 
   const [childWidth, setChildWidth] = useState(0);
 
-  const [testimonialsList, setTestimonialsList] = useState<Testimonial[]>([
-    ...Testimonials,
-  ]);
-
-  // Calculate the width of each testimonial card based on the parent container size
+  //Calculate Width
   useEffect(() => {
     const updateWidth = () => {
       setChildWidth(
@@ -100,111 +95,61 @@ const TestimonialsContainer = () => {
     };
   }, []);
 
-  const [isAnimating, setIsAnimating] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
+  const scrollContainer = useRef<HTMLDivElement | null>(null);
 
   const scroll = (direction: ScrollDirection) => {
-    if (isAnimating) return;
-    setIsAnimating(true);
-
-    const TestimonialsContainer = testimonials.current;
-    if (!TestimonialsContainer) return;
-
-    const prefersReducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
-
-    const duration = prefersReducedMotion ? 0 : 500;
+    const container = scrollContainer.current;
+    if (!container) return;
 
     if (direction === "LEFT") {
-      flushSync(() => {
-        setTestimonialsList((prev) => {
-          const updated = [...prev];
-          const lastItem = updated.pop();
-          if (lastItem !== undefined) {
-            updated.unshift(lastItem);
-          }
-          return updated;
-        });
-      });
-
-      TestimonialsContainer.animate(
-        [
-          { transform: `translateX(calc(-${childWidth}px - 1rem))` },
-          { transform: "translateX(0%)" },
-        ],
-        {
-          duration,
-          easing: "ease-in-out",
-          fill: "forwards",
-        }
-      ).finished.then(() => {
-        setIsAnimating(false);
-      });
+      container.scrollLeft -= childWidth + 16;
     } else {
-      TestimonialsContainer.animate(
-        [
-          { transform: "translateX(0%)" },
-          { transform: `translateX(calc(-${childWidth}px - 1rem))` },
-        ],
-        {
-          duration,
-          easing: "ease-in-out",
-          fill: "forwards",
-        }
-      ).finished.then(() => {
-        flushSync(() => {
-          setTestimonialsList((prev) => {
-            const updated = [...prev];
-            const firstItem = updated.shift();
-            if (firstItem !== undefined) {
-              updated.push(firstItem);
-            }
-            return updated;
-          });
-        });
-
-        TestimonialsContainer.animate([{ transform: "translateX(0%)" }], {
-          duration: 0,
-          fill: "forwards",
-        });
-
-        setIsAnimating(false);
-      });
+      container.scrollLeft += childWidth - 16;
     }
   };
 
-  // Auto scrolling
-  useEffect(() => {
-    if (isHovered == true) return;
+  const [scrollValue, setScrollValue] = useState<ScrollDirection | null>(
+    "LEFT"
+  );
 
-    const interval = setInterval(() => scroll("RIGHT"), 2000);
-    return () => clearInterval(interval);
-  }, [childWidth, isHovered]);
+  const handleScrollValue = (e: React.UIEvent<HTMLDivElement>) => {
+    const element = e.currentTarget;
+    const scrollValue = element.scrollLeft;
+
+    if (scrollValue == 0) {
+      setScrollValue("LEFT");
+    } else if (scrollValue == element.scrollWidth - element.clientWidth) {
+      setScrollValue("RIGHT");
+    } else {
+      setScrollValue(null);
+    }
+  };
 
   return (
-    <div
-      className="flex flex-col gap-y-4 sm:px-16 px-8"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      <div className="flex justify-between">
+    <div className="flex flex-col gap-y-4 lg:px-16 lg:overflow-hidden">
+      <div ref={parent} className="flex justify-between lg:mx-0 sm:mx-16 mx-8">
         <h1 className="font-bold text-2xl">Client Testimonials</h1>
         <div className="lg:hidden flex gap-2">
           <button
             onClick={() => scroll("LEFT")}
-            disabled={isAnimating}
+            disabled={scrollValue === "LEFT"}
             className={classNames(
-              "w-fit h-fit aspect-square grow-0 bg-primary-100 rounded cursor-pointer"
+              "w-fit h-fit aspect-square grow-0 bg-primary-100 rounded cursor-pointer transition-opacity duration-100",
+              {
+                "opacity-50 cursor-not-allowed!": scrollValue === "LEFT",
+              }
             )}
           >
             <Arrow className="w-8 h-auto fill-primary-500" />
           </button>
           <button
             onClick={() => scroll("RIGHT")}
-            disabled={isAnimating}
+            disabled={scrollValue === "RIGHT"}
             className={classNames(
-              "w-fit h-fit aspect-square grow-0 bg-primary-100 rounded cursor-pointer"
+              "w-fit h-fit aspect-square grow-0 bg-primary-100 rounded cursor-pointer transition-opacity duration-100",
+              {
+                "opacity-50 cursor-not-allowed!": scrollValue === "RIGHT",
+              }
             )}
           >
             <Arrow className="w-8 h-auto fill-primary-500 rotate-180" />
@@ -213,17 +158,17 @@ const TestimonialsContainer = () => {
       </div>
 
       <div
-        ref={parent}
         className={classNames(
-          "max-w-full w-full relative flex rounded-lg overflow-hidden z-10"
+          "max-w-full w-full relative flex rounded-lg z-10"
         )}
       >
-        <div className="lg:flex hidden w-full h-full absolute justify-between gap-x-4">
+        <div className="lg:flex hidden w-full h-full absolute justify-between gap-x-4 lg:px-0 sm:px-16 px-8">
           <button
             onClick={() => scroll("LEFT")}
-            disabled={isAnimating}
+            disabled={scrollValue === "LEFT"}
             className={classNames(
-              "md:flex hidden shrink-0 items-center justify-center bg-gradient-to-r to-[#b0b7e800] from-natural-100 transition-opacity cursor-pointer z-20"
+              "md:flex hidden shrink-0 items-center justify-center bg-gradient-to-r to-[#b0b7e800] from-natural-100 transition-opacity duration-100 cursor-pointer z-20",
+              { "opacity-0 pointer-events-none": scrollValue === "LEFT" }
             )}
             style={{ width: `${childWidth / 16}rem` }}
           >
@@ -231,9 +176,10 @@ const TestimonialsContainer = () => {
           </button>
           <button
             onClick={() => scroll("RIGHT")}
-            disabled={isAnimating}
+            disabled={scrollValue === "RIGHT"}
             className={classNames(
-              "ml-auto shrink-0 flex items-center justify-center bg-gradient-to-r to-natural-100 from-[#b0b7e800] transition-opacity cursor-pointer z-20"
+              "ml-auto shrink-0 flex items-center justify-center bg-gradient-to-r to-natural-100 from-[#b0b7e800] transition-opacity duration-100 cursor-pointer z-20",
+              { "opacity-0 pointer-events-none": scrollValue === "RIGHT" }
             )}
             style={{ width: `${childWidth / 16}rem` }}
           >
@@ -242,12 +188,15 @@ const TestimonialsContainer = () => {
         </div>
 
         <div
-          ref={testimonials}
+          ref={scrollContainer}
+          onScroll={(e) => handleScrollValue(e)}
           className={classNames(
-            "w-max flex flex-none gap-4 overflow-hidden scroll-smooth snap-x snap-mandatory"
+            "w-max flex gap-4 lg:px-0 sm:px-16 px-8 scrollbar-invisible",
+            "scroll-smooth snap-x sm:scroll-px-16 scroll-px-8 snap-mandatory overflow-x-scroll",
+            "lg:scroll-px-0"
           )}
         >
-          {testimonialsList.map((testimonial, index) => (
+          {Testimonials.map((testimonial, index) => (
             <Testimonial
               testimonial={testimonial}
               width={childWidth}

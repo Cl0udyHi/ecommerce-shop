@@ -15,7 +15,7 @@ const TestimonialCard = (props: {
 
   return (
     <div
-      className="flex flex-col shrink-0 gap-4 p-4 snap-start bg-natural-200 rounded-lg"
+      className="flex flex-col shrink-0 gap-4 p-4 snap-always snap-start bg-natural-200 rounded-lg"
       style={{ width: `${props.width / 16}rem` }}
     >
       <div className="flex gap-2">
