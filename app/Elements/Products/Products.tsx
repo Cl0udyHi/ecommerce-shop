@@ -79,7 +79,7 @@ const Products = () => {
             <h1 className="col-start-1 row-start-1 font-bold text-[1.75rem]">
               {collection.name}
             </h1>
-            <div className="col-start-2 row-start-1 sm:hidden flex gap-2 ml-auto">
+            <div className="col-start-2 row-start-1 lg:hidden flex gap-2 ml-auto">
               <button
                 onClick={() => scroll("LEFT")}
                 disabled={scrollValue === "LEFT"}
@@ -116,13 +116,13 @@ const Products = () => {
             onScroll={handleScrollValue}
             className={classNames(
               "w-full overflow-scroll overflow-y-hidden snap-always scroll-smooth sm:scroll-px-16 scroll-px-8 scrollbar-invisible snap-x snap-mandatory",
-              "sm:w-auto sm:overflow-visible sm:scroll-auto sm:scrollbar-auto sm:snap-none"
+              "lg:w-auto lg:overflow-visible lg:scroll-auto lg:scrollbar-auto lg:snap-none"
             )}
           >
             <div
               className={classNames(
                 "w-max flex gap-4 sm:px-16 px-8",
-                "sm:w-full lg:grid-cols-3 sm:grid sm:grid-cols-2 gap-x-4 gap-y-8"
+                "lg:w-full lg:grid-cols-3 lg:grid gap-x-4 gap-y-8"
               )}
             >
               {collection.products.map((product, index) => (
