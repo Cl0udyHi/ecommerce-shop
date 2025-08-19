@@ -59,7 +59,7 @@ const TestimonialsContainer = () => {
 
     if (scrollValue == 0) {
       setScrollValue("LEFT");
-    } else if (scrollValue == element.scrollWidth - element.clientWidth) {
+    } else if (scrollValue >= element.scrollWidth - element.clientWidth) {
       setScrollValue("RIGHT");
     } else {
       setScrollValue(null);

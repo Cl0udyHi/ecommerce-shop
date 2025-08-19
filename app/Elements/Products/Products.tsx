@@ -59,7 +59,7 @@ const Products = () => {
 
     if (scrollValue == 0) {
       setScrollValue("LEFT");
-    } else if (scrollValue == element.scrollWidth - element.clientWidth) {
+    } else if (scrollValue >= element.scrollWidth - element.clientWidth) {
       setScrollValue("RIGHT");
     } else {
       setScrollValue(null);
@@ -75,15 +75,6 @@ const Products = () => {
             "w-full flex flex-col gap-4 text-text text-xl font-bold"
           )}
         >
-          {/*  */}
-          {/* <div className="w-full">
-            <h1 className="sm:mx-16 mx-8 font-bold text-[1.75rem]">
-              {collection.name}
-            </h1>
-            <div ref={parent} className="sm:mx-16 mx-8 overflow-hidden"></div>
-          </div> */}
-          {/*  */}
-
           <div className="w-full grid grid-cols-2 grid-rows-[auto,0] justify-between items-center sm:px-16 px-8">
             <h1 className="col-start-1 row-start-1 font-bold text-[1.75rem]">
               {collection.name}
@@ -119,8 +110,6 @@ const Products = () => {
               className="col-start-1 row-start-2 col-span-2 w-full"
             ></div>
           </div>
-
-          {/*  */}
 
           <div
             ref={scrollContainer}
