@@ -28,13 +28,6 @@ export const collections: Collections = [
         image: Hoodie3,
         colors: ["black", "gray", "white", "magenta"],
       },
-      {
-        id: 4,
-        name: "WAVIN Lightweight Shirt",
-        price: "159.00 SAR",
-        image: Hoodie3,
-        colors: ["black", "gray", "white", "magenta"],
-      },
     ],
   },
 ];
