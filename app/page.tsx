@@ -8,7 +8,7 @@ export default function Home() {
     <div className="w-full flex flex-col gap-16 py-8 bg-natural-100">
       <div className="sm:block hidden sm:px-16 px-8" id="Home">
         <Image
-          className="w-full rounded-lg object-cover"
+          className="w-full rounded-lg object-cover -mt-8"
           src={heroBanner}
           placeholder="blur"
           alt="Banner"
