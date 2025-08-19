@@ -1,28 +1,9 @@
 import classNames from "classnames";
 import Link from "next/link";
 import React from "react";
-import { links } from "@/app/utils/data";
+import { links, socialMedia } from "@/app/utils/data";
 
 const Footer = () => {
-  const socialMedia = [
-    {
-      name: "Instagram",
-      href: "/",
-    },
-    {
-      name: "Twitter (X)",
-      href: "/",
-    },
-    {
-      name: "Tiktok",
-      href: "/",
-    },
-    {
-      name: "Facebook",
-      href: "/",
-    },
-  ];
-
   return (
     <footer
       className={classNames(
@@ -38,10 +19,10 @@ const Footer = () => {
           contemporary design.
         </p>
         <div className="space-y-1">
-          <p className="text-sm text-natural-100 font-medium">
+          <p className="text-sm text-natural-100 font-medium select-all">
             support@wavin.shop
           </p>
-          <p className="text-sm text-natural-100 font-medium">
+          <p className="text-sm text-natural-100 font-medium select-all">
             +966 55 123 4567
           </p>
         </div>

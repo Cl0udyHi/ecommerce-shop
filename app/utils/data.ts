@@ -1,7 +1,26 @@
 import Hoodie1 from "@/public/images/products/hoodie_1.png";
 import Hoodie2 from "@/public/images/products/hoodie_2.png";
 import Hoodie3 from "@/public/images/products/hoodie_3.png";
-import { Collections, TestimonialType } from "./types";
+import { Collections, SocialMediaType, TestimonialType } from "./types";
+
+export const socialMedia: SocialMediaType[] = [
+  {
+    name: "Instagram",
+    href: "https://www.instagram.com/cloudyhi_",
+  },
+  {
+    name: "Twitter (X)",
+    href: "https://x.com/cloudyhi_",
+  },
+  {
+    name: "Tiktok",
+    href: "/",
+  },
+  {
+    name: "Facebook",
+    href: "/",
+  },
+];
 
 export const collections: Collections = [
   {

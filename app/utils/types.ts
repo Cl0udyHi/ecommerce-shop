@@ -1,5 +1,10 @@
 import { StaticImageData } from "next/image";
 
+export type SocialMediaType = {
+  name: string;
+  href: string;
+};
+
 export type ScrollDirection = "LEFT" | "RIGHT";
 
 export type TestimonialType = {
