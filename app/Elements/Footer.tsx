@@ -1,28 +1,9 @@
 import classNames from "classnames";
 import Link from "next/link";
 import React from "react";
-import { links } from "@/app/utils/data";
+import { links, socialMedia } from "@/app/utils/data";
 
 const Footer = () => {
-  const socialMedia = [
-    {
-      name: "Instagram",
-      href: "/",
-    },
-    {
-      name: "Twitter (X)",
-      href: "/",
-    },
-    {
-      name: "Tiktok",
-      href: "/",
-    },
-    {
-      name: "Facebook",
-      href: "/",
-    },
-  ];
-
   return (
     <footer
       className={classNames(
