@@ -20,7 +20,7 @@ const Products = () => {
       setChildWidth(
         calcWidth({
           container: parent.current,
-          colsSize: { base: 1, sm: 2, lg: 3 },
+          colsSize: { base: 1, sm: 2, lg: 3, "2xl": 4 },
           gap: 16,
         })
       );
@@ -122,7 +122,7 @@ const Products = () => {
             <div
               className={classNames(
                 "w-max flex gap-4 sm:px-16 px-8",
-                "lg:w-full lg:grid-cols-3 lg:grid gap-x-4 gap-y-8"
+                "lg:w-full lg:grid-cols-3 2xl:grid-cols-4 lg:grid gap-x-4 gap-y-8"
               )}
             >
               {collection.products.map((product, index) => (

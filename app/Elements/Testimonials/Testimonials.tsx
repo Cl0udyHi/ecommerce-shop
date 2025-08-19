@@ -20,7 +20,7 @@ const TestimonialsContainer = () => {
       setChildWidth(
         calcWidth({
           container: parent.current,
-          colsSize: { base: 1, sm: 2, lg: 3 },
+          colsSize: { base: 1, sm: 2, lg: 3, "2xl": 4 },
           gap: 16,
         })
       );
