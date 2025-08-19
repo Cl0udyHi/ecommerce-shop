@@ -19,10 +19,10 @@ const Footer = () => {
           contemporary design.
         </p>
         <div className="space-y-1">
-          <p className="text-sm text-natural-100 font-medium select-all w-fit">
+          <p className="text-sm text-natural-100 font-medium w-fit">
             support@wavin.shop
           </p>
-          <p className="text-sm text-natural-100 font-medium select-all w-fit">
+          <p className="text-sm text-natural-100 font-medium w-fit">
             +966 55 123 4567
           </p>
         </div>
