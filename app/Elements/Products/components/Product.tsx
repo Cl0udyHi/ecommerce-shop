@@ -9,7 +9,6 @@ const Product = (props: {
   name: string;
   id: string;
   price: string;
-  width: number;
   colors: string[];
   image: StaticImageData;
 }) => {

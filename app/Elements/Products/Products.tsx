@@ -8,11 +8,8 @@ import classNames from "classnames";
 import { StaticImageData } from "next/image";
 import Arrow from "@/public/icons/arrow.svg";
 import { ScrollDirection } from "@/app/utils/types";
-import { ColumnWidthContext } from "@/app/page";
 
 const Products = (props: { className?: string }) => {
-  const columnWidth = useContext(ColumnWidthContext) ?? 0;
-
   const scrollContainer = useRef<HTMLDivElement | null>(null);
 
   const scroll = (direction: ScrollDirection) => {
@@ -103,7 +100,6 @@ const Products = (props: { className?: string }) => {
               {collection.products.map((product, index) => (
                 <Product
                   name={product.name}
-                  width={columnWidth}
                   id={product.id}
                   price={product.price}
                   key={index}

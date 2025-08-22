@@ -3,10 +3,7 @@
 import heroBanner from "@/public/images/Banner.png";
 import Image from "next/image";
 import Products from "./Elements/Products/Products";
-import { createContext } from "react";
 import TestimonialsContainer from "./Elements/Testimonials/Testimonials";
-
-export const ColumnWidthContext = createContext(0);
 
 export default function Home() {
   return (
