@@ -1,6 +1,6 @@
 "use client";
 
-import Dropdown from "@/app/Elements/Navbar/components/Dropdown/Dropdown";
+import Dropdown from "@/app/components/Dropdown";
 import Emoji from "@/app/components/Emoji";
 import DropdownArrow from "@/public/icons/dropdown_arrow.svg";
 import classNames from "classnames";

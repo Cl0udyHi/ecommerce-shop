@@ -1,23 +1,28 @@
+"use client";
+
 import heroBanner from "@/public/images/Banner.png";
 import Image from "next/image";
-import Testomonials from "./Elements/Testimonials/Testimonials";
 import Products from "./Elements/Products/Products";
+import { createContext } from "react";
+import TestimonialsContainer from "./Elements/Testimonials/Testimonials";
+
+export const ColumnWidthContext = createContext(0);
 
 export default function Home() {
   return (
-    <div className="w-full flex flex-col gap-16 py-8 bg-natural-100">
-      <div className="sm:block hidden sm:px-16 px-8" id="Home">
+    <div className="w-full flex flex-col gap-16 py-16 bg-natural-100">
+      <div className="sm:block hidden sm:px-16 px-8 -mt-16" id="Home">
         <Image
-          className="w-full rounded-lg object-cover -mt-8"
+          className="w-full rounded-lg object-cover"
           src={heroBanner}
           placeholder="blur"
           alt="Banner"
         />
       </div>
 
-      <Products />
+      <Products className="sm:px-16 px-8" />
 
-      <Testomonials />
+      <TestimonialsContainer className="sm:px-16 px-8" />
     </div>
   );
 }

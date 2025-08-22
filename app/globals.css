@@ -56,10 +56,14 @@
 
 body {
   font-family: "Satoshi", sans-serif;
-  background-color: var(--color-natural-200);
+  background-color: var(--color-natural-100);
   color: var(--color-natural-700);
 }
 
 * {
   interpolate-size: allow-keywords;
+}
+
+button {
+  cursor: pointer;
 }
