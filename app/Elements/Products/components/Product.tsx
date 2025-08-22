@@ -3,10 +3,11 @@ import Image, { StaticImageData } from "next/image";
 import React from "react";
 import Link from "next/link";
 import Add from "@/public/icons/add.svg";
+import classNames from "classnames";
 
 const Product = (props: {
   name: string;
-  id: number;
+  id: string;
   price: string;
   width: number;
   colors: string[];
@@ -14,9 +15,11 @@ const Product = (props: {
 }) => {
   return (
     <Link
-      className="flex flex-col gap-4 group hover:cursor-pointer snap-start snap-always"
+      className={classNames(
+        "basis-full sm:basis-[calc((100%-1rem)/2)] lg:basis-[calc((100%-2rem)/3)] 2xl:basis-[calc((100%-3rem)/4)]",
+        "flex flex-col shrink-0 gap-4 snap-always snap-start"
+      )}
       href={"/products/" + props.id}
-      style={{ width: `${props.width / 16}rem` }}
     >
       {/* Image */}
       <Image

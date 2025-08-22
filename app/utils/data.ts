@@ -25,27 +25,34 @@ export const socialMedia: SocialMediaType[] = [
 export const collections: Collections = [
   {
     name: "Winter Drop",
+    id: "1",
     products: [
       {
-        id: 1,
+        id: "1",
         name: "WAVIN Oversized Tee",
         price: "129.00 SAR",
         image: Hoodie1,
-        colors: ["black", "gray", "white"],
+        colors: ["#000000", "#808080", "#FFFFFF"],
+        description:
+          "Experience ultimate comfort with our Oversized Tee. Crafted from premium cotton blend fabric, this tee features a relaxed fit design perfect for everyday wear. The breathable material and reinforced stitching ensure both comfort and durability. Available in three classic colors, this versatile piece can be dressed up or down for any occasion. Machine washable and designed to maintain its shape after multiple washes.",
       },
       {
-        id: 2,
+        id: "2",
         name: "WAVIN Cargo Shorts",
         price: "179.00 SAR",
         image: Hoodie2,
-        colors: ["black", "white"],
+        colors: ["#000000", "#FFFFFF"],
+        description:
+          "Our Cargo Shorts combine style with functionality. Made from durable ripstop fabric, these shorts feature multiple practical pockets perfect for carrying essentials. The comfortable elastic waistband with drawstring ensures a perfect fit, while the knee-length cut offers both style and mobility. Reinforced seams and high-quality YKK zippers guarantee long-lasting wear. Available in classic black and white colorways.",
       },
       {
-        id: 3,
+        id: "3",
         name: "WAVIN Lightweight Shirt",
         price: "159.00 SAR",
         image: Hoodie3,
-        colors: ["black", "gray", "white", "magenta"],
+        colors: ["#000000", "#808080", "#FFFFFF", "#FF00FF"],
+        description:
+          "The WAVIN Lightweight Shirt is perfect for any season. Constructed with ultra-light, moisture-wicking fabric, this shirt keeps you cool and comfortable throughout the day. Features include a modern cut, subtle branded details, and UV protection properties. The wrinkle-resistant material makes it ideal for travel or daily wear. Available in four stunning colors, this shirt offers both style and practicality with its easy-care properties.",
       },
     ],
   },
@@ -104,8 +111,8 @@ export const Testimonials: TestimonialType[] = [
   },
 ];
 
-export const links = [
-  { name: "Home", href: "/" },
+export const links: { name: string; href: string; exact?: boolean }[] = [
+  { name: "Home", href: "/", exact: true },
   { name: "Products", href: "/products" },
   { name: "Contact", href: "/contact" },
   { name: "FAQ", href: "/about" },

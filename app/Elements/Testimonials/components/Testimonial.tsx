@@ -6,17 +6,17 @@ import Star_Full from "@/public/icons/star_full.svg";
 import Star_Half from "@/public/icons/star_half.svg";
 import Star_Empty from "@/public/icons/star_empty.svg";
 import { TestimonialType } from "@/app/utils/types";
+import classNames from "classnames";
 
-const TestimonialCard = (props: {
-  testimonial: TestimonialType;
-  width: number;
-}) => {
+const TestimonialCard = (props: { testimonial: TestimonialType }) => {
   const rating = props.testimonial.rating;
 
   return (
     <div
-      className="flex flex-col shrink-0 gap-4 p-4 snap-always snap-start bg-natural-200 rounded-lg"
-      style={{ width: `${props.width / 16}rem` }}
+      className={classNames(
+        "basis-full sm:basis-[calc((100%-1rem)/2)] lg:basis-[calc((100%-2rem)/3)] 2xl:basis-[calc((100%-3rem)/4)]",
+        "flex flex-col shrink-0 gap-4 p-4 snap-always snap-start bg-natural-200 rounded-lg"
+      )}
     >
       <div className="flex gap-2">
         <div className="flex gap-2 items-center">

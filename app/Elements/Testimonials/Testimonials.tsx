@@ -1,51 +1,25 @@
 "use client";
 
-import React, { RefObject, useEffect, useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import Arrow from "@/public/icons/arrow.svg";
 import classNames from "classnames";
-import { calcWidth } from "@/app/utils/CalcWidth";
 import { Testimonials } from "@/app/utils/data";
 import Testimonial from "@/app/Elements/Testimonials/components/Testimonial";
 import { ScrollDirection } from "@/app/utils/types";
 
-const TestimonialsContainer = () => {
-  const testimonials: RefObject<HTMLDivElement | null> = useRef(null);
-  const parent: RefObject<HTMLDivElement | null> = useRef(null);
-
-  const [childWidth, setChildWidth] = useState(0);
-
-  //Calculate Width
-  useEffect(() => {
-    const updateWidth = () => {
-      setChildWidth(
-        calcWidth({
-          container: parent.current,
-          colsSize: { base: 1, sm: 2, lg: 3, "2xl": 4 },
-          gap: 16,
-        })
-      );
-    };
-
-    const resizeObserver = new ResizeObserver(updateWidth);
-    if (parent.current) {
-      resizeObserver.observe(parent.current);
-    }
-
-    return () => {
-      resizeObserver.disconnect();
-    };
-  }, []);
-
+const TestimonialsContainer = (props: { className?: string }) => {
   const scrollContainer = useRef<HTMLDivElement | null>(null);
 
   const scroll = (direction: ScrollDirection) => {
     const container = scrollContainer.current;
+    const cardWidth = container?.children[0].clientWidth ?? 0;
+
     if (!container) return;
 
     if (direction === "LEFT") {
-      container.scrollLeft -= childWidth + 16;
+      container.scrollLeft -= cardWidth + 16;
     } else {
-      container.scrollLeft += childWidth - 16;
+      container.scrollLeft += cardWidth - 16;
     }
   };
 
@@ -67,8 +41,8 @@ const TestimonialsContainer = () => {
   };
 
   return (
-    <div className="flex flex-col gap-y-4 lg:px-16 lg:overflow-hidden">
-      <div ref={parent} className="flex justify-between lg:mx-0 sm:mx-16 mx-8">
+    <div className={classNames("flex flex-col gap-y-4 lg:overflow-hidden")}>
+      <div className={classNames(props.className, "flex justify-between")}>
         <h1 className="font-bold text-2xl">Client Testimonials</h1>
         <div className="lg:hidden flex gap-2">
           <button
@@ -108,10 +82,10 @@ const TestimonialsContainer = () => {
             onClick={() => scroll("LEFT")}
             disabled={scrollValue === "LEFT"}
             className={classNames(
+              "basis-full sm:basis-[calc((100%-1rem)/2)] lg:basis-[calc((100%-2rem)/3)] 2xl:basis-[calc((100%-3rem)/4)]",
               "md:flex hidden shrink-0 items-center justify-center bg-gradient-to-r to-[#b0b7e800] from-natural-100 transition-opacity duration-100 cursor-pointer z-20",
               { "opacity-0 pointer-events-none": scrollValue === "LEFT" }
             )}
-            style={{ width: `${childWidth / 16}rem` }}
           >
             <Arrow className="w-8 h-auto fill-natural-700" />
           </button>
@@ -119,10 +93,10 @@ const TestimonialsContainer = () => {
             onClick={() => scroll("RIGHT")}
             disabled={scrollValue === "RIGHT"}
             className={classNames(
+              "basis-full sm:basis-[calc((100%-1rem)/2)] lg:basis-[calc((100%-2rem)/3)] 2xl:basis-[calc((100%-3rem)/4)]",
               "ml-auto shrink-0 flex items-center justify-center bg-gradient-to-r to-natural-100 from-[#b0b7e800] transition-opacity duration-100 cursor-pointer z-20",
               { "opacity-0 pointer-events-none": scrollValue === "RIGHT" }
             )}
-            style={{ width: `${childWidth / 16}rem` }}
           >
             <Arrow className="w-8 h-auto fill-natural-700 rotate-180" />
           </button>
@@ -132,17 +106,13 @@ const TestimonialsContainer = () => {
           ref={scrollContainer}
           onScroll={(e) => handleScrollValue(e)}
           className={classNames(
-            "w-max flex gap-4 lg:px-0 sm:px-16 px-8 scrollbar-invisible",
-            "scroll-smooth snap-x sm:scroll-px-16 scroll-px-8 snap-mandatory overflow-x-scroll",
-            "lg:scroll-px-0"
+            props.className,
+            "w-max flex gap-4 scrollbar-invisible",
+            "scroll-smooth snap-x sm:scroll-px-16 scroll-px-8 snap-mandatory overflow-x-scroll"
           )}
         >
           {Testimonials.map((testimonial, index) => (
-            <Testimonial
-              testimonial={testimonial}
-              width={childWidth}
-              key={index}
-            />
+            <Testimonial testimonial={testimonial} key={index} />
           ))}
         </div>
       </div>

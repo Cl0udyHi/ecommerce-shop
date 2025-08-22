@@ -1,4 +1,4 @@
-export function calcWidth(params: {
+export function calcColumnWidth(params: {
   container: HTMLElement | null;
   colsSize?: {
     base?: number;

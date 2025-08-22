@@ -13,30 +13,17 @@ export type TestimonialType = {
   rating: 0 | 0.5 | 1 | 1.5 | 2 | 2.5 | 3 | 3.5 | 4 | 4.5 | 5;
 };
 
-export type CssColor =
-  | "black"
-  | "white"
-  | "red"
-  | "blue"
-  | "green"
-  | "gray"
-  | "orange"
-  | "pink"
-  | "purple"
-  | "yellow"
-  | "brown"
-  | "cyan"
-  | "magenta";
-
-export type Product = {
+export type ProductType = {
+  id: string;
   name: string;
+  description: string;
   price: string;
   image: StaticImageData | string;
-  colors: CssColor[];
-  id: number;
+  colors: string[];
 };
 
 export type Collections = {
+  id: string;
   name: string;
-  products: Product[];
+  products: ProductType[];
 }[];
