@@ -44,7 +44,7 @@ const TestimonialsContainer = (props: { className?: string }) => {
     <div className={classNames("flex flex-col gap-y-4 lg:overflow-hidden")}>
       <div className={classNames(props.className, "flex justify-between")}>
         <h1 className="font-bold text-2xl">Client Testimonials</h1>
-        <div className="lg:hidden flex gap-2">
+        <div className="flex gap-2">
           <button
             onClick={() => scroll("LEFT")}
             disabled={scrollValue === "LEFT"}
@@ -77,31 +77,6 @@ const TestimonialsContainer = (props: { className?: string }) => {
           "max-w-full w-full relative flex rounded-lg z-10"
         )}
       >
-        <div className="lg:flex hidden w-full h-full absolute justify-between gap-x-4 lg:px-0 sm:px-16 px-8">
-          <button
-            onClick={() => scroll("LEFT")}
-            disabled={scrollValue === "LEFT"}
-            className={classNames(
-              "basis-full sm:basis-[calc((100%-1rem)/2)] lg:basis-[calc((100%-2rem)/3)] 2xl:basis-[calc((100%-3rem)/4)]",
-              "md:flex hidden shrink-0 items-center justify-center bg-gradient-to-r to-[#b0b7e800] from-natural-100 transition-opacity duration-100 cursor-pointer z-20",
-              { "opacity-0 pointer-events-none": scrollValue === "LEFT" }
-            )}
-          >
-            <Arrow className="w-8 h-auto fill-natural-700" />
-          </button>
-          <button
-            onClick={() => scroll("RIGHT")}
-            disabled={scrollValue === "RIGHT"}
-            className={classNames(
-              "basis-full sm:basis-[calc((100%-1rem)/2)] lg:basis-[calc((100%-2rem)/3)] 2xl:basis-[calc((100%-3rem)/4)]",
-              "ml-auto shrink-0 flex items-center justify-center bg-gradient-to-r to-natural-100 from-[#b0b7e800] transition-opacity duration-100 cursor-pointer z-20",
-              { "opacity-0 pointer-events-none": scrollValue === "RIGHT" }
-            )}
-          >
-            <Arrow className="w-8 h-auto fill-natural-700 rotate-180" />
-          </button>
-        </div>
-
         <div
           ref={scrollContainer}
           onScroll={(e) => handleScrollValue(e)}
