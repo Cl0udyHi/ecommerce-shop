@@ -1,7 +1,7 @@
 "use client";
 
 import classNames from "classnames";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import CheckmarkIcon from "@/public/icons/checkmark.svg";
 import AddIcon from "@/public/icons/add.svg";
 import RemoveIcon from "@/public/icons/remove.svg";
@@ -34,7 +34,19 @@ const ProductInfo = (props: { product: Product }) => {
 
   console.log(Colors);
 
+  const formRef = useRef<HTMLFormElement | null>(null);
   const [canSubmit, setCanSubmit] = useState<boolean>(false);
+
+  function handleFormChange() {
+    const form = formRef.current;
+    if (!form) return;
+
+    setCanSubmit(form.currentTarget.checkValidity() ?? false);
+  }
+
+  useEffect(() => {
+    handleFormChange();
+  }, []);
 
   return (
     <div className="flex flex-col gap-8 mb-16 mt-[1px]">
@@ -89,9 +101,8 @@ const ProductInfo = (props: { product: Product }) => {
 
         {/* Select Options */}
         <form
-          onChange={(form) =>
-            setCanSubmit(form.currentTarget.checkValidity() ?? false)
-          }
+          ref={formRef}
+          onChange={handleFormChange}
           className={classNames(
             "px-8 flex flex-col gap-4",
             "sm:col-start-2 sm:row-start-1 sm:px-0",
