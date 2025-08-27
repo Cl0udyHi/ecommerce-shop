@@ -224,19 +224,25 @@ export async function createCart(): Promise<Cart> {
 export async function addToCart(
   lines: { merchandiseId: string; quantity: number }[]
 ): Promise<Cart> {
-  const cartId = (await cookies()).get("cartId")?.value!;
+  const cartId = (await cookies()).get("cartId")?.value;
+  if (!cartId) {
+    throw new Error("No cartId found in cookies");
+  }
+
   const res = await shopifyFetch<ShopifyAddToCartOperation>({
     query: addToCartMutation,
-    variables: {
-      cartId,
-      lines,
-    },
+    variables: { cartId, lines },
   });
+
   return reshapeCart(res.body.data.cartLinesAdd.cart);
 }
 
 export async function removeFromCart(lineIds: string[]): Promise<Cart> {
-  const cartId = (await cookies()).get("cartId")?.value!;
+  const cartId = (await cookies()).get("cartId")?.value;
+  if (!cartId) {
+    throw new Error("No cartId found in cookies");
+  }
+
   const res = await shopifyFetch<ShopifyRemoveFromCartOperation>({
     query: removeFromCartMutation,
     variables: {
@@ -251,7 +257,11 @@ export async function removeFromCart(lineIds: string[]): Promise<Cart> {
 export async function updateCart(
   lines: { id: string; merchandiseId: string; quantity: number }[]
 ): Promise<Cart> {
-  const cartId = (await cookies()).get("cartId")?.value!;
+  const cartId = (await cookies()).get("cartId")?.value;
+  if (!cartId) {
+    throw new Error("No cartId found in cookies");
+  }
+
   const res = await shopifyFetch<ShopifyUpdateCartOperation>({
     query: editCartItemsMutation,
     variables: {
