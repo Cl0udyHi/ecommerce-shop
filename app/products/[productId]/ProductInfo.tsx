@@ -1,14 +1,23 @@
 "use client";
 
 import classNames from "classnames";
-import React, { useEffect, useRef, useState } from "react";
+import React, {
+  FormEvent,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import CheckmarkIcon from "@/public/icons/checkmark.svg";
-import AddIcon from "@/public/icons/add.svg";
-import RemoveIcon from "@/public/icons/remove.svg";
 import TestimonialsContainer from "@/app/Elements/Testimonials/Testimonials";
 import { Product } from "@/lib/shopify/types";
 import { getContrastColor } from "@/utils/color";
 import Image from "next/image";
+import Quantity from "@/components/Quantity";
+
+import type { CartProduct } from "@/utils/types";
+import { CartOpenContext } from "@/app/bodyContent";
+import MyCart from "@/utils/Cart";
 
 const ProductInfo = (props: { product: Product }) => {
   const Sizes = ["XS", "S", "M", "L", "XL", "2XL", "3XL"];
@@ -32,8 +41,6 @@ const ProductInfo = (props: { product: Product }) => {
     )
     .filter(Boolean);
 
-  console.log(Colors);
-
   const formRef = useRef<HTMLFormElement | null>(null);
   const [canSubmit, setCanSubmit] = useState<boolean>(false);
 
@@ -42,6 +49,33 @@ const ProductInfo = (props: { product: Product }) => {
     if (!form) return;
 
     setCanSubmit(form.checkValidity());
+  }
+
+  const openContext = useContext(CartOpenContext);
+  if (!openContext) {
+    throw new Error("CartOpenContext is not available");
+  }
+  const [isOpen, setIsOpen] = openContext;
+
+  function handleFormSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    const form = formRef.current;
+    if (!form) return;
+
+    const formData = new FormData(form);
+    const color = formData.get("color");
+    const size = formData.get("size");
+
+    const productData: CartProduct = {
+      product: props.product,
+      id: crypto.randomUUID(),
+      variants: [color as string, size as string],
+      quantity: 1,
+    };
+
+    MyCart.addProduct(productData);
+    setIsOpen(true);
   }
 
   useEffect(() => {
@@ -95,7 +129,7 @@ const ProductInfo = (props: { product: Product }) => {
             Product Details
           </h1>
           <p className="text-sm text-natural-700 font-normal">
-            {props.product.description}
+            {props.product.descriptionHtml}
           </p>
         </div>
 
@@ -103,12 +137,12 @@ const ProductInfo = (props: { product: Product }) => {
         <form
           ref={formRef}
           onChange={handleFormChange}
+          onSubmit={handleFormSubmit}
           className={classNames(
             "px-8 flex flex-col gap-4",
             "sm:col-start-2 sm:row-start-1 sm:px-0",
             "xl:col-start-3"
           )}
-          action="/cart"
           method="post"
         >
           {/* Color selection */}
@@ -124,7 +158,7 @@ const ProductInfo = (props: { product: Product }) => {
                     <input
                       type="radio"
                       name="color"
-                      value={`${index}:${color}`}
+                      value={color}
                       className="peer hidden"
                       required={true}
                     />
@@ -150,7 +184,7 @@ const ProductInfo = (props: { product: Product }) => {
                     <label key={index} className="block">
                       <input
                         type="radio"
-                        name="size"
+                        name={available ? "size" : ""}
                         value={size}
                         className="peer hidden"
                         required={true}
@@ -173,7 +207,7 @@ const ProductInfo = (props: { product: Product }) => {
 
           {/* Quantity + Add to Cart */}
           <div className={classNames("flex gap-2", "sm:mt-auto")}>
-            <QuantityButton />
+            <Quantity />
             <button
               type="submit"
               className={classNames(
@@ -194,32 +228,6 @@ const ProductInfo = (props: { product: Product }) => {
     </div>
   );
 };
-
-function QuantityButton() {
-  const [quantity, setQuantity] = useState(1);
-
-  const Increase = () => {
-    setQuantity((prev) => Math.min(prev + 1, 10));
-  };
-
-  const Decrease = () => {
-    setQuantity((prev) => Math.max(1, prev - 1));
-  };
-
-  return (
-    <div className="w-fit flex items-center bg-natural-200 p-2 rounded">
-      <button type="button" onClick={Decrease}>
-        <RemoveIcon className="w-6 aspect-square fill-natural-700" />
-      </button>
-      <span className="flex w-6 justify-center items-center aspect-square">
-        {quantity}
-      </span>
-      <button type="button" onClick={Increase}>
-        <AddIcon className="w-6 aspect-square fill-natural-700" />
-      </button>
-    </div>
-  );
-}
 
 const ColorInput = (props: { color: string }) => {
   return (

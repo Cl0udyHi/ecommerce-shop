@@ -1,7 +1,6 @@
-import type { Metadata } from "next";
 import "./globals.css";
-import Navbar from "./Elements/Navbar/Navbar";
-import Footer from "./Elements/Footer";
+import BodyContent from "./bodyContent";
+import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Wavin",
@@ -16,9 +15,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <body className="antialiased">
-        <Navbar />
-        <main>{children}</main>
-        <Footer />
+        <BodyContent children={children} />
       </body>
     </html>
   );

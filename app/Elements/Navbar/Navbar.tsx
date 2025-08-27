@@ -3,13 +3,13 @@
 import classNames from "classnames";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
-import Bag from "@/public/icons/bag.svg";
 import LangDropdown from "./components/LangDropdown";
 import CurrencyDropDown from "./components/CurrencyDropdown";
 import MenuIcon from "@/public/icons/menu.svg";
 import CloseIcon from "@/public/icons/close.svg";
 import { usePathname } from "next/navigation";
 import { links } from "@/utils/data";
+import ShoppingCart from "@/components/Cart";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -58,9 +58,7 @@ const Navbar = () => {
         <div className="flex gap-2">
           <LangDropdown />
 
-          <button className="p-2 rounded-sm cursor-pointer bg-accent-500 hover:bg-accent-400">
-            <Bag className="w-5 h-auto fill-accent-100" />
-          </button>
+          <ShoppingCart />
         </div>
       </div>
 

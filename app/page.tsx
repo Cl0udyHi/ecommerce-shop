@@ -1,3 +1,5 @@
+"use cache";
+
 import heroBanner from "@/public/images/Banner.png";
 import Image from "next/image";
 import Collections from "./Elements/Collections/Collections";

@@ -1,4 +1,12 @@
+import { Product } from "@/lib/shopify/types";
 import { StaticImageData } from "next/image";
+
+export type CartProduct = {
+  product: Product;
+  id: string;
+  variants: string[];
+  quantity: number;
+};
 
 export type SocialMediaType = {
   name: string;
