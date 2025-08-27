@@ -41,7 +41,7 @@ const ProductInfo = (props: { product: Product }) => {
     const form = formRef.current;
     if (!form) return;
 
-    setCanSubmit(form.currentTarget.checkValidity() ?? false);
+    setCanSubmit(form.checkValidity());
   }
 
   useEffect(() => {
