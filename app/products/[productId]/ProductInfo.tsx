@@ -1,14 +1,14 @@
 "use client";
 
 import classNames from "classnames";
-import React, { useRef, useState } from "react";
-import ImagePreview from "./components/ImagePreview";
+import React, { useState } from "react";
 import CheckmarkIcon from "@/public/icons/checkmark.svg";
 import AddIcon from "@/public/icons/add.svg";
 import RemoveIcon from "@/public/icons/remove.svg";
 import TestimonialsContainer from "@/app/Elements/Testimonials/Testimonials";
 import { Product } from "@/lib/shopify/types";
 import { getContrastColor } from "@/utils/color";
+import Image from "next/image";
 
 const ProductInfo = (props: { product: Product }) => {
   const Sizes = ["XS", "S", "M", "L", "XL", "2XL", "3XL"];
@@ -46,7 +46,7 @@ const ProductInfo = (props: { product: Product }) => {
         )}
       >
         {/* Images */}
-        <ImagePreview
+        <Images
           product={props.product}
           className={classNames(
             "xl:col-start-2 xl:row-start-1 xl:grid-cols-2 xl:grid-rows-2"
@@ -223,5 +223,58 @@ const ColorInput = (props: { color: string }) => {
     </div>
   );
 };
+
+function Images(props: { product: Product; className: string }) {
+  const images = props.product.images.slice(0, 4);
+
+  const [selectedIndex, setSelectedIndex] = useState<number>(0);
+
+  return (
+    <>
+      <Image
+        src={props.product.images[selectedIndex].url}
+        blurDataURL={`${props.product.images[selectedIndex].url}?width=10`}
+        alt={props.product.images[selectedIndex].altText}
+        placeholder="blur"
+        width={500}
+        height={500}
+        className={classNames(
+          "w-full aspect-square object-cover",
+          "sm:rounded-lg",
+          "md:row-start-1 md:col-start-1"
+        )}
+        loading="lazy"
+      />
+
+      <div
+        className={classNames(
+          "px-8 row-start-3 grid grid-cols-4 grid-rows-1 gap-4",
+          "sm:col-start-1 sm:row-start-3 sm:px-0",
+          props.className
+        )}
+      >
+        {images.map((image, index) => (
+          <Image
+            onClick={() => setSelectedIndex(index)}
+            key={index}
+            src={image.url}
+            blurDataURL={`${image.url}?width=10`}
+            alt={image.altText}
+            width={500}
+            height={500}
+            placeholder="blur"
+            className={classNames(
+              "w-full aspect-square object-cover bg-natural-200 rounded cursor-pointer",
+              {
+                "outline outline-natural-700": index == selectedIndex,
+              }
+            )}
+            loading="lazy"
+          />
+        ))}
+      </div>
+    </>
+  );
+}
 
 export default ProductInfo;

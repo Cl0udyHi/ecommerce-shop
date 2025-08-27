@@ -4,7 +4,7 @@ import Dropdown from "@/components/Dropdown";
 import Emoji from "@/components/Emoji";
 import DropdownArrow from "@/public/icons/dropdown_arrow.svg";
 import classNames from "classnames";
-import React, { useEffect, useLayoutEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const Currencies: { label: string; emoji: string }[] = [
   {
