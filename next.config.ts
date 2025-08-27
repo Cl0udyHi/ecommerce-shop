@@ -10,6 +10,9 @@ const nextConfig: NextConfig = {
     });
     return config;
   },
+  experimental: {
+    useCache: true,
+  },
   images: {
     remotePatterns: [
       {
@@ -18,7 +21,7 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
-        hostname: "images.pexels.com",
+        hostname: "cdn.shopify.com",
       },
     ],
   },

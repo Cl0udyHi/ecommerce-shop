@@ -3,9 +3,9 @@
 import React, { useRef, useState } from "react";
 import Arrow from "@/public/icons/arrow.svg";
 import classNames from "classnames";
-import { Testimonials } from "@/app/utils/data";
+import { Testimonials } from "@/utils/data";
 import Testimonial from "@/app/Elements/Testimonials/components/Testimonial";
-import { ScrollDirection } from "@/app/utils/types";
+import { ScrollDirection } from "@/utils/types";
 
 const TestimonialsContainer = (props: { className?: string }) => {
   const scrollContainer = useRef<HTMLDivElement | null>(null);

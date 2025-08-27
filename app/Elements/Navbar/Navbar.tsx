@@ -9,7 +9,7 @@ import CurrencyDropDown from "./components/CurrencyDropdown";
 import MenuIcon from "@/public/icons/menu.svg";
 import CloseIcon from "@/public/icons/close.svg";
 import { usePathname } from "next/navigation";
-import { links } from "@/app/utils/data";
+import { links } from "@/utils/data";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);

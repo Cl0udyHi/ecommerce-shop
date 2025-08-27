@@ -5,7 +5,7 @@ import Person from "@/public/icons/person.svg";
 import Star_Full from "@/public/icons/star_full.svg";
 import Star_Half from "@/public/icons/star_half.svg";
 import Star_Empty from "@/public/icons/star_empty.svg";
-import { TestimonialType } from "@/app/utils/types";
+import { TestimonialType } from "@/utils/types";
 import classNames from "classnames";
 
 const TestimonialCard = (props: { testimonial: TestimonialType }) => {

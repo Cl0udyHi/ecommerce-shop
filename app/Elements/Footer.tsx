@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import Link from "next/link";
 import React from "react";
-import { links, socialMedia } from "@/app/utils/data";
+import { links, socialMedia } from "@/utils/data";
 
 const Footer = () => {
   return (

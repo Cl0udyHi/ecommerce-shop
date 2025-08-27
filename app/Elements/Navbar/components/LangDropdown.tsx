@@ -1,7 +1,7 @@
 "use client";
 
-import Dropdown from "@/app/components/Dropdown";
-import Emoji from "@/app/components/Emoji";
+import Dropdown from "@/components/Dropdown";
+import Emoji from "@/components/Emoji";
 import Globe from "@/public/icons/globe.svg";
 import React, { useState } from "react";
 

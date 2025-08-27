@@ -1,6 +1,6 @@
 "use client";
 
-import { getTwemojiUrl } from "@/app/utils/parseTwemoji";
+import { getTwemojiUrl } from "@/utils/parseTwemoji";
 import Image from "next/image";
 
 export default function FlagEmoji({

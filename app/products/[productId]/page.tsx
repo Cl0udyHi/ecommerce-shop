@@ -1,8 +1,8 @@
 import React from "react";
-import { collections } from "@/app/utils/data";
-import type { ProductType } from "@/app/utils/types";
 import Link from "next/link";
 import ProductInfo from "./ProductInfo";
+import { Product } from "@/lib/shopify/types";
+import { getProduct } from "@/lib/shopify";
 
 const ProductId = async ({
   params,
@@ -10,14 +10,13 @@ const ProductId = async ({
   params: Promise<{ productId: string }>;
 }) => {
   const productId = (await params).productId;
-  const Product: ProductType | null =
-    collections
-      .map((c) => c.products.find((p) => p.id === productId))
-      .find((p) => p !== undefined) ?? null;
+  const product: Product | undefined = await getProduct(productId);
+
+  if (!product) return;
 
   return (
     <div className="min-h-screen">
-      {Product ? <ProductInfo product={Product} /> : <UndefinedProduct />}
+      {ProductInfo ? <ProductInfo product={product} /> : <UndefinedProduct />}
     </div>
   );
 };

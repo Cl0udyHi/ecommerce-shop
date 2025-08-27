@@ -1,10 +1,10 @@
 "use client";
 
-import Dropdown from "@/app/components/Dropdown";
-import Emoji from "@/app/components/Emoji";
+import Dropdown from "@/components/Dropdown";
+import Emoji from "@/components/Emoji";
 import DropdownArrow from "@/public/icons/dropdown_arrow.svg";
 import classNames from "classnames";
-import React, { useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 
 const Currencies: { label: string; emoji: string }[] = [
   {
@@ -26,8 +26,19 @@ const Currencies: { label: string; emoji: string }[] = [
 ];
 
 const CurrencyDropDown = () => {
-  const [openCurrencies, setOpenCurrencies] = useState(false);
-  const [selectedCurrency, setSelectedCurrency] = useState(2);
+  const [openCurrencies, setOpenCurrencies] = useState<boolean>(false);
+  const [selectedCurrency, setSelectedCurrency] = useState<number>(0);
+
+  useEffect(() => {
+    const match = document.cookie.match(/(?:^|; )currency=([^;]+)/);
+    const index = match ? Currencies.findIndex((c) => c.label === match[1]) : 0;
+    setSelectedCurrency(index >= 0 ? index : 0);
+  }, []);
+
+  useEffect(() => {
+    const currency = Currencies[selectedCurrency].label;
+    document.cookie = `currency=${currency}; path=/;`;
+  }, [selectedCurrency]);
 
   return (
     <Dropdown

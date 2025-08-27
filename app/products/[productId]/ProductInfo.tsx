@@ -1,21 +1,43 @@
 "use client";
 
-import { ProductType } from "@/app/utils/types";
 import classNames from "classnames";
-import Image from "next/image";
-import React from "react";
-import { Thumbnails } from "./components/ImagePreview";
-import ColorInput from "./components/ColorInput";
-import QuantityButton from "./components/QuantityButton";
+import React, { useRef, useState } from "react";
+import ImagePreview from "./components/ImagePreview";
+import CheckmarkIcon from "@/public/icons/checkmark.svg";
+import AddIcon from "@/public/icons/add.svg";
+import RemoveIcon from "@/public/icons/remove.svg";
 import TestimonialsContainer from "@/app/Elements/Testimonials/Testimonials";
+import { Product } from "@/lib/shopify/types";
+import { getContrastColor } from "@/utils/color";
 
-const ProductInfo = (props: { product: ProductType }) => {
-  const Product = props.product;
+const ProductInfo = (props: { product: Product }) => {
+  const Sizes = ["XS", "S", "M", "L", "XL", "2XL", "3XL"];
 
-  const sizes = ["XS", "S", "M", "L", "XL", "2XL"];
+  const Colors = Array.from(
+    new Set(
+      props.product.variants
+        .map(
+          (variant) =>
+            variant.selectedOptions.find((opt) => opt.name === "Color")?.value
+        )
+        .filter(Boolean)
+        .map((c) => c?.trim().toLowerCase())
+    )
+  );
+
+  const AvailableSizes = props.product.variants
+    .map(
+      (variant) =>
+        variant.selectedOptions.find((opt) => opt.name === "Size")?.value
+    )
+    .filter(Boolean);
+
+  console.log(Colors);
+
+  const [canSubmit, setCanSubmit] = useState<boolean>(false);
 
   return (
-    <div className="flex flex-col gap-8 mb-16">
+    <div className="flex flex-col gap-8 mb-16 mt-[1px]">
       <div
         className={classNames(
           "grid grid-cols-1 grid-rows-[auto_auto_auto_auto] gap-8",
@@ -23,21 +45,9 @@ const ProductInfo = (props: { product: ProductType }) => {
           "xl:grid-cols-3 xl:grid-rows-[auto_auto_auto]"
         )}
       >
-        {/* Product Image */}
-        <Image
-          src={Product.image}
-          alt="Product Image"
-          className={classNames(
-            "w-full aspect-square object-cover",
-            "sm:rounded-lg",
-            "md:row-start-1 md:col-start-1"
-          )}
-          loading="lazy"
-        />
-
-        {/* Thumbnails */}
-        <Thumbnails
-          product={Product}
+        {/* Images */}
+        <ImagePreview
+          product={props.product}
           className={classNames(
             "xl:col-start-2 xl:row-start-1 xl:grid-cols-2 xl:grid-rows-2"
           )}
@@ -50,27 +60,14 @@ const ProductInfo = (props: { product: ProductType }) => {
             "sm:col-span-2 sm:row-start-2 sm:px-0"
           )}
         >
-          <h1 className="text-xl text-natural-700 font-bold">{Product.name}</h1>
+          <h1 className="text-xl text-natural-700 font-bold">
+            {props.product.title}
+          </h1>
           <div className="row-start-2 col-span-2 flex gap-1 items-center">
-            <svg
-              className="h-[14px] w-auto fill-natural-600"
-              xmlns="http://www.w3.org/2000/svg"
-              id="Layer_1"
-              data-name="Layer 1"
-              viewBox="0 0 1124.14 1256.39"
-            >
-              <path
-                className="cls-1"
-                d="M699.62,1113.02h0c-20.06,44.48-33.32,92.75-38.4,143.37l424.51-90.24c20.06-44.47,33.31-92.75,38.4-143.37l-424.51,90.24Z"
-              />
-              <path
-                className="cls-1"
-                d="M1085.73,895.8c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.33v-135.2l292.27-62.11c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.27V66.13c-50.67,28.45-95.67,66.32-132.25,110.99v403.35l-132.25,28.11V0c-50.67,28.44-95.67,66.32-132.25,110.99v525.69l-295.91,62.88c-20.06,44.47-33.33,92.75-38.42,143.37l334.33-71.05v170.26l-358.3,76.14c-20.06,44.47-33.32,92.75-38.4,143.37l375.04-79.7c30.53-6.35,56.77-24.4,73.83-49.24l68.78-101.97v-.02c7.14-10.55,11.3-23.27,11.3-36.97v-149.98l132.25-28.11v270.4l424.53-90.28Z"
-              />
-            </svg>
-            <h3 className="text-sm text-natural-600 font-medium">
-              {Product.price}
-            </h3>
+            <span className="text-sm text-natural-600 font-medium">
+              {props.product.priceRange.minVariantPrice.amount}{" "}
+              {props.product.priceRange.minVariantPrice.currencyCode}
+            </span>
           </div>
         </div>
 
@@ -86,12 +83,15 @@ const ProductInfo = (props: { product: ProductType }) => {
             Product Details
           </h1>
           <p className="text-sm text-natural-700 font-normal">
-            {Product.description}
+            {props.product.description}
           </p>
         </div>
 
         {/* Select Options */}
         <form
+          onChange={(form) =>
+            setCanSubmit(form.currentTarget.checkValidity() ?? false)
+          }
           className={classNames(
             "px-8 flex flex-col gap-4",
             "sm:col-start-2 sm:row-start-1 sm:px-0",
@@ -100,62 +100,78 @@ const ProductInfo = (props: { product: ProductType }) => {
           action="/cart"
           method="post"
         >
+          {/* Color selection */}
+          {Colors.length > 0 && (
+            <fieldset className="space-y-2">
+              <legend className="text-base text-natural-700 font-bold">
+                Select Color
+              </legend>
+
+              <div className="flex flex-wrap gap-1">
+                {Colors.map((color, index) => (
+                  <label key={index} className="block">
+                    <input
+                      type="radio"
+                      name="color"
+                      value={`${index}:${color}`}
+                      className="peer hidden"
+                      required={true}
+                    />
+                    <ColorInput color={color ?? ""} />
+                  </label>
+                ))}
+              </div>
+            </fieldset>
+          )}
+
           {/* Size selection */}
-          <fieldset className="space-y-2">
-            <legend className="text-base text-natural-700 font-bold">
-              Select Color
-            </legend>
+          {AvailableSizes.length > 0 && (
+            <fieldset className="space-y-2">
+              <legend className="text-base text-natural-700 font-bold">
+                Select Size
+              </legend>
 
-            <div className="flex flex-wrap gap-1">
-              {Product.colors.map((color, index) => (
-                <label key={index} className="block">
-                  <input
-                    type="radio"
-                    name="color"
-                    value={color}
-                    className="peer hidden"
-                    required={true}
-                  />
-                  <ColorInput color={color} />
-                </label>
-              ))}
-            </div>
-          </fieldset>
+              <div className="grid grid-cols-4 gap-1">
+                {Sizes.map((size, index) => {
+                  const available = AvailableSizes.includes(size);
 
-          {/* Size selection */}
-          <fieldset className="space-y-2">
-            <legend className="text-base text-natural-700 font-bold">
-              Select Size
-            </legend>
-
-            <div className="grid grid-cols-4 gap-1">
-              {sizes.map((size, index) => (
-                <label key={index} className="block">
-                  <input
-                    type="radio"
-                    name="size"
-                    value={size}
-                    className="peer hidden"
-                    required={true}
-                  />
-                  <span
-                    className="block rounded py-3 text-center text-sm font-semibold cursor-pointer bg-primary-100 text-primary-500
-                 peer-checked:bg-primary-400 peer-checked:text-natural-100
-                 hover:bg-primary-200 hover:text-primary-500"
-                  >
-                    {size}
-                  </span>
-                </label>
-              ))}
-            </div>
-          </fieldset>
+                  return (
+                    <label key={index} className="block">
+                      <input
+                        type="radio"
+                        name="size"
+                        value={size}
+                        className="peer hidden"
+                        required={true}
+                        disabled={!available && true} //If not available return false (disable)
+                      />
+                      <span
+                        className={classNames(
+                          "block rounded py-3 text-center text-sm font-semibold cursor-pointer bg-primary-100 text-primary-500 peer-checked:bg-primary-400 peer-checked:text-natural-100 hover:bg-primary-200 hover:text-primary-500",
+                          { "opacity-50 cursor-not-allowed!": !available }
+                        )}
+                      >
+                        {size}
+                      </span>
+                    </label>
+                  );
+                })}
+              </div>
+            </fieldset>
+          )}
 
           {/* Quantity + Add to Cart */}
           <div className={classNames("flex gap-2", "sm:mt-auto")}>
             <QuantityButton />
             <button
               type="submit"
-              className="w-full py-2 bg-accent-300 text-natural-100 text-sm font-semibold rounded"
+              className={classNames(
+                "w-full py-2 bg-accent-300 hover:bg-accent-200 text-natural-100 text-sm font-semibold rounded transition-opacity",
+                {
+                  "opacity-50 cursor-not-allowed!": !canSubmit,
+                }
+              )}
+              disabled={!canSubmit}
             >
               Add to Cart
             </button>
@@ -164,6 +180,46 @@ const ProductInfo = (props: { product: ProductType }) => {
       </div>
 
       <TestimonialsContainer className="sm:px-16 px-8" />
+    </div>
+  );
+};
+
+function QuantityButton() {
+  const [quantity, setQuantity] = useState(1);
+
+  const Increase = () => {
+    setQuantity((prev) => Math.min(prev + 1, 10));
+  };
+
+  const Decrease = () => {
+    setQuantity((prev) => Math.max(1, prev - 1));
+  };
+
+  return (
+    <div className="w-fit flex items-center bg-natural-200 p-2 rounded">
+      <button type="button" onClick={Decrease}>
+        <RemoveIcon className="w-6 aspect-square fill-natural-700" />
+      </button>
+      <span className="flex w-6 justify-center items-center aspect-square">
+        {quantity}
+      </span>
+      <button type="button" onClick={Increase}>
+        <AddIcon className="w-6 aspect-square fill-natural-700" />
+      </button>
+    </div>
+  );
+}
+
+const ColorInput = (props: { color: string }) => {
+  return (
+    <div
+      className="peer-checked:[&>svg]:block w-10 h-10 flex justify-center items-center bg-natural-200 border border-natural-700 rounded-full cursor-pointer"
+      style={{ backgroundColor: props.color }}
+    >
+      <CheckmarkIcon
+        className="hidden w-5 h-auto fill-natural-700"
+        style={{ fill: getContrastColor(props.color) }}
+      />
     </div>
   );
 };
