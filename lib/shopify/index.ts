@@ -404,9 +404,9 @@ export async function getPages(): Promise<Page[]> {
 }
 
 export async function getProduct(handle: string): Promise<Product | undefined> {
-  // "use cache";
-  // cacheTag(TAGS.products);
-  // cacheLife("days");
+  "use cache";
+  cacheTag(TAGS.products);
+  cacheLife("days");
 
   const res = await shopifyFetch<ShopifyProductOperation>({
     query: getProductQuery,

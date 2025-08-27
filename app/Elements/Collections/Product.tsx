@@ -1,5 +1,5 @@
 "use client";
-import Image, { StaticImageData } from "next/image";
+import Image from "next/image";
 import React from "react";
 import Link from "next/link";
 import Add from "@/public/icons/add.svg";
@@ -61,22 +61,11 @@ const Product = (props: { product: Product }) => {
           </div>
         </div>
 
-        {/* <div className="flex justify-between gap-4 items-start"></div> */}
         <span className="text-sm text-natural-600 font-medium">
           {props.product.priceRange.minVariantPrice.amount}{" "}
           {props.product.priceRange.minVariantPrice.currencyCode}
         </span>
       </div>
-
-      {/* Buttons */}
-      {/* <div className="flex gap-4 mt-auto">
-        <button className="text-sm font-semibold w-full py-2 bg-primary-400 rounded text-natural-100 cursor-pointer">
-          Add to Cart
-        </button>
-        <button className="text-sm font-semibold w-full py-2 bg-natural-200 rounded text-natural-700 cursor-pointer">
-          Details
-        </button>
-      </div> */}
     </Link>
   );
 };
