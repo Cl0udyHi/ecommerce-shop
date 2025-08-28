@@ -9,7 +9,10 @@ import React, {
 
 import Footer from "./Footer";
 import Navbar from "./Navbar/Navbar";
+<<<<<<< HEAD
 import Cart from "@/components/Cart";
+=======
+>>>>>>> 2b7ecd870a1def2eeb00475b39f2882eeb2e7319
 
 export const CartOpenContext = createContext<
   [boolean, Dispatch<SetStateAction<boolean>>] | null
