@@ -1,5 +1,5 @@
 import "./globals.css";
-import BodyContent from "./bodyContent";
+import BodyContent from "./Elements/BodyContent";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -15,7 +15,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <body className="antialiased">
-        <BodyContent children={children} />
+        <BodyContent>{children}</BodyContent>
       </body>
     </html>
   );

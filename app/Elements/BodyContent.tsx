@@ -7,14 +7,15 @@ import React, {
   useState,
 } from "react";
 
-import Footer from "./Elements/Footer";
-import Navbar from "./Elements/Navbar/Navbar";
+import Footer from "./Footer";
+import Navbar from "./Navbar/Navbar";
+import Cart from "@/components/Cart";
 
 export const CartOpenContext = createContext<
   [boolean, Dispatch<SetStateAction<boolean>>] | null
 >(null);
 
-const bodyContent = ({
+const BodyContent = ({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -26,8 +27,9 @@ const bodyContent = ({
       <Navbar />
       <main>{children}</main>
       <Footer />
+      <Cart />
     </CartOpenContext>
   );
 };
 
-export default bodyContent;
+export default BodyContent;

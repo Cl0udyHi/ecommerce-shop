@@ -30,6 +30,20 @@ class Cart {
 
   public checkout() {}
 
+  public getTotal(): number {
+    const currencyCode =
+      this.content[0]?.product.priceRange.minVariantPrice.currencyCode;
+    let total: number = this.content.reduce(
+      (sum, cartProduct) =>
+        sum +
+        Number(cartProduct.product.priceRange.minVariantPrice.amount) *
+          cartProduct.quantity,
+      0
+    );
+
+    return Math.round(total * 100) / 100;
+  }
+
   public addProduct(product: CartProduct) {
     this.content.unshift(product);
     this.save();

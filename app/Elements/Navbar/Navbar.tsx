@@ -2,14 +2,15 @@
 
 import classNames from "classnames";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import LangDropdown from "./components/LangDropdown";
 import CurrencyDropDown from "./components/CurrencyDropdown";
 import MenuIcon from "@/public/icons/menu.svg";
 import CloseIcon from "@/public/icons/close.svg";
 import { usePathname } from "next/navigation";
 import { links } from "@/utils/data";
-import ShoppingCart from "@/components/Cart";
+import Bag from "@/public/icons/bag.svg";
+import { CartOpenContext } from "../BodyContent";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -28,6 +29,12 @@ const Navbar = () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
+  const openContext = useContext(CartOpenContext);
+  if (!openContext) {
+    throw new Error("CartOpenContext is not available");
+  }
+  const [, setIsOpen] = openContext;
 
   return (
     <nav
@@ -58,7 +65,12 @@ const Navbar = () => {
         <div className="flex gap-2">
           <LangDropdown />
 
-          <ShoppingCart />
+          <button
+            onClick={() => setIsOpen(true)}
+            className="p-2 rounded-sm cursor-pointer bg-accent-500 hover:bg-accent-400"
+          >
+            <Bag className="w-5 h-auto fill-accent-100" />
+          </button>
         </div>
       </div>
 
