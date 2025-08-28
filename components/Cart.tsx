@@ -18,7 +18,7 @@ import Bag from "@/public/icons/bag.svg";
 import type { CartProduct } from "@/utils/types";
 import type { Product } from "@/lib/shopify/types";
 import { useOnClickOutside } from "usehooks-ts";
-import { CartOpenContext } from "@/app/bodyContent";
+import { CartOpenContext } from "@/app/Elements/BodyContent";
 import MyCart from "@/utils/Cart";
 
 export default function ShoppingCart() {
@@ -122,7 +122,7 @@ export default function ShoppingCart() {
 }
 
 const Product = (props: { cartProduct: CartProduct }) => {
-  const { variants, quantity, product } = props.cartProduct;
+  const { variants, product } = props.cartProduct;
 
   return (
     <div className="flex gap-3">

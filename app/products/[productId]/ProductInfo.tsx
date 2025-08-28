@@ -16,7 +16,7 @@ import Image from "next/image";
 import Quantity from "@/components/Quantity";
 
 import type { CartProduct } from "@/utils/types";
-import { CartOpenContext } from "@/app/bodyContent";
+import { CartOpenContext } from "@/app/Elements/BodyContent";
 import MyCart from "@/utils/Cart";
 
 const ProductInfo = (props: { product: Product }) => {
@@ -55,7 +55,7 @@ const ProductInfo = (props: { product: Product }) => {
   if (!openContext) {
     throw new Error("CartOpenContext is not available");
   }
-  const [isOpen, setIsOpen] = openContext;
+  const [, setIsOpen] = openContext;
 
   function handleFormSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
