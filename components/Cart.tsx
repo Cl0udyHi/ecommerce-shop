@@ -50,7 +50,7 @@ export default function ShoppingCart() {
     <div
       ref={cartRef}
       className={classNames(
-        "fixed top-0 right-0 bg-natural-100 h-screen w-full z-100 flex flex-col px-8 transition-transform duration-150 drop-shadow-sm",
+        "fixed top-0 right-0 bg-natural-100 h-full w-full z-100 flex flex-col px-8 transition-transform duration-150 drop-shadow-sm",
         "sm:w-[393px]",
         { "translate-x-full pointer-events-none": !isOpen }
       )}
