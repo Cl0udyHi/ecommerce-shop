@@ -36,6 +36,8 @@ export default function ShoppingCart() {
   });
 
   useEffect(() => {
+    window.history.pushState(null, "", window.location.href);
+
     const handlePopState = () => {
       setIsOpen(false);
       window.history.pushState(null, "", window.location.href);
