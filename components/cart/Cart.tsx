@@ -35,6 +35,18 @@ export default function ShoppingCart() {
     return unsubscribe; // cleanup  }, []);
   });
 
+  useEffect(() => {
+    const handlePopState = () => {
+      setIsOpen(false);
+      window.history.pushState(null, "", window.location.href);
+    };
+
+    window.addEventListener("popstate", handlePopState);
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, []);
+
   const openContext = useContext(CartOpenContext);
   if (!openContext) {
     throw new Error("CartOpenContext is not available");
