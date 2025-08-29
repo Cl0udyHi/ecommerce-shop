@@ -1,4 +1,3 @@
-"use client";
 import Image from "next/image";
 import React from "react";
 import Link from "next/link";
@@ -29,11 +28,11 @@ const Product = (props: { product: Product }) => {
     >
       {/* Image */}
       <Image
-        src={props.product.images[0].url}
-        blurDataURL={`${props.product.images[0].url}?width=10`}
-        alt={props.product.images[0].altText}
-        width={500}
-        height={500}
+        src={props.product.featuredImage.url}
+        blurDataURL={`${props.product.featuredImage.url}&width=10`}
+        alt={props.product.featuredImage.altText}
+        width={props.product.featuredImage.width}
+        height={props.product.featuredImage.height}
         placeholder="blur"
         className="object-cover w-full aspect-[201/230] rounded-lg"
       />

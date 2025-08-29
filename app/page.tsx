@@ -2,8 +2,8 @@
 
 import heroBanner from "@/public/images/Banner.png";
 import Image from "next/image";
-import Collections from "./Elements/Collections/Collections";
-import TestimonialsContainer from "./Elements/Testimonials/Testimonials";
+import Collections from "@/components/collections/Collections";
+import TestimonialsContainer from "@/components/Testimonials";
 import { getCollections } from "@/lib/shopify";
 
 export default async function Home() {

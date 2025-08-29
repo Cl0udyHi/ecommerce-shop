@@ -1,10 +1,12 @@
 import "./globals.css";
-import BodyContent from "./Elements/BodyContent";
+import BodyContent from "@/components/cart/cart-context";
+import Footer from "@/components/Footer";
+import Navbar from "@/components/navbar/Navbar";
+import Cart from "@/components/cart/Cart";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Wavin",
-  description: "",
 };
 
 export default function RootLayout({
@@ -13,9 +15,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="scroll-smooth">
+    <html lang="en" data-scroll-behavior="smooth" className="scroll-smooth">
       <body className="antialiased">
-        <BodyContent>{children}</BodyContent>
+        <BodyContent>
+          <Navbar />
+          <main>{children}</main>
+          <Footer />
+          <Cart />
+        </BodyContent>
       </body>
     </html>
   );

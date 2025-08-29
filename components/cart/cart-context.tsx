@@ -7,10 +7,6 @@ import React, {
   useState,
 } from "react";
 
-import Footer from "./Footer";
-import Navbar from "./Navbar/Navbar";
-import Cart from "@/components/Cart";
-
 export const CartOpenContext = createContext<
   [boolean, Dispatch<SetStateAction<boolean>>] | null
 >(null);
@@ -24,10 +20,7 @@ const BodyContent = ({
 
   return (
     <CartOpenContext value={[cartOpen, setCartOpen]}>
-      <Navbar />
-      <main>{children}</main>
-      <Footer />
-      <Cart />
+      {children}
     </CartOpenContext>
   );
 };

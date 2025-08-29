@@ -10,7 +10,7 @@ import CloseIcon from "@/public/icons/close.svg";
 import { usePathname } from "next/navigation";
 import { links } from "@/utils/data";
 import Bag from "@/public/icons/bag.svg";
-import { CartOpenContext } from "../BodyContent";
+import { CartOpenContext } from "../cart/cart-context";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);

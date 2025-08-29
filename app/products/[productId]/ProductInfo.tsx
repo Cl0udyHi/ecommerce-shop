@@ -9,14 +9,14 @@ import React, {
   useState,
 } from "react";
 import CheckmarkIcon from "@/public/icons/checkmark.svg";
-import TestimonialsContainer from "@/app/Elements/Testimonials/Testimonials";
+import TestimonialsContainer from "@/components/Testimonials";
 import { Product } from "@/lib/shopify/types";
 import { getContrastColor } from "@/utils/color";
 import Image from "next/image";
 import Quantity from "@/components/Quantity";
 
 import type { CartProduct } from "@/utils/types";
-import { CartOpenContext } from "@/app/Elements/BodyContent";
+import { CartOpenContext } from "@/components/cart/cart-context";
 import MyCart from "@/utils/Cart";
 
 const ProductInfo = (props: { product: Product }) => {
@@ -83,7 +83,7 @@ const ProductInfo = (props: { product: Product }) => {
   }, []);
 
   return (
-    <div className="flex flex-col gap-8 mb-16 mt-[1px]">
+    <div className="min-h-screen flex flex-col gap-8 mb-16 mt-[1px]">
       <div
         className={classNames(
           "grid grid-cols-1 grid-rows-[auto_auto_auto_auto] gap-8",
@@ -245,18 +245,17 @@ const ColorInput = (props: { color: string }) => {
 
 function Images(props: { product: Product; className: string }) {
   const images = props.product.images.slice(0, 4);
-
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
 
   return (
     <>
       <Image
-        src={props.product.images[selectedIndex].url}
-        blurDataURL={`${props.product.images[selectedIndex].url}?width=10`}
-        alt={props.product.images[selectedIndex].altText}
+        src={images[selectedIndex].url}
+        blurDataURL={`${images[selectedIndex].url}&width=10`}
+        alt={images[selectedIndex].altText}
         placeholder="blur"
-        width={500}
-        height={500}
+        width={images[selectedIndex].width}
+        height={images[selectedIndex].height}
         className={classNames(
           "w-full aspect-square object-cover",
           "sm:rounded-lg",
@@ -277,10 +276,10 @@ function Images(props: { product: Product; className: string }) {
             onClick={() => setSelectedIndex(index)}
             key={index}
             src={image.url}
-            blurDataURL={`${image.url}?width=10`}
+            blurDataURL={`${image.url}&width=10`}
             alt={image.altText}
-            width={500}
-            height={500}
+            width={image.width}
+            height={image.height}
             placeholder="blur"
             className={classNames(
               "w-full aspect-square object-cover bg-natural-200 rounded cursor-pointer",
