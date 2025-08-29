@@ -13,7 +13,7 @@ export type SocialMediaType = {
   href: string;
 };
 
-export type ScrollDirection = "LEFT" | "RIGHT";
+export type ScrollDirection = "LEFT" | "RIGHT" | "NONE";
 
 export type TestimonialType = {
   name: string;

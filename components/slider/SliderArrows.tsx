@@ -12,9 +12,10 @@ type ArrowsProps = {
 };
 
 export default function Arrows({ className, scrollContainerRef }: ArrowsProps) {
-  const [scrollValue, setScrollValue] = useState<ScrollDirection | null>(
-    "LEFT"
-  );
+  const [isLeftArrowDisabled, setIsLeftArrowDisabled] =
+    useState<boolean>(false);
+  const [isRightArrowDisabled, setIsRightArrowDisabled] =
+    useState<boolean>(false);
 
   const scroll = (direction: ScrollDirection) => {
     const container = scrollContainerRef.current;
@@ -23,6 +24,8 @@ export default function Arrows({ className, scrollContainerRef }: ArrowsProps) {
     const cardWidth = container.children[0]?.clientWidth ?? 0;
     container.scrollLeft +=
       direction === "LEFT" ? -(cardWidth + 16) : cardWidth - 16;
+
+    console.log(container.scroll);
   };
 
   useEffect(() => {
@@ -32,31 +35,32 @@ export default function Arrows({ className, scrollContainerRef }: ArrowsProps) {
     const cardWidth = container.children[0]?.clientWidth ?? 0;
 
     const handleScroll = () => {
-      if (container.scrollLeft <= 0 + cardWidth) {
-        setScrollValue("LEFT");
-      } else if (
-        container.scrollLeft >=
-        container.scrollWidth - container.clientWidth - cardWidth
-      ) {
-        setScrollValue("RIGHT");
-      } else {
-        setScrollValue(null);
-      }
+      if (!container) return;
+
+      const scrollLeft = container.scrollLeft;
+      const maxScrollLeft =
+        container.scrollWidth - container.clientWidth - cardWidth;
+
+      setIsLeftArrowDisabled(scrollLeft <= cardWidth);
+      setIsRightArrowDisabled(scrollLeft >= maxScrollLeft);
     };
 
     container.addEventListener("scroll", handleScroll);
+
+    handleScroll();
+
     return () => container.removeEventListener("scroll", handleScroll);
-  }, [scrollContainerRef]);
+  }, []);
 
   return (
     <div className={classNames(className, "flex gap-2")}>
       <button
         onClick={() => scroll("LEFT")}
-        disabled={scrollValue === "LEFT"}
+        disabled={isLeftArrowDisabled}
         className={classNames(
           "w-fit h-fit aspect-square grow-0 bg-primary-100 rounded cursor-pointer transition-opacity duration-100",
           {
-            "opacity-50 cursor-not-allowed!": scrollValue === "LEFT",
+            "opacity-50 cursor-not-allowed!": isLeftArrowDisabled,
           }
         )}
       >
@@ -64,11 +68,11 @@ export default function Arrows({ className, scrollContainerRef }: ArrowsProps) {
       </button>
       <button
         onClick={() => scroll("RIGHT")}
-        disabled={scrollValue === "RIGHT"}
+        disabled={isRightArrowDisabled}
         className={classNames(
           "w-fit h-fit aspect-square grow-0 bg-primary-100 rounded cursor-pointer transition-opacity duration-100",
           {
-            "opacity-50 cursor-not-allowed!": scrollValue === "RIGHT",
+            "opacity-50 cursor-not-allowed!": isRightArrowDisabled,
           }
         )}
       >
