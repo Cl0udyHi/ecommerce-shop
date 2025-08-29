@@ -35,6 +35,18 @@ export default function ShoppingCart() {
     return unsubscribe; // cleanup  }, []);
   });
 
+  useEffect(() => {
+    const handlePopState = () => {
+      setIsOpen(false);
+      window.history.pushState(null, "", window.location.href);
+    };
+
+    window.addEventListener("popstate", handlePopState);
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, []);
+
   const openContext = useContext(CartOpenContext);
   if (!openContext) {
     throw new Error("CartOpenContext is not available");
@@ -46,22 +58,19 @@ export default function ShoppingCart() {
 
   const productsSectionRef = useRef<HTMLElement>(null);
   useEffect(() => {
-    productsSectionRef.current?.scrollTo({ top: 0 });
-  }, [isOpen]);
+    if (!isOpen) return;
 
-  useEffect(() => {
-    const handlePopState = () => {
+    window.history.pushState({ cartOpen: true }, "", window.location.href);
+
+    const handlePopState = (event: PopStateEvent) => {
       if (isOpen) {
         setIsOpen(false);
-        window.history.pushState(null, "", window.location.href);
+
+        window.history.pushState({ cartOpen: true }, "", window.location.href);
       }
     };
 
-    if (isOpen) {
-      window.history.pushState(null, "", window.location.href);
-      window.addEventListener("popstate", handlePopState);
-    }
-
+    window.addEventListener("popstate", handlePopState);
     return () => {
       window.removeEventListener("popstate", handlePopState);
     };
