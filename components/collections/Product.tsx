@@ -3,20 +3,20 @@ import React from "react";
 import Link from "next/link";
 import Add from "@/public/icons/add.svg";
 import classNames from "classnames";
-import type { Product } from "@/lib/shopify/types";
+import type { Product } from "@/utils/types";
 
 const Product = (props: { product: Product }) => {
-  const Colors = Array.from(
-    new Set(
-      props.product.variants
-        .map(
-          (variant) =>
-            variant.selectedOptions.find((opt) => opt.name === "Color")?.value
-        )
-        .filter(Boolean)
-        .map((c) => c?.trim().toLowerCase())
-    )
-  );
+  // const Colors = Array.from(
+  //   new Set(
+  //     props.product.variants
+  //       .map(
+  //         (variant) =>
+  //           variant.selectedOptions.find((opt) => opt.name === "Color")?.value
+  //       )
+  //       .filter(Boolean)
+  //       .map((c) => c?.trim().toLowerCase())
+  //   )
+  // );
 
   return (
     <Link
@@ -30,11 +30,11 @@ const Product = (props: { product: Product }) => {
       <Image
         src={props.product.featuredImage.url}
         blurDataURL={`${props.product.featuredImage.url}&width=10`}
-        alt={props.product.featuredImage.altText}
+        alt={props.product.featuredImage.altText ?? ""}
         width={props.product.featuredImage.width}
         height={props.product.featuredImage.height}
         placeholder="blur"
-        className="object-cover w-full aspect-[201/230] rounded-lg"
+        className="object-cover w-full aspect-201/230 rounded-lg"
       />
 
       {/* Info */}
@@ -45,18 +45,18 @@ const Product = (props: { product: Product }) => {
           </h2>
           {/* Colors */}
           <div className="sm:col-start-2 row-start-1 col-start-1 flex shrink-0 justify-end gap-2">
-            {Colors.length > 3 && (
-              <div className="w-5 h-5 flex justify-center items-center rounded-full border-1 border-natural-700 bg-natural-200">
+            {/* {Colors.length > 3 && (
+              <div className="w-5 h-5 flex justify-center items-center rounded-full border border-natural-700 bg-natural-200">
                 <Add className="w-5 h-auto fill-natural-700" />
               </div>
             )}
             {Colors.slice(0, 3).map((color, index) => (
               <div
                 key={index}
-                className={`shrink-0 w-5 h-5 rounded-full border-1 border-natural-700`}
+                className={`shrink-0 w-5 h-5 rounded-full border border-natural-700`}
                 style={{ backgroundColor: color }}
               ></div>
-            ))}
+            ))} */}
           </div>
         </div>
 

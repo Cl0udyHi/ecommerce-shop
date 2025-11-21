@@ -4,6 +4,7 @@ import Footer from "@/components/Footer";
 import Navbar from "@/components/navbar/Navbar";
 import Cart from "@/components/cart/Cart";
 import { Metadata } from "next";
+import { Providers } from "@/components/providers";
 
 export const metadata: Metadata = {
   title: "Wavin",
@@ -19,7 +20,9 @@ export default function RootLayout({
       <body className="antialiased">
         <BodyContent>
           <Navbar />
-          <main>{children}</main>
+          <main>
+            <Providers>{children}</Providers>
+          </main>
           <Footer />
           <Cart />
         </BodyContent>

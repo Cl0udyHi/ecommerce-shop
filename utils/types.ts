@@ -1,5 +1,54 @@
-import { Product } from "@/lib/shopify/types";
+// import { Product } from "@/lib/shopify/types";
 import { StaticImageData } from "next/image";
+
+export type ProductImage = {
+  id: string;
+  altText: string;
+  height: number;
+  width: number;
+  url: string;
+};
+
+export type ProductPrice = {
+  amount: string;
+  currencyCode: string;
+};
+
+export type ProductSelectedOption = { name: string; value: string };
+
+export type ProductOptionValue = {
+  id: string;
+  name: string;
+  selectedOptions: ProductSelectedOption[];
+};
+
+export type ProductOptions = {
+  id: string;
+  name: string;
+  optionValues: ProductOptionValue[];
+};
+
+export type Product = {
+  id: string;
+  handle: string;
+  title: string;
+  description: string;
+  descriptionHtml: string;
+  featuredImage: ProductImage;
+  images: ProductImage[];
+  priceRange: {
+    minVariantPrice: ProductPrice;
+    maxVariantPrice: ProductPrice;
+  };
+  options: ProductOptions[];
+};
+
+export type Collection = {
+  id: string;
+  handle: string;
+  title: string;
+  products: Product[];
+};
 
 export type CartProduct = {
   product: Product;

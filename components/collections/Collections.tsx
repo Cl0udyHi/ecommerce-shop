@@ -1,26 +1,28 @@
-import React from "react";
+"use client";
 
-import type { Collection } from "@/lib/shopify/types";
 import CollectionProducts from "./Collection";
-import { getCollectionProducts } from "@/lib/shopify";
+import { Collection } from "@/utils/types";
+import { useCollections } from "@/hooks/useCollections";
 
-const Collections = (props: { collections: Collection[] }) => {
+const Collections = () => {
+  const { data: collections, isPending, error } = useCollections();
+
   return (
     <>
-      {props.collections.map(async (collection, index) => {
-        const products = await getCollectionProducts({
-          collection: collection.handle,
-        });
-
-        return (
-          <CollectionProducts
-            key={index}
-            className="sm:px-16 px-8"
-            products={products}
-            collection={collection}
-          />
-        );
-      })}
+      {isPending ? (
+        <></>
+      ) : (
+        <>
+          {collections!.map((collection: Collection, index: number) => (
+            <CollectionProducts
+              key={index}
+              className="sm:px-16 px-8"
+              products={collection.products}
+              collection={collection}
+            />
+          ))}
+        </>
+      )}
     </>
   );
 };

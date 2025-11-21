@@ -15,20 +15,25 @@ import Quantity from "../Quantity";
 import CloseIcon from "@/public/icons/close.svg";
 import ShoppingCartWarning from "@/public/icons/shopping_cart_warning.svg";
 
-import type { CartItem, Product } from "@/lib/shopify/types";
+import type { CartProduct } from "@/utils/types";
+import type { Product } from "@/lib/shopify/types";
 import { useOnClickOutside } from "usehooks-ts";
-import { CartContext, CartOpenContext } from "@/components/cart/cart-context";
+import { CartOpenContext } from "@/components/cart/cart-context";
 import MyCart from "@/utils/Cart";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { CartProduct } from "@/utils/types";
 
 export default function ShoppingCart() {
-  const cartContext = useContext(CartContext);
-  if (!cartContext) throw new Error("sad");
-  const [cart, setCart] = cartContext;
-
+  const [cartProducts, setCartProducts] = useState<CartProduct[]>([]);
   const [totalPrice, setTotalPrice] = useState<number>(0);
+
+  useEffect(() => {
+    const unsubscribe = MyCart.subscribe((products) => {
+      setCartProducts(products);
+      setTotalPrice(MyCart.getTotal());
+    });
+    return unsubscribe; // cleanup  }, []);
+  });
 
   useEffect(() => {
     const handlePopState = () => {
@@ -40,7 +45,7 @@ export default function ShoppingCart() {
     return () => {
       window.removeEventListener("popstate", handlePopState);
     };
-  });
+  }, []);
 
   const openContext = useContext(CartOpenContext);
   if (!openContext) {
@@ -57,7 +62,7 @@ export default function ShoppingCart() {
 
     window.history.pushState({ cartOpen: true }, "", window.location.href);
 
-    const handlePopState = () => {
+    const handlePopState = (event: PopStateEvent) => {
       if (isOpen) {
         setIsOpen(false);
 
@@ -101,8 +106,8 @@ export default function ShoppingCart() {
           style={{ scrollbarGutter: "stable" }}
         >
           <AnimatePresence>
-            {cart?.items && cart.items.length > 0 ? (
-              cart.items.map((cartProduct) => {
+            {cartProducts.length > 0 ? (
+              cartProducts.map((cartProduct) => {
                 return (
                   <motion.div
                     key={cartProduct.id}
@@ -112,7 +117,7 @@ export default function ShoppingCart() {
                     exit={{ opacity: 0, scale: 0.95 }}
                     transition={{ duration: 0.15 }}
                   >
-                    <Product key={cartProduct.id} cartItem={cartProduct} />
+                    <Product key={cartProduct.id} cartProduct={cartProduct} />
                   </motion.div>
                 );
               })
@@ -147,11 +152,10 @@ export default function ShoppingCart() {
           className={classNames(
             "w-full py-2 bg-accent-300 hover:bg-accent-200 text-natural-100 text-sm font-semibold rounded transition-opacity",
             {
-              "opacity-50 cursor-not-allowed!":
-                cart?.items && cart?.items.length < 1,
+              "opacity-50 cursor-not-allowed!": cartProducts.length < 1,
             }
           )}
-          disabled={!(cart?.items && cart.items.length < 1)}
+          disabled={!(cartProducts.length < 1)}
         >
           Checkout
         </button>
@@ -169,26 +173,16 @@ const EmptyCart = () => {
   );
 };
 
-const Product = ({ cartItem }: { cartItem: CartProduct }) => {
-  const cartContext = useContext(CartContext);
-  if (!cartContext) throw new Error("sad");
-  const [cart, setCart] = cartContext;
-
-  const product = cartItem.product;
+const Product = (props: { cartProduct: CartProduct }) => {
+  const { variants, product } = props.cartProduct;
   const [loaded, setLoaded] = useState(false);
-
-  const [quantity, setQuantity] = useState(cartItem.quantity);
 
   useEffect(() => {
     setLoaded(true);
   }, []);
 
   function handleRemove() {
-    setCart((prev) => {
-      prev?.items.filter((line) => line.id !== cartItem.id);
-
-      return prev;
-    });
+    MyCart.removeProduct(props.cartProduct);
   }
 
   return (
@@ -209,9 +203,9 @@ const Product = ({ cartItem }: { cartItem: CartProduct }) => {
         className="flex gap-3"
       >
         <Image
-          src={product.featuredImage.url}
-          blurDataURL={`${product.featuredImage.url}?width=10`}
-          alt={product.featuredImage.altText}
+          src={product.images[0].url}
+          blurDataURL={`${product.images[0].url}?width=10`}
+          alt={product.images[0].altText}
           placeholder="blur"
           width={120}
           height={120}
@@ -232,12 +226,12 @@ const Product = ({ cartItem }: { cartItem: CartProduct }) => {
                 {product.priceRange.minVariantPrice.currencyCode}
               </span>
               <span className="text-sm text-natural-600 font-normal">
-                {cartItem.variants.filter(Boolean).join(" / ")}
+                {variants.filter(Boolean).join(" / ")}
               </span>
             </div>
           </div>
           <div className="flex justify-between items-center">
-            <Quantity value={quantity} onChange={setQuantity} />
+            {/* <Quantity /> */}
             <button
               onClick={handleRemove}
               className={classNames(
