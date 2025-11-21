@@ -15,7 +15,7 @@ import Quantity from "../Quantity";
 import CloseIcon from "@/public/icons/close.svg";
 import ShoppingCartWarning from "@/public/icons/shopping_cart_warning.svg";
 
-import type { CartItem, Product } from "@/lib/shopify/types";
+// import type { CartItem, Product } from "@/lib/shopify/types";
 import { useOnClickOutside } from "usehooks-ts";
 import { CartContext, CartOpenContext } from "@/components/cart/cart-context";
 import MyCart from "@/utils/Cart";

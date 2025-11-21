@@ -15,7 +15,7 @@ export const CartOpenContext = createContext<
 export const CartContext = createContext<
   | [
       { items: CartProduct[] } | undefined,
-      Dispatch<SetStateAction<{ items: CartProduct[] }>>,
+      Dispatch<SetStateAction<{ items: CartProduct[] }>>
     ]
   | null
 >(null);

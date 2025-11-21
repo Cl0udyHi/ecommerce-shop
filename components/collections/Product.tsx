@@ -1,7 +1,5 @@
 import Image from "next/image";
-import React from "react";
 import Link from "next/link";
-import Add from "@/public/icons/add.svg";
 import classNames from "classnames";
 import type { Product } from "@/utils/types";
 
