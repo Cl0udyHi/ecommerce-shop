@@ -1,6 +1,6 @@
 import heroBanner from "@/public/images/Banner.png";
 import Image from "next/image";
-import Collections from "@/components/collections/Collections";
+import Collections from "@/components/collections/collections-section";
 import TestimonialsContainer from "@/components/Testimonials";
 
 export default async function Home() {
@@ -14,8 +14,6 @@ export default async function Home() {
           alt="Banner"
         />
       </div>
-
-      {/* <ProductsList /> */}
 
       <Collections />
 

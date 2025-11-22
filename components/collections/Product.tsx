@@ -4,18 +4,6 @@ import classNames from "classnames";
 import type { Product } from "@/utils/types";
 
 const Product = (props: { product: Product }) => {
-  // const Colors = Array.from(
-  //   new Set(
-  //     props.product.variants
-  //       .map(
-  //         (variant) =>
-  //           variant.selectedOptions.find((opt) => opt.name === "Color")?.value
-  //       )
-  //       .filter(Boolean)
-  //       .map((c) => c?.trim().toLowerCase())
-  //   )
-  // );
-
   return (
     <Link
       className={classNames(
