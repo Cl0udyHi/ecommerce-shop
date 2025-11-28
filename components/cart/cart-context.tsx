@@ -7,6 +7,7 @@ import React, {
   SetStateAction,
   useState,
 } from "react";
+import { ReactQueryProvider } from "../providers";
 
 export const CartOpenContext = createContext<
   [boolean, Dispatch<SetStateAction<boolean>>] | null
@@ -31,7 +32,7 @@ const BodyContent = ({
   return (
     <CartContext value={[cart, setCart]}>
       <CartOpenContext value={[cartOpen, setCartOpen]}>
-        {children}
+        <ReactQueryProvider>{children}</ReactQueryProvider>
       </CartOpenContext>
     </CartContext>
   );

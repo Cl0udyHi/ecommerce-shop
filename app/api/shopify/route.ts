@@ -1,11 +1,11 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import axios from "axios";
 
 const SHOPIFY_URL = `https://${process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN}/api/2025-10/graphql.json`;
 
-export async function POST(req: NextRequest) {
+export async function POST(request: NextRequest) {
   try {
-    const { query, variables } = await req.json();
+    const { query, variables } = await request.json();
 
     const response = await axios.post(
       SHOPIFY_URL,
@@ -19,10 +19,10 @@ export async function POST(req: NextRequest) {
       }
     );
 
-    return NextResponse.json(response.data);
+    return Response.json(response.data);
   } catch (err: any) {
     console.error(err.response?.data || err.message);
-    return NextResponse.json(
+    return Response.json(
       { error: err.message },
       { status: err.response?.status || 500 }
     );

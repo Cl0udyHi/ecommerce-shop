@@ -1,6 +1,8 @@
 // import { Product } from "@/lib/shopify/types";
 import { StaticImageData } from "next/image";
 
+export type AnyObject = Record<string, any>;
+
 export type ProductImage = {
   id: string;
   altText: string;
@@ -19,7 +21,11 @@ export type ProductSelectedOption = { name: string; value: string };
 export type ProductOptionValue = {
   id: string;
   name: string;
-  selectedOptions: ProductSelectedOption[];
+  firstSelectableVariant: {
+    availableForSale: boolean;
+    quantityAvailable: bigint;
+    selectedOptions: ProductSelectedOption[];
+  };
 };
 
 export type ProductOptions = {

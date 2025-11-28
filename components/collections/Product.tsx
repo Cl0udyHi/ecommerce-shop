@@ -25,26 +25,9 @@ const Product = (props: { product: Product }) => {
 
       {/* Info */}
       <div className="flex flex-col gap-1">
-        <div className="sm:grid-cols-2 grid grid-cols-1 grid-rows-1 gap-2 h-max">
-          <h2 className="sm:row-start-1 row-start-2 col-start-1 text-base font-bold group-hover:underline">
-            {props.product.title}
-          </h2>
-          {/* Colors */}
-          <div className="sm:col-start-2 row-start-1 col-start-1 flex shrink-0 justify-end gap-2">
-            {/* {Colors.length > 3 && (
-              <div className="w-5 h-5 flex justify-center items-center rounded-full border border-natural-700 bg-natural-200">
-                <Add className="w-5 h-auto fill-natural-700" />
-              </div>
-            )}
-            {Colors.slice(0, 3).map((color, index) => (
-              <div
-                key={index}
-                className={`shrink-0 w-5 h-5 rounded-full border border-natural-700`}
-                style={{ backgroundColor: color }}
-              ></div>
-            ))} */}
-          </div>
-        </div>
+        <h2 className="sm:row-start-1 row-start-2 col-start-1 text-base font-bold group-hover:underline">
+          {props.product.title}
+        </h2>
 
         <span className="text-sm text-natural-600 font-medium">
           {props.product.priceRange.minVariantPrice.amount}{" "}

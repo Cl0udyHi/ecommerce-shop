@@ -1,36 +1,22 @@
-"use client";
-
-import React from "react";
 import AddIcon from "@/public/icons/add.svg";
 import RemoveIcon from "@/public/icons/remove.svg";
+import { useState } from "react";
 
 type QuantityProps = {
-  value: number;
   min?: number;
   max?: number;
-  onChange: (val: number) => void;
-  onQuantityChange?: (type: "plus" | "minus") => void;
+  defaultValue?: number;
 };
 
-function Quantity({
-  value,
-  onQuantityChange,
-  min = 1,
-  max = 10,
-  onChange,
-}: QuantityProps) {
+function Quantity({ min = 1, max = 10, defaultValue = min }: QuantityProps) {
+  const [value, setValue] = useState(defaultValue);
+
   const handleIncrease = () => {
-    if (value < max) {
-      onChange(value + 1);
-      onQuantityChange?.("plus");
-    }
+    if (value < max) setValue?.(value + 1);
   };
 
   const handleDecrease = () => {
-    if (value > min) {
-      onChange(value - 1);
-      onQuantityChange?.("minus");
-    }
+    if (value > min) setValue?.(value - 1);
   };
 
   return (

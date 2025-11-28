@@ -1,16 +1,8 @@
 "use client";
 
 import classNames from "classnames";
-import React, {
-  RefObject,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { RefObject, useContext, useEffect, useRef, useState } from "react";
 import Image from "next/image";
-
-import Quantity from "../Quantity";
 
 import CloseIcon from "@/public/icons/close.svg";
 import ShoppingCartWarning from "@/public/icons/shopping_cart_warning.svg";
@@ -22,6 +14,8 @@ import MyCart from "@/utils/Cart";
 
 import { motion, AnimatePresence } from "framer-motion";
 import { CartProduct } from "@/utils/types";
+import Quantity from "../quantity";
+import { useCreateCart } from "@/hooks/shopify/useCart";
 
 export default function ShoppingCart() {
   const cartContext = useContext(CartContext);
@@ -29,6 +23,11 @@ export default function ShoppingCart() {
   const [cart, setCart] = cartContext;
 
   const [totalPrice, setTotalPrice] = useState<number>(0);
+  const { mutateAsync: createCartMutation } = useCreateCart();
+
+  useEffect(() => {
+    createCartMutation();
+  }, []);
 
   useEffect(() => {
     const handlePopState = () => {
@@ -177,8 +176,6 @@ const Product = ({ cartItem }: { cartItem: CartProduct }) => {
   const product = cartItem.product;
   const [loaded, setLoaded] = useState(false);
 
-  const [quantity, setQuantity] = useState(cartItem.quantity);
-
   useEffect(() => {
     setLoaded(true);
   }, []);
@@ -237,7 +234,7 @@ const Product = ({ cartItem }: { cartItem: CartProduct }) => {
             </div>
           </div>
           <div className="flex justify-between items-center">
-            <Quantity value={quantity} onChange={setQuantity} />
+            <Quantity />
             <button
               onClick={handleRemove}
               className={classNames(

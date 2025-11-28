@@ -1,7 +1,7 @@
 "use client";
 
 import type { Collection } from "@/utils/types";
-import { useCollections } from "@/hooks/useCollections";
+import { useCollections } from "@/hooks/shopify/useCollections";
 import classNames from "classnames";
 import Product from "./product";
 import Slider from "../slider/Slider";
@@ -12,25 +12,28 @@ const Collections = () => {
   const { data: collections, isPending, error } = useCollections();
 
   if (isPending) {
-    return <PendingSkeleton />;
+    return <CollectionsSkeleton />;
   }
 
   return (
     <>
-      {collections?.map((collection: Collection, index: number) => (
-        <Collection key={index} collection={collection} />
-      ))}
+      {collections?.map(
+        (collection: Collection, index: number) =>
+          collection.products.length > 0 && (
+            <Collection key={index} collection={collection} />
+          )
+      )}
     </>
   );
 };
 
-const PendingSkeleton = () => {
+const CollectionsSkeleton = () => {
   return (
     <>
       {Array.from({ length: 4 }).map((_, index) => (
         <div key={index} className="flex flex-col gap-4">
           <div className="w-full sm:px-16 px-8">
-            <div className="h-7 w-4/5 rounded-sm bg-natural-300 animate-pulse" />
+            <div className="h-10.5 w-4/5 rounded-sm bg-natural-300 animate-pulse" />
           </div>
 
           <Slider
@@ -53,10 +56,10 @@ const PendingSkeleton = () => {
 
                 <div className="flex flex-col gap-1">
                   <div className="flex w-full h-max">
-                    <div className="sm:row-start-1 row-start-2 col-start-1 h-4 w-3/4 bg-natural-300 rounded-sm animate-pulse" />
+                    <div className="sm:row-start-1 row-start-2 col-start-1 h-6 w-3/4 bg-natural-300 rounded-sm animate-pulse" />
                   </div>
 
-                  <div className="h-3.5 w-1/2 bg-natural-300 animate-pulse rounded-sm" />
+                  <div className="h-5 w-1/2 bg-natural-300 animate-pulse rounded-sm" />
                 </div>
               </div>
             ))}

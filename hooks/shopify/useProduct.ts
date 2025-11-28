@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { Product } from "../utils/types";
-import { unwrapEdges } from "../utils/unwrap_edges";
+import { Product } from "../../utils/types";
+import { shopifyFetch, unwrapEdges } from "@/utils/shopify/shopify";
 
 async function fetchProduct(handle: string) {
   const query = `
@@ -46,6 +46,8 @@ async function fetchProduct(handle: string) {
             id
             name
             firstSelectableVariant {
+              availableForSale
+              quantityAvailable
               selectedOptions {
                 name
                 value
@@ -60,7 +62,6 @@ async function fetchProduct(handle: string) {
   const { data } = await axios.post("/api/shopify", { query });
   const productData = data.data.product;
 
-  // Return the product directly (no unwrapEdges needed)
   return unwrapEdges(productData) as Product;
 }
 

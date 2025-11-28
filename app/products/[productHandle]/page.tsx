@@ -1,35 +1,15 @@
-import Link from "next/link";
-import ProductInfo from "./ProductInfo";
+import ProductInfo from "./components/product-info";
 
-// export async function generateMetadata({ params }: Props): Promise<Metadata> {
-//   const { productId } = await params;
-//   const { data: product, isPending, error } = useProduct(productId);
-
-//   if (product)
-//     return {
-//       title: `${product.title} | Wavin`,
-//     };
-
-//   return {
-//     title: "Product not found | Wavin",
-//   };
-// }
-
-export default async function ProductId({
+export default async function Product({
   params,
 }: {
   params: Promise<{ productHandle: string }>;
 }) {
   const { productHandle } = await params;
 
-  return <ProductInfo productHandle={productHandle} />;
-}
-
-const UndefinedProduct = () => {
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center">
-      <h1>Sorry couldn't find what you're looking for</h1>
-      <Link href={"/"}>Go Back</Link>
-    </div>
+    <main className="min-h-screen flex flex-col gap-8 mb-16 mt-px">
+      <ProductInfo productHandle={productHandle} />
+    </main>
   );
-};
+}
