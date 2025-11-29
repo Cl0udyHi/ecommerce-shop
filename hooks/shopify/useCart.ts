@@ -6,14 +6,14 @@ export async function createCart() {
       mutation createCart {
           cartCreate {
               cart {
-                  id  
+                  id
               }
           }
       }
   `;
 
   const { data } = await axios.post("/api/shopify", { query });
-  console.log(data);
+  return data.data.cartCreate.cart.id as string;
 }
 
 export function useCreateCart() {

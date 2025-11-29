@@ -3,7 +3,7 @@ import ProductInfo from "./components/product-info";
 export default async function Product({
   params,
 }: {
-  params: Promise<{ productHandle: string }>;
+  params: Promise<{ productHandle: string; color: string; size: string }>;
 }) {
   const { productHandle } = await params;
 

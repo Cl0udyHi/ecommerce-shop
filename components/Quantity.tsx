@@ -1,6 +1,6 @@
 import AddIcon from "@/public/icons/add.svg";
 import RemoveIcon from "@/public/icons/remove.svg";
-import { useState } from "react";
+import { forwardRef, useImperativeHandle, useState } from "react";
 
 type QuantityProps = {
   min?: number;
@@ -8,7 +8,10 @@ type QuantityProps = {
   defaultValue?: number;
 };
 
-function Quantity({ min = 1, max = 10, defaultValue = min }: QuantityProps) {
+const Quantity = forwardRef(function Quantity(
+  { min = 1, max = 10, defaultValue = min }: QuantityProps,
+  ref
+) {
   const [value, setValue] = useState(defaultValue);
 
   const handleIncrease = () => {
@@ -19,8 +22,27 @@ function Quantity({ min = 1, max = 10, defaultValue = min }: QuantityProps) {
     if (value > min) setValue?.(value - 1);
   };
 
+  useImperativeHandle(ref, () => ({
+    setValueFromOutside(newVal: number) {
+      // Clamp the value
+      const clamped = Math.min(max, Math.max(min, newVal));
+      setValue(clamped);
+    },
+    getValue() {
+      return value;
+    },
+  }));
+
   return (
     <div className="w-fit flex items-center bg-natural-200 p-2 rounded">
+      <input
+        type="number"
+        name="quantity"
+        value={value}
+        onChange={() => {}}
+        hidden
+        required
+      />
       <button type="button" onClick={handleDecrease}>
         <RemoveIcon className="w-5 aspect-square fill-natural-700" />
       </button>
@@ -32,6 +54,6 @@ function Quantity({ min = 1, max = 10, defaultValue = min }: QuantityProps) {
       </button>
     </div>
   );
-}
+});
 
 export default Quantity;

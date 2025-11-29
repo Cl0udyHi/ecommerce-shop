@@ -16,6 +16,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { CartProduct } from "@/utils/types";
 import Quantity from "../quantity";
 import { useCreateCart } from "@/hooks/shopify/useCart";
+import { createCart } from "@/utils/shopify/actions";
 
 export default function ShoppingCart() {
   const cartContext = useContext(CartContext);
@@ -23,10 +24,13 @@ export default function ShoppingCart() {
   const [cart, setCart] = cartContext;
 
   const [totalPrice, setTotalPrice] = useState<number>(0);
-  const { mutateAsync: createCartMutation } = useCreateCart();
+  const { data: cartId, mutateAsync: createCartMutation } = useCreateCart();
 
   useEffect(() => {
+    // createCart();
     createCartMutation();
+
+    console.log(cartId);
   }, []);
 
   useEffect(() => {

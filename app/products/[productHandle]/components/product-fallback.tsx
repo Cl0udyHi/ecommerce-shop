@@ -7,7 +7,7 @@ export function ProductError({ message }: { message: string }) {
     <div className="h-screen flex flex-col gap-4 justify-center items-center">
       <h1>{message}</h1>
       <Link href="/">
-        <Button>Label</Button>
+        <Button>Go Back</Button>
       </Link>
     </div>
   );
