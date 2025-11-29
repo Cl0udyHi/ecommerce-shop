@@ -20,7 +20,6 @@ type Props = {
 };
 
 export default function ProductForm({ product }: Props) {
-  const quantityInput = useRef(null);
   const searchParams = useSearchParams();
 
   const colorOption = product.options.filter(
@@ -179,7 +178,7 @@ export default function ProductForm({ product }: Props) {
         </fieldset>
       )}
       <div className={classNames("flex gap-2", "md:mt-auto")}>
-        <Quantity ref={quantityInput} min={1} max={10} />
+        <Quantity min={1} max={10} />
         <div className="flex flex-col size-full">
           <button
             type="submit"
