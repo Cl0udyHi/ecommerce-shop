@@ -4,7 +4,6 @@ import Quantity from "@/components/quantity";
 import { addToCart } from "@/utils/shopify/actions";
 import { Product, ProductOptions } from "@/utils/types";
 import classNames from "classnames";
-import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import {
   FormEvent,
@@ -15,7 +14,6 @@ import {
   useRef,
   useState,
 } from "react";
-import { useFormStatus } from "react-dom";
 
 type Props = {
   product: Product;
