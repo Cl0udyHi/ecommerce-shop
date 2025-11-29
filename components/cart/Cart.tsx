@@ -14,7 +14,7 @@ import MyCart from "@/utils/Cart";
 
 import { motion, AnimatePresence } from "framer-motion";
 import { CartProduct } from "@/utils/types";
-import Quantity from "../quantity";
+import Quantity from "../Quantity";
 import { useCreateCart } from "@/hooks/shopify/useCart";
 import { createCart } from "@/utils/shopify/actions";
 

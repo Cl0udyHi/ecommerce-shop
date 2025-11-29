@@ -1,6 +1,5 @@
 "use client";
 
-import Quantity from "@/components/quantity";
 import { addToCart } from "@/utils/shopify/actions";
 import { Product, ProductOptions } from "@/utils/types";
 import classNames from "classnames";
@@ -14,6 +13,7 @@ import {
   useRef,
   useState,
 } from "react";
+import Quantity from "@/components/Quantity";
 
 type Props = {
   product: Product;
