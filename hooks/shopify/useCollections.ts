@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { Collection } from "../utils/types";
+import { Collection } from "@/utils/types";
 import { unwrapEdges } from "@/utils/shopify/shopify";
 
 async function fetchCollections() {

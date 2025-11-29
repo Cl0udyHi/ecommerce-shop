@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { Product } from "../../utils/types";
-import { shopifyFetch, unwrapEdges } from "@/utils/shopify/shopify";
+import { unwrapEdges } from "@/utils/shopify/shopify";
 
 async function fetchProduct(handle: string) {
   const query = `
