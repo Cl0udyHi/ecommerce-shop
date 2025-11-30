@@ -1,8 +1,13 @@
+"use client";
+
 import Button from "@/components/Button";
 import classNames from "classnames";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export function ProductError({ message }: { message: string }) {
+  const router = useRouter();
+
   return (
     <div className="h-screen flex flex-col gap-4 justify-center items-center">
       <h1>{message}</h1>

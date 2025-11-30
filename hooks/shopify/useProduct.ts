@@ -3,7 +3,7 @@ import axios from "axios";
 import { Product } from "../../utils/types";
 import { unwrapEdges } from "@/utils/shopify/shopify";
 
-async function fetchProduct(handle: string) {
+export async function fetchProduct(handle: string) {
   const query = `
     query getProduct {
       product(handle: "${handle}") {

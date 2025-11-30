@@ -11,12 +11,17 @@ type Props = {
 };
 
 export default function ProductInfo({ productHandle }: Props) {
-  const { data: product, isLoading, error } = useProduct(productHandle);
+  const {
+    data: product,
+    isLoading,
+    error,
+    isError,
+  } = useProduct(productHandle);
 
   if (isLoading) return <ProductSkeleton />;
 
-  if (error) {
-    const msg = `Error loading product: \n${error.message}`;
+  if (isError) {
+    const msg = `Error loading product: \n${(error as Error).message}`;
 
     return <ProductError message={msg} />;
   }
@@ -69,10 +74,10 @@ export default function ProductInfo({ productHandle }: Props) {
             Product Details
           </h1>
           {product.description.length > 0 ? (
-            <p
+            <div
               className="text-natural-700 font-normal [&_li]:indent-0 [&_li]:ml-4 [&_ul]:list-outside [&_ul]:list-disc"
               dangerouslySetInnerHTML={{ __html: product.descriptionHtml }}
-            ></p>
+            ></div>
           ) : (
             <p className="text-natural-500">No Description Provided</p>
           )}
