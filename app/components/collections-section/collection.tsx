@@ -54,7 +54,6 @@ export default function Collection({ collection }: { collection: Collection }) {
         opts={{
           align: "start",
           loop: false,
-          active: !api?.canScrollNext && !api?.canScrollPrev,
         }}
         className="w-full"
       >
