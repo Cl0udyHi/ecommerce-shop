@@ -1,6 +1,7 @@
 "use server";
 
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 export async function createCart() {
   const Cookies = await cookies();
@@ -14,6 +15,8 @@ export async function createCart() {
 }
 
 export async function addToCart(previousState: any, formData: FormData) {
+  "use server";
+
   try {
     const rawFormData = {
       color: formData.get("color") as string,
@@ -25,6 +28,9 @@ export async function addToCart(previousState: any, formData: FormData) {
     console.log(
       `submitted a form of: \ncolor: ${rawFormData.color}\nsize: ${rawFormData.size}\nquantity: ${rawFormData.quantity}`
     );
+
+    redirect("/");
+
     return rawFormData;
   } catch (error) {
     return { ...previousState, error: error };

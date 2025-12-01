@@ -3,7 +3,7 @@
 import classNames from "classnames";
 import React, { Dispatch, RefObject, SetStateAction, useRef } from "react";
 
-import { links } from "@/utils/data";
+import { NAVIGATION_LINKS } from "@/utils/data";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useOnClickOutside } from "usehooks-ts";
@@ -37,7 +37,7 @@ const Menu = ({
       >
         <h1 className="text-xl text-primary-500 font-black">NAVIGATION</h1>
         <ul className="space-y-3">
-          {links.map((link, index) => (
+          {NAVIGATION_LINKS.map((link, index) => (
             <li key={index}>
               <Link
                 className={classNames(

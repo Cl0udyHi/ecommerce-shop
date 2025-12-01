@@ -7,7 +7,7 @@ import React, {
   SetStateAction,
   useState,
 } from "react";
-import { ReactQueryProvider } from "../providers";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 export const CartOpenContext = createContext<
   [boolean, Dispatch<SetStateAction<boolean>>] | null
@@ -21,21 +21,22 @@ export const CartContext = createContext<
   | null
 >(null);
 
-const BodyContent = ({
+export default function Providers({
   children,
 }: Readonly<{
   children: React.ReactNode;
-}>) => {
+}>) {
+  const [queryClient] = useState(() => new QueryClient());
   const [cartOpen, setCartOpen] = useState<boolean>(false);
   const [cart, setCart] = useState<{ items: CartProduct[] }>({ items: [] });
 
   return (
     <CartContext value={[cart, setCart]}>
       <CartOpenContext value={[cartOpen, setCartOpen]}>
-        <ReactQueryProvider>{children}</ReactQueryProvider>
+        <QueryClientProvider client={queryClient}>
+          {children}
+        </QueryClientProvider>
       </CartOpenContext>
     </CartContext>
   );
-};
-
-export default BodyContent;
+}

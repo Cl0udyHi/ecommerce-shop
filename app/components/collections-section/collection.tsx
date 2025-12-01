@@ -1,25 +1,9 @@
 import type { Collection } from "@/utils/types";
-import { fetchCollections } from "@/hooks/shopify/useCollections";
 import classNames from "classnames";
 import Product from "./product";
-import Slider from "../slider/Slider";
+import Slider from "../../../components/slider/Slider";
 
-export default async function Collections() {
-  const collections = await fetchCollections();
-
-  return (
-    <>
-      {collections.map(
-        (collection: Collection, index: number) =>
-          collection.products.length > 0 && (
-            <Collection key={index} collection={collection} />
-          )
-      )}
-    </>
-  );
-}
-
-const Collection = ({ collection }: { collection: Collection }) => {
+export default function Collection({ collection }: { collection: Collection }) {
   // const scrollContainer = useRef(null);
 
   return (
@@ -46,4 +30,4 @@ const Collection = ({ collection }: { collection: Collection }) => {
       </Slider>
     </div>
   );
-};
+}

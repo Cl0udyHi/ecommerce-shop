@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
-import type { Configuration } from "webpack";
 
 const nextConfig: NextConfig = {
+  reactCompiler: true,
   turbopack: {
     rules: {
       "*.svg": {

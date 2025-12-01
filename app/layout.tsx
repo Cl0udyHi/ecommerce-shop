@@ -1,7 +1,7 @@
 import "./globals.css";
-import BodyContent from "@/components/cart/cart-context";
-import Footer from "@/components/Footer";
-import Navbar from "@/components/navbar/Navbar";
+import Providers from "@/app/components/providers";
+import Footer from "@/app/components/Footer";
+import Navbar from "@/app/components/navbar/Navbar";
 import Cart from "@/components/cart/Cart";
 import { Metadata } from "next";
 
@@ -17,12 +17,12 @@ export default function RootLayout({
   return (
     <html lang="en" data-scroll-behavior="smooth" className="scroll-smooth">
       <body className="antialiased">
-        <BodyContent>
+        <Providers>
           <Navbar />
           <main>{children}</main>
           <Footer />
           <Cart />
-        </BodyContent>
+        </Providers>
       </body>
     </html>
   );

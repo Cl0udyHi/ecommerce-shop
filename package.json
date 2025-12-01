@@ -12,6 +12,7 @@
     "@svgr/webpack": "^8.1.0",
     "@tanstack/react-query": "^5.90.10",
     "axios": "^1.13.2",
+    "babel-plugin-react-compiler": "^1.0.0",
     "classnames": "^2.5.1",
     "framer-motion": "^12.23.12",
     "next": "16.0.3",

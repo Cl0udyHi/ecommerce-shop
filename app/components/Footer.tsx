@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import Link from "next/link";
 import React from "react";
-import { links, socialMedia } from "@/utils/data";
+import { NAVIGATION_LINKS, socialMedia } from "@/utils/data";
 
 const Footer = () => {
   return (
@@ -30,11 +30,12 @@ const Footer = () => {
       <div className="lg:flex hidden w-full flex-col gap-4">
         <h1 className="text-base text-natural-100 font-bold">Navigation</h1>
         <ul className="w-full flex flex-col justify-between gap-2">
-          {links.map((link, index) => (
+          {NAVIGATION_LINKS.map((link, index) => (
             <li key={index}>
               <Link
                 className={classNames({
-                  "text-sm text-primary-100 hover:text-primary-200 font-semibold": true,
+                  "text-sm text-primary-100 hover:text-primary-200 font-semibold":
+                    true,
                 })}
                 href={link.href}
               >
@@ -51,7 +52,8 @@ const Footer = () => {
             <li key={index}>
               <Link
                 className={classNames({
-                  "text-sm text-primary-100 hover:text-primary-200 font-semibold": true,
+                  "text-sm text-primary-100 hover:text-primary-200 font-semibold":
+                    true,
                 })}
                 href={social.href}
                 target="_blank"

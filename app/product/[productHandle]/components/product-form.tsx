@@ -50,32 +50,6 @@ export default function ProductForm({ product }: Props) {
     router.push(`?color=${selectedColor}&size=${selectedSize}`);
   }, [selectedColor, selectedSize]);
 
-  // const quantityInput = useRef(null);
-
-  // const router = useRouter();
-  // const searchParams = useSearchParams();
-
-  // const colorOption = product.options.filter(
-  //   (option) => option.name === "Color"
-  // )[0];
-  // const sizeOption = product.options.filter(
-  //   (option) => option.name === "Size"
-  // )[0];
-
-  // const firstOption = useMemo(
-  //   () => (option: ProductOptions) => {
-  //     return option.optionValues[0].name;
-  //   },
-  //   [colorOption, sizeOption]
-  // );
-
-  // const selectedColor = searchParams.get("color") ?? firstOption(colorOption);
-  // const selectedSize = searchParams.get("size") ?? firstOption(sizeOption);
-
-  // function handleChange(color: string, size: string) {
-  //   router.push(`?color=${color}&size=${size}`, { scroll: false });
-  // }
-
   const [state, formAction, pending] = useActionState(addToCart, {});
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {

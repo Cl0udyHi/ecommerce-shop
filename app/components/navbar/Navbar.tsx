@@ -8,9 +8,9 @@ import CurrencyDropDown from "./components/CurrencyDropdown";
 import MenuIcon from "@/public/icons/menu.svg";
 import CloseIcon from "@/public/icons/close.svg";
 import { usePathname } from "next/navigation";
-import { links } from "@/utils/data";
+import { NAVIGATION_LINKS } from "@/utils/data";
 import Bag from "@/public/icons/bag.svg";
-import { CartOpenContext } from "../cart/cart-context";
+import { CartOpenContext } from "../providers";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -101,7 +101,7 @@ const Navigation = ({ isOpen = true }: { isOpen: boolean }) => {
         { hidden: !isOpen }
       )}
     >
-      {links.map((link, index) => {
+      {NAVIGATION_LINKS.map((link, index) => {
         const isActive = link.exact
           ? pathname === link.href
           : pathname.startsWith(link.href);

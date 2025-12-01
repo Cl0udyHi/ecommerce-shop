@@ -111,9 +111,13 @@ export const Testimonials: TestimonialType[] = [
   },
 ];
 
-export const links: { name: string; href: string; exact?: boolean }[] = [
+export const NAVIGATION_LINKS: {
+  name: string;
+  href: string;
+  exact?: boolean;
+}[] = [
   { name: "Home", href: "/", exact: true },
   { name: "Products", href: "/products" },
   { name: "Contact", href: "/contact" },
-  { name: "FAQ", href: "/about" },
+  { name: "About Us", href: "/about" },
 ];
