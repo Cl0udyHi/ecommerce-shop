@@ -1,9 +1,11 @@
+"use server";
+
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { Collection } from "@/utils/types";
-import { unwrapEdges } from "@/utils/shopify/shopify";
+import { Collection, Collections } from "@/utils/types";
+import { shopifyFetch, unwrapEdges } from "@/utils/shopify/shopify";
 
-async function fetchCollections() {
+export async function fetchCollections() {
   const query = `
         query getCollections {
             collections(first: 50) {
@@ -44,13 +46,14 @@ async function fetchCollections() {
         }
    `;
 
-  const { data } = await axios.post("/api/shopify", { query });
+  const data: any = await shopifyFetch(query);
+
   return unwrapEdges(data.data.collections) as Collection[];
 }
 
-export function useCollections() {
-  return useQuery({
-    queryKey: ["collections"],
-    queryFn: fetchCollections,
-  });
-}
+// export function useCollections() {
+//   return useQuery({
+//     queryKey: ["collections"],
+//     queryFn: fetchCollections,
+//   });
+// }

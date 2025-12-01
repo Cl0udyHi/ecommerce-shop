@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
-async function fetchCollection(collectionId: string) {
+export async function fetchCollection(collectionId: string) {
   const query = `
     query getCollection($id: ID!) {
       collection(id: $id) {

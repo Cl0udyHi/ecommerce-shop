@@ -1,7 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import { Product } from "../../utils/types";
-import { unwrapEdges } from "@/utils/shopify/shopify";
+import { shopifyFetch, unwrapEdges } from "@/utils/shopify/shopify";
 
 export async function fetchProduct(handle: string) {
   const query = `
@@ -59,10 +58,9 @@ export async function fetchProduct(handle: string) {
     }
   `;
 
-  const { data } = await axios.post("/api/shopify", { query });
-  const productData = data.data.product;
+  const data: any = await shopifyFetch(query);
 
-  return unwrapEdges(productData) as Product;
+  return unwrapEdges(data.data.product) as Product;
 }
 
 export function useProduct(productHandle: string) {

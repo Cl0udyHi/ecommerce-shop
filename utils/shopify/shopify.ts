@@ -1,5 +1,5 @@
 import axios from "axios";
-import { AnyObject, Product } from "../types";
+import { AnyObject } from "../types";
 
 const SHOPIFY_URL = `https://${process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN}/api/2025-10/graphql.json`;
 
@@ -19,7 +19,7 @@ export async function shopifyFetch<T>(
     }
   );
 
-  return response.data.json() as Promise<T>;
+  return response.data as Promise<T>;
 }
 
 export function unwrapEdges(data: AnyObject): AnyObject {
