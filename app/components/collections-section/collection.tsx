@@ -1,10 +1,20 @@
-import type { Collection } from "@/utils/types";
+"use client";
+
 import classNames from "classnames";
 import Product from "./product";
-import Slider from "../../../components/slider/Slider";
+import {
+  Carousel,
+  CarouselApi,
+  CarouselContent,
+  CarouselItem,
+} from "@/components/shadcn/ui/carousel";
+import type { Collection } from "@/utils/types";
+import { Button } from "@/components/shadcn/ui/button";
+import ArrowIcon from "@/public/icons/arrow.svg";
+import { useState } from "react";
 
 export default function Collection({ collection }: { collection: Collection }) {
-  // const scrollContainer = useRef(null);
+  const [api, setApi] = useState<CarouselApi>();
 
   return (
     <div className={"flex flex-col gap-4"}>
@@ -12,22 +22,53 @@ export default function Collection({ collection }: { collection: Collection }) {
         <h1 className="col-start-1 row-start-1 font-bold text-[1.75rem]">
           {collection.title}
         </h1>
-        {/* <Arrows className="lg:hidden" scrollContainerRef={scrollContainer} /> */}
+        <div
+          className={classNames(
+            "flex gap-2",
+            "[&>button]:size-fit [&>button]:p-0! [&>button]:aspect-square [&>button]:bg-primary-100 [&>button]:hover:bg-primary-200 [&>button]:rounded!"
+          )}
+        >
+          <Button
+            onClick={() => api?.scrollPrev()}
+            disabled={!api?.canScrollPrev()}
+            className={classNames({
+              "opacity-50 cursor-not-allowed": !api?.canScrollPrev,
+            })}
+          >
+            <ArrowIcon className="size-8 fill-primary-500 " />
+          </Button>
+          <Button
+            onClick={() => api?.scrollNext()}
+            disabled={!api?.canScrollNext()}
+            className={classNames({
+              "opacity-50 cursor-not-allowed": !api?.canScrollNext,
+            })}
+          >
+            <ArrowIcon className="size-8 fill-primary-500 rotate-180" />
+          </Button>
+        </div>
       </div>
 
-      <Slider
-        // scrollContainerRef={scrollContainer}
-        invisibleScrollbar
-        className={classNames(
-          "sm:px-16 px-8",
-          "lg:w-full lg:grid-cols-3 2xl:grid-cols-4 lg:grid gap-x-4 gap-y-8",
-          "lg:overflow-visible lg:scroll-auto lg:scrollbar-auto lg:snap-none"
-        )}
+      <Carousel
+        setApi={setApi}
+        opts={{
+          align: "start",
+          loop: false,
+          active: !api?.canScrollNext && !api?.canScrollPrev,
+        }}
+        className="w-full"
       >
-        {collection.products.map((product: any, index: number) => (
-          <Product key={index} product={product} />
-        ))}
-      </Slider>
+        <CarouselContent className="sm:ml-12 sm:mr-16 ml-4 mr-8">
+          {collection.products.map((product: any, index: number) => (
+            <CarouselItem
+              key={index}
+              className="basis-full sm:basis-1/2 lg:basis-1/3 2xl:basis-1/4"
+            >
+              <Product product={product} />
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+      </Carousel>
     </div>
   );
 }
