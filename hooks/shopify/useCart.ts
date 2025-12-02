@@ -1,7 +1,7 @@
+import { shopifyFetch } from "@/utils/shopify/shopify";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
 
-export async function createCart() {
+export async function fetchCartId() {
   const query = `
       mutation createCart {
           cartCreate {
@@ -12,15 +12,18 @@ export async function createCart() {
       }
   `;
 
-  const { data } = await axios.post("/api/shopify", { query });
-  return data.data.cartCreate.cart.id as string;
+  const data = await shopifyFetch<any>(query);
+
+  return data.data.cartCreate.cart.id;
 }
+
+export async function fetchCartLines() {}
 
 export function useCreateCart() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: createCart,
+    mutationFn: fetchCartId,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["cart"] });
     },

@@ -2,7 +2,7 @@ import "./globals.css";
 import Providers from "@/app/components/providers";
 import Footer from "@/app/components/Footer";
 import Navbar from "@/app/components/navbar/Navbar";
-import Cart from "@/components/cart/Cart";
+import Cart from "@/components/cart/cart-panel";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {

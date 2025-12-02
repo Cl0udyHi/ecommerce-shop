@@ -34,6 +34,12 @@ export type ProductOptions = {
   optionValues: ProductOptionValue[];
 };
 
+export type ProductVariant = {
+  id: string;
+  title: string;
+  selectedOptions: ProductSelectedOption[];
+};
+
 export type Product = {
   id: string;
   handle: string;
@@ -47,6 +53,7 @@ export type Product = {
     maxVariantPrice: ProductPrice;
   };
   options: ProductOptions[];
+  variants: ProductVariant[];
 };
 
 export type Collection = {
@@ -90,3 +97,10 @@ export type Collections = {
   name: string;
   products: ProductType[];
 }[];
+
+export type CartItem = {
+  id: string;
+  variantId: string;
+  product: Product;
+  quantity: number;
+};

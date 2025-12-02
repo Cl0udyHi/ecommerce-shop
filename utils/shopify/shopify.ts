@@ -19,6 +19,25 @@ export async function shopifyFetch<T>(
     }
   );
 
+  return response.data;
+}
+
+export async function shopifyPrivateFetch<T>(
+  query: string,
+  variables?: Record<string, any>
+) {
+  const response = await axios.post(
+    SHOPIFY_URL,
+    { query, variables },
+    {
+      headers: {
+        "X-Shopify-Storefront-Access-Token":
+          process.env.SHOPIFY_STOREFRONT_PRIVATE_ACCESS_TOKEN!,
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
   return response.data as Promise<T>;
 }
 
@@ -41,3 +60,5 @@ export function unwrapEdges(data: AnyObject): AnyObject {
 
   return data;
 }
+
+export function getVariantId() {}

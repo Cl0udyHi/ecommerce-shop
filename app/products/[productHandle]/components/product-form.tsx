@@ -1,7 +1,7 @@
 "use client";
 
 import { addToCart } from "@/utils/shopify/actions";
-import { Product, ProductOptions } from "@/utils/types";
+import { CartItem, Product, ProductOptions } from "@/utils/types";
 import classNames from "classnames";
 import { useRouter, useSearchParams } from "next/navigation";
 import {
@@ -14,6 +14,8 @@ import {
   useState,
 } from "react";
 import Quantity from "@/components/Quantity";
+import { useCart, useCartPanel } from "@/app/components/providers";
+import { v4 as uuid } from "uuid";
 
 type Props = {
   product: Product;
@@ -23,43 +25,63 @@ export default function ProductForm({ product }: Props) {
   const quantityInput = useRef(null);
   const searchParams = useSearchParams();
 
-  const colorOption = product.options.filter(
-    (option) => option.name === "Color"
-  )[0];
-  const sizeOption = product.options.filter(
-    (option) => option.name === "Size"
-  )[0];
-
-  const firstOption = useMemo(
-    () => (option: ProductOptions) => {
-      return option.optionValues[0].name;
-    },
-    [colorOption, sizeOption]
-  );
-
-  const [selectedColor, setSelectedColor] = useState(
-    searchParams.get("color") ?? firstOption(colorOption)
-  );
-  const [selectedSize, setSelectedSize] = useState(
-    searchParams.get("size") ?? firstOption(sizeOption)
-  );
-
   const router = useRouter();
 
-  useEffect(() => {
-    router.push(`?color=${selectedColor}&size=${selectedSize}`);
-  }, [selectedColor, selectedSize]);
-
   const [state, formAction, pending] = useActionState(addToCart, {});
+  const [open, setOpen] = useCartPanel();
+  const [cart, setCart] = useCart();
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const formData = new FormData(event.currentTarget);
 
-    startTransition(() => {
-      formAction(formData);
+    const formData = new FormData(event.currentTarget);
+    const color = formData.get("Color");
+    const size = formData.get("Size");
+    const quantity = Number(formData.get("quantity"));
+
+    const variantId = product.variants.filter(
+      (variant) =>
+        variant.selectedOptions.filter((option) => option.name == "Color")[0]
+          .value == color &&
+        variant.selectedOptions.filter((option) => option.name == "Size")[0]
+          .value == size
+    )[0]?.id;
+
+    const newItem: CartItem = {
+      id: uuid(),
+      product: product,
+      quantity: quantity,
+      variantId: variantId,
+    };
+
+    setCart((prev) => {
+      return [...prev, newItem];
     });
+
+    setOpen(true);
   }
+
+  // function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  //   event.preventDefault();
+
+  //   const formData = new FormData(event.currentTarget);
+  //   const color = formData.get("Color");
+  //   const size = formData.get("Size");
+
+  //   const variantId = product.variants.filter(
+  //     (variant) =>
+  //       variant.selectedOptions.filter((option) => option.name == "Color")[0]
+  //         .value == color &&
+  //       variant.selectedOptions.filter((option) => option.name == "Size")[0]
+  //         .value == size
+  //   )[0]?.id;
+
+  //   formData.append("variantId", variantId);
+
+  //   startTransition(() => {
+  //     formAction(formData);
+  //   });
+  // }
 
   return (
     <form
@@ -72,16 +94,16 @@ export default function ProductForm({ product }: Props) {
       )}
     >
       {/* COLOR FIELD */}
-      {colorOption && (
-        <fieldset className="space-y-2">
+      {product.options.map((option, index) => (
+        <fieldset key={index} className="space-y-2">
           <legend className="text-base text-natural-700 font-bold">
-            Select {colorOption.name}
+            Select {option.name}
           </legend>
 
           <div
             className={classNames("grid grid-cols-3 gap-1", "lg:grid-cols-4")}
           >
-            {colorOption.optionValues.map((optionValue, index) => {
+            {option.optionValues.map((optionValue, index) => {
               const available =
                 optionValue.firstSelectableVariant.availableForSale;
 
@@ -89,10 +111,9 @@ export default function ProductForm({ product }: Props) {
                 <label key={index} className="block">
                   <input
                     type="radio"
-                    name="color"
+                    name={option.name}
                     value={optionValue.name}
-                    checked={selectedColor === optionValue.name}
-                    onChange={() => setSelectedColor(optionValue.name)}
+                    defaultChecked={index == 0}
                     required
                     className="peer hidden"
                     disabled={!available}
@@ -110,48 +131,8 @@ export default function ProductForm({ product }: Props) {
             })}
           </div>
         </fieldset>
-      )}
+      ))}
 
-      {/* SIZE FIELD */}
-      {sizeOption && (
-        <fieldset className="space-y-2">
-          <legend className="text-base text-natural-700 font-bold">
-            Select {sizeOption.name}
-          </legend>
-
-          <div
-            className={classNames("grid grid-cols-3 gap-1", "lg:grid-cols-4")}
-          >
-            {sizeOption.optionValues.map((optionValue, index) => {
-              const available =
-                optionValue.firstSelectableVariant.availableForSale;
-
-              return (
-                <label key={index} className="block">
-                  <input
-                    type="radio"
-                    name="size"
-                    value={optionValue.name}
-                    checked={selectedSize === optionValue.name}
-                    onChange={() => setSelectedSize(optionValue.name)}
-                    required
-                    className="peer hidden"
-                    disabled={!available}
-                  />
-                  <span
-                    className={classNames(
-                      "block rounded py-3 text-center text-sm font-semibold cursor-pointer bg-primary-100 text-primary-500 peer-checked:bg-primary-400 peer-checked:text-natural-100 peer-checked:hover:bg-primary-500 peer-checked:hover:text-primary-100 hover:bg-primary-200 hover:text-primary-500",
-                      { "opacity-50 cursor-not-allowed!": !available }
-                    )}
-                  >
-                    {optionValue.name}
-                  </span>
-                </label>
-              );
-            })}
-          </div>
-        </fieldset>
-      )}
       <div className={classNames("flex gap-2", "md:mt-auto")}>
         <Quantity ref={quantityInput} min={1} max={10} />
         <div className="flex flex-col size-full">

@@ -4,8 +4,8 @@ import { shopifyFetch, unwrapEdges } from "@/utils/shopify/shopify";
 
 export async function fetchProduct(handle: string) {
   const query = `
-    query getProduct {
-      product(handle: "${handle}") {
+    query getProduct($handle: String!) {
+      product(handle: $handle) {
         title
         handle
         description
@@ -54,11 +54,27 @@ export async function fetchProduct(handle: string) {
             }
           }
         }
+        variants(first: 100) {
+          edges {
+            node {
+              id
+              title
+              selectedOptions {
+                name
+                value
+              }
+            }
+          }
+        }
       }
     }
   `;
 
-  const data: any = await shopifyFetch(query);
+  const variables = {
+    handle: handle,
+  };
+
+  const data: any = await shopifyFetch(query, variables);
 
   return unwrapEdges(data.data.product) as Product;
 }

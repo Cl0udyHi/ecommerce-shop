@@ -10,7 +10,7 @@ import CloseIcon from "@/public/icons/close.svg";
 import { usePathname } from "next/navigation";
 import { NAVIGATION_LINKS } from "@/utils/data";
 import Bag from "@/public/icons/bag.svg";
-import { CartOpenContext } from "../providers";
+import { CartPanelContext } from "../providers";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -30,7 +30,7 @@ const Navbar = () => {
     };
   }, []);
 
-  const openContext = useContext(CartOpenContext);
+  const openContext = useContext(CartPanelContext);
   if (!openContext) {
     throw new Error("CartOpenContext is not available");
   }
