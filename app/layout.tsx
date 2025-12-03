@@ -7,6 +7,8 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Wavin",
+  description:
+    "Premium fashion for the modern lifestyle. Quality craftsmanship meets contemporary design.",
 };
 
 export default function RootLayout({

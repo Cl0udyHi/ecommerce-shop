@@ -33,6 +33,7 @@ export default function TestimonialsContainer(props: { className?: string }) {
           )}
         >
           <Button
+            aria-label="Previous"
             onClick={() => api?.scrollPrev()}
             disabled={!api?.canScrollPrev()}
             className={classNames({
@@ -42,6 +43,7 @@ export default function TestimonialsContainer(props: { className?: string }) {
             <ArrowIcon className="size-8 fill-primary-500 " />
           </Button>
           <Button
+            aria-label="Next"
             onClick={() => api?.scrollNext()}
             disabled={!api?.canScrollNext()}
             className={classNames({

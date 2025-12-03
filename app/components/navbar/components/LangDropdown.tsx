@@ -22,7 +22,10 @@ const LangDropdown = () => {
       selected={selectedLang}
       setSelected={setSelectedLang}
     >
-      <button className="p-2 rounded-sm cursor-pointer bg-natural-200 hover:bg-natural-300">
+      <button
+        aria-label="Languages"
+        className="p-2 rounded-sm cursor-pointer bg-natural-200 hover:bg-natural-300"
+      >
         <Globe className="w-5 h-auto fill-natural-700" />
       </button>
       <ul>

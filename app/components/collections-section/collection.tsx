@@ -19,7 +19,7 @@ export default function Collection({ collection }: { collection: Collection }) {
   return (
     <div className={"flex flex-col gap-4"}>
       <div className={"w-full flex justify-between items-center sm:px-16 px-8"}>
-        <h1 className="col-start-1 row-start-1 font-bold text-[1.75rem]">
+        <h1 className="col-start-1 row-start-1 font-bold text-2xl">
           {collection.title}
         </h1>
         <div
@@ -29,6 +29,7 @@ export default function Collection({ collection }: { collection: Collection }) {
           )}
         >
           <Button
+            aria-label="Previous"
             onClick={() => api?.scrollPrev()}
             disabled={!api?.canScrollPrev()}
             className={classNames({
@@ -38,6 +39,7 @@ export default function Collection({ collection }: { collection: Collection }) {
             <ArrowIcon className="size-8 fill-primary-500 " />
           </Button>
           <Button
+            aria-label="Next"
             onClick={() => api?.scrollNext()}
             disabled={!api?.canScrollNext()}
             className={classNames({

@@ -58,25 +58,23 @@ const Navbar = () => {
 
       <div
         className={classNames(
-          "lg:col-start-3 lg:row-start-1 col-start-2 row-start-2 shrink-0 w-full lg:flex! flex justify-end gap-4",
+          "lg:col-start-3 lg:row-start-1 col-start-2 row-start-2 shrink-0 w-full lg:flex! flex justify-end gap-2",
           { hidden: !isMenuOpen }
         )}
       >
         <CurrencyDropDown />
-
-        <div className="flex gap-2">
-          <LangDropdown />
-
-          <button
-            onClick={() => setIsOpen(true)}
-            className="p-2 rounded-sm cursor-pointer bg-accent-500 hover:bg-accent-400"
-          >
-            <Bag className="w-5 h-auto fill-accent-100" />
-          </button>
-        </div>
+        <LangDropdown />
+        <button
+          aria-label="Cart Menu"
+          onClick={() => setIsOpen(true)}
+          className="p-2 rounded-sm cursor-pointer bg-accent-500 hover:bg-accent-400"
+        >
+          <Bag className="w-5 h-auto fill-accent-100" />
+        </button>
       </div>
 
       <button
+        aria-label="Navigation Menu"
         onClick={() => setIsMenuOpen((prev) => !prev)}
         className={classNames(
           "col-start-2 ml-auto w-max row-start-1 p-2 rounded-sm cursor-pointer bg-natural-200 hover:bg-natural-300",

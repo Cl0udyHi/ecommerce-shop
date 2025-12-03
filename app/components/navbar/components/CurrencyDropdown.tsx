@@ -48,6 +48,7 @@ const CurrencyDropDown = () => {
       setSelected={setSelectedCurrency}
     >
       <button
+        aria-label="Currencies"
         className={classNames(
           "relative flex justify-end p-2 rounded-sm cursor-pointer bg-natural-200 hover:bg-natural-300"
         )}

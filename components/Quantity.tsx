@@ -69,13 +69,13 @@ const Quantity = forwardRef(function Quantity(
         hidden
         required
       />
-      <button type="button" onClick={handleDecrease}>
+      <button aria-label="Minus" type="button" onClick={handleDecrease}>
         <RemoveIcon className="w-5 aspect-square fill-natural-700" />
       </button>
       <span className="flex w-5 justify-center items-center aspect-square">
         {value}
       </span>
-      <button type="button" onClick={handleIncrease}>
+      <button aria-label="Plus" type="button" onClick={handleIncrease}>
         <AddIcon className="w-5 aspect-square fill-natural-700" />
       </button>
     </div>
