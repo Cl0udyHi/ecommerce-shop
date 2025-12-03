@@ -41,6 +41,7 @@ export default function CartPanel() {
       <section className="flex justify-between items-center py-4">
         <h1 className="text-xl text-natural-700 font-bold">My Cart</h1>
         <button
+          aria-label="Close"
           onClick={() => setIsOpen(false)}
           className={classNames(
             "col-start-2 ml-auto w-max row-start-1 p-2 rounded-sm cursor-pointer bg-natural-200 hover:bg-natural-300"
@@ -207,6 +208,7 @@ const Product = ({ cartItem }: { cartItem: CartItem }) => {
               onChange={(value) => handleQuantityChange(value)}
             />
             <button
+              aria-label="Delete"
               onClick={handleRemove}
               className={classNames(
                 "col-start-2 ml-auto w-max row-start-1 p-2 rounded-sm cursor-pointer bg-natural-200 hover:bg-natural-300"
