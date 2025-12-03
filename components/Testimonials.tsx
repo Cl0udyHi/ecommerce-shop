@@ -1,35 +1,82 @@
 "use client";
 
-import React, { useRef } from "react";
+import { useState } from "react";
 import classNames from "classnames";
 import { Testimonials } from "@/utils/data";
-import Slider from "./slider/Slider";
-import Arrows from "./slider/SliderArrows";
+
+import ArrowIcon from "@/public/icons/arrow.svg";
 import Person from "@/public/icons/person.svg";
 import Star_Full from "@/public/icons/star_full.svg";
 import Star_Half from "@/public/icons/star_half.svg";
 import Star_Empty from "@/public/icons/star_empty.svg";
 import { TestimonialType } from "@/utils/types";
+import {
+  Carousel,
+  CarouselApi,
+  CarouselContent,
+  CarouselItem,
+} from "./shadcn/ui/carousel";
+import { Button } from "./shadcn/ui/button";
+import Autoplay from "embla-carousel-autoplay";
 
 export default function TestimonialsContainer(props: { className?: string }) {
-  const scrollContainerRef = useRef(null);
+  const [api, setApi] = useState<CarouselApi>();
 
   return (
     <div className={classNames("flex flex-col gap-y-4 lg:overflow-hidden")}>
       <div className={classNames(props.className, "flex justify-between")}>
         <h1 className="font-bold text-2xl">Client Testimonials</h1>
-        <Arrows scrollContainerRef={scrollContainerRef} />
+        <div
+          className={classNames(
+            "flex gap-2",
+            "[&>button]:size-fit [&>button]:p-0! [&>button]:aspect-square [&>button]:bg-primary-100 [&>button]:hover:bg-primary-200 [&>button]:rounded!"
+          )}
+        >
+          <Button
+            onClick={() => api?.scrollPrev()}
+            disabled={!api?.canScrollPrev()}
+            className={classNames({
+              "opacity-50 cursor-not-allowed": !api?.canScrollPrev,
+            })}
+          >
+            <ArrowIcon className="size-8 fill-primary-500 " />
+          </Button>
+          <Button
+            onClick={() => api?.scrollNext()}
+            disabled={!api?.canScrollNext()}
+            className={classNames({
+              "opacity-50 cursor-not-allowed": !api?.canScrollNext,
+            })}
+          >
+            <ArrowIcon className="size-8 fill-primary-500 rotate-180" />
+          </Button>
+        </div>
       </div>
 
-      <Slider
-        scrollContainerRef={scrollContainerRef}
-        invisibleScrollbar
-        className={props.className}
+      <Carousel
+        setApi={setApi}
+        plugins={[
+          Autoplay({
+            delay: 2000,
+          }),
+        ]}
+        opts={{
+          align: "start",
+          loop: true,
+        }}
+        className="w-full"
       >
-        {Testimonials.map((testimonial, index) => (
-          <TestimonialCard testimonial={testimonial} key={index} />
-        ))}
-      </Slider>
+        <CarouselContent className="sm:ml-12 sm:mr-16 ml-4 mr-8">
+          {Testimonials.map((testimonial, index) => (
+            <CarouselItem
+              key={index}
+              className="basis-full sm:basis-1/2 lg:basis-1/3 2xl:basis-1/4"
+            >
+              <TestimonialCard testimonial={testimonial} key={index} />
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+      </Carousel>
     </div>
   );
 }

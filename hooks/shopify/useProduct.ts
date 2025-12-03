@@ -59,6 +59,13 @@ export async function fetchProduct(handle: string) {
             node {
               id
               title
+              image {
+                id
+                altText
+                height
+                width
+                url
+              }
               selectedOptions {
                 name
                 value

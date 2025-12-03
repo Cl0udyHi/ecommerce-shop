@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import Link from "next/link";
 import React from "react";
-import { NAVIGATION_LINKS, socialMedia } from "@/utils/data";
+import { NAVIGATION_LINKS, socialMedia } from "../../utils/data";
 
 const Footer = () => {
   return (

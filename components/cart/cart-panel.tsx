@@ -3,15 +3,17 @@
 import classNames from "classnames";
 
 import CloseIcon from "@/public/icons/close.svg";
+import DeleteIcon from "@/public/icons/delete.svg";
 import ShoppingCartWarning from "@/public/icons/shopping_cart_warning.svg";
 import { AnimatePresence, motion } from "framer-motion";
 import { useCart, useCartPanel } from "@/app/components/providers";
 import { RefObject, useEffect, useRef, useState } from "react";
 import { useOnClickOutside } from "usehooks-ts";
-import { getCartId } from "@/utils/shopify/actions";
+import { cacheCartItems, getCartId } from "@/utils/shopify/actions";
 import Image from "next/image";
 import { CartItem } from "@/utils/types";
 import Quantity from "../Quantity";
+import { MAX_QUANTITY, MIN_QUANTITY } from "@/utils/data";
 
 export default function CartPanel() {
   const [isOpen, setIsOpen] = useCartPanel();
@@ -50,7 +52,6 @@ export default function CartPanel() {
 
       {
         <section
-          //   ref={productsSectionRef}
           className={classNames(
             "relative flex flex-col gap-4 overflow-y-scroll -mx-8 px-8 h-full scrollbar-invisible"
           )}
@@ -125,9 +126,7 @@ const EmptyCart = () => {
 const Product = ({ cartItem }: { cartItem: CartItem }) => {
   const { product, quantity, variantId, id } = cartItem;
 
-  const variantTitle = product.variants.find(
-    (variant) => variant.id === variantId
-  )?.title;
+  const variant = product.variants.find((variant) => variant.id === variantId);
 
   const [loaded, setLoaded] = useState(false);
 
@@ -135,12 +134,22 @@ const Product = ({ cartItem }: { cartItem: CartItem }) => {
     setLoaded(true);
   }, []);
 
+  const [value, setValue] = useState<number>(1);
   const [cart, setCart] = useCart();
 
   function handleRemove() {
     setCart((prev) => {
       return prev.filter((cartItem) => cartItem.id !== id);
     });
+  }
+
+  function handleQuantityChange(value: number) {
+    value = Math.min(Math.max(value, MIN_QUANTITY), MAX_QUANTITY);
+
+    setValue(value);
+    setCart((prev) =>
+      prev.map((item) => (item.id === id ? { ...item, quantity: value } : item))
+    );
   }
 
   return (
@@ -161,9 +170,9 @@ const Product = ({ cartItem }: { cartItem: CartItem }) => {
         className="flex gap-3"
       >
         <Image
-          src={product.featuredImage.url}
-          blurDataURL={`${product.featuredImage.url}?width=10`}
-          alt={product.featuredImage.altText ?? ""}
+          src={variant?.image.url ?? ""}
+          blurDataURL={`${variant?.image.url}?width=10`}
+          alt={variant?.image.altText ?? ""}
           placeholder="blur"
           width={120}
           height={120}
@@ -184,19 +193,26 @@ const Product = ({ cartItem }: { cartItem: CartItem }) => {
                 {product.priceRange.minVariantPrice.currencyCode}
               </span>
               <span className="text-sm text-natural-600 font-normal">
-                {variantTitle}
+                {variant?.title}
               </span>
             </div>
           </div>
           <div className="flex justify-between items-center">
-            <Quantity min={1} max={10} defaultValue={quantity} />
+            <Quantity
+              min={MIN_QUANTITY}
+              max={MAX_QUANTITY}
+              value={cartItem.quantity}
+              setValue={setValue}
+              defaultValue={quantity}
+              onChange={(value) => handleQuantityChange(value)}
+            />
             <button
               onClick={handleRemove}
               className={classNames(
                 "col-start-2 ml-auto w-max row-start-1 p-2 rounded-sm cursor-pointer bg-natural-200 hover:bg-natural-300"
               )}
             >
-              <CloseIcon className="w-5 h-auto fill-natural-700" />
+              <DeleteIcon className="w-5 h-auto fill-natural-700" />
             </button>
           </div>
         </div>

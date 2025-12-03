@@ -2,15 +2,15 @@
 
 import classNames from "classnames";
 import Link from "next/link";
-import React, { useContext, useEffect, useState } from "react";
+import React, { Suspense, useContext, useEffect, useState } from "react";
 import LangDropdown from "./components/LangDropdown";
 import CurrencyDropDown from "./components/CurrencyDropdown";
 import MenuIcon from "@/public/icons/menu.svg";
 import CloseIcon from "@/public/icons/close.svg";
-import { usePathname } from "next/navigation";
-import { NAVIGATION_LINKS } from "@/utils/data";
 import Bag from "@/public/icons/bag.svg";
 import { CartPanelContext } from "../providers";
+import { NAVIGATION_LINKS } from "../../../utils/data";
+import { usePathname } from "next/navigation";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -52,7 +52,9 @@ const Navbar = () => {
         </Link>
       </div>
 
-      <Navigation isOpen={isMenuOpen} />
+      <Suspense>
+        <Navigation isOpen={isMenuOpen} />
+      </Suspense>
 
       <div
         className={classNames(

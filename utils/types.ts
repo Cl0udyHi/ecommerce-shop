@@ -37,6 +37,7 @@ export type ProductOptions = {
 export type ProductVariant = {
   id: string;
   title: string;
+  image: ProductImage;
   selectedOptions: ProductSelectedOption[];
 };
 

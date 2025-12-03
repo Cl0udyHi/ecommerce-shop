@@ -4,18 +4,11 @@ import { addToCart } from "@/utils/shopify/actions";
 import { CartItem, Product, ProductOptions } from "@/utils/types";
 import classNames from "classnames";
 import { useRouter, useSearchParams } from "next/navigation";
-import {
-  FormEvent,
-  startTransition,
-  useActionState,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { FormEvent, useActionState, useRef, useState } from "react";
 import Quantity from "@/components/Quantity";
 import { useCart, useCartPanel } from "@/app/components/providers";
 import { v4 as uuid } from "uuid";
+import { MAX_QUANTITY, MIN_QUANTITY } from "@/utils/data";
 
 type Props = {
   product: Product;
@@ -47,16 +40,33 @@ export default function ProductForm({ product }: Props) {
           .value == size
     )[0]?.id;
 
-    const newItem: CartItem = {
-      id: uuid(),
-      product: product,
-      quantity: quantity,
-      variantId: variantId,
-    };
+    if (cart.find((item) => item.variantId === variantId)) {
+      const quantityLimit = (quantity: number) => {
+        return Math.min(Math.max(quantity, MIN_QUANTITY), MAX_QUANTITY);
+      };
 
-    setCart((prev) => {
-      return [...prev, newItem];
-    });
+      setCart((prev) =>
+        prev.map((item) =>
+          item.variantId === variantId
+            ? {
+                ...item,
+                quantity: quantityLimit(item.quantity + quantity),
+              }
+            : item
+        )
+      );
+    } else {
+      const newItem: CartItem = {
+        id: uuid(),
+        product: product,
+        quantity: quantity,
+        variantId: variantId,
+      };
+
+      setCart((prev) => {
+        return [...prev, newItem];
+      });
+    }
 
     setOpen(true);
   }
@@ -82,6 +92,8 @@ export default function ProductForm({ product }: Props) {
   //     formAction(formData);
   //   });
   // }
+
+  const [value, setValue] = useState<number>(1);
 
   return (
     <form
@@ -134,7 +146,13 @@ export default function ProductForm({ product }: Props) {
       ))}
 
       <div className={classNames("flex gap-2", "md:mt-auto")}>
-        <Quantity ref={quantityInput} min={1} max={10} />
+        <Quantity
+          ref={quantityInput}
+          min={1}
+          max={10}
+          value={value}
+          setValue={setValue}
+        />
         <div className="flex flex-col size-full">
           <button
             type="submit"

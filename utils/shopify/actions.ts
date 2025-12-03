@@ -3,6 +3,7 @@
 import { cookies } from "next/headers";
 import { fetchCartId } from "@/hooks/shopify/useCart";
 import { shopifyFetch } from "./shopify";
+import { CartItem } from "../types";
 
 export async function getCartId() {
   const Cookies = await cookies();
@@ -72,4 +73,10 @@ export async function addToCart(previousState: any, formData: FormData) {
   } catch (error) {
     return { ...previousState, error: error };
   }
+}
+
+export async function cacheCartItems(items: CartItem[]) {
+  const Cookies = await cookies();
+
+  Cookies.set("cartItems", JSON.stringify(items));
 }

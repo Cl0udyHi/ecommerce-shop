@@ -7,38 +7,21 @@ export async function shopifyFetch<T>(
   query: string,
   variables?: Record<string, any>
 ) {
-  const response = await axios.post(
-    SHOPIFY_URL,
-    { query, variables },
-    {
-      headers: {
-        "X-Shopify-Storefront-Access-Token":
-          process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN!,
-        "Content-Type": "application/json",
-      },
-    }
-  );
+  if (!SHOPIFY_URL) throw new Error("SHOPIFY_URL is not defined");
 
-  return response.data;
-}
+  const response = await fetch(SHOPIFY_URL, {
+    method: "POST",
+    headers: {
+      "X-Shopify-Storefront-Access-Token":
+        process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN!,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ query, variables }),
+  });
 
-export async function shopifyPrivateFetch<T>(
-  query: string,
-  variables?: Record<string, any>
-) {
-  const response = await axios.post(
-    SHOPIFY_URL,
-    { query, variables },
-    {
-      headers: {
-        "X-Shopify-Storefront-Access-Token":
-          process.env.SHOPIFY_STOREFRONT_PRIVATE_ACCESS_TOKEN!,
-        "Content-Type": "application/json",
-      },
-    }
-  );
+  const data = await response.json();
 
-  return response.data as Promise<T>;
+  return data;
 }
 
 export function unwrapEdges(data: AnyObject): AnyObject {

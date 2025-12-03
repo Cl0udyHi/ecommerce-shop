@@ -121,3 +121,6 @@ export const NAVIGATION_LINKS: {
   { name: "Contact", href: "/contact" },
   { name: "About Us", href: "/about" },
 ];
+
+export const MAX_QUANTITY = 10;
+export const MIN_QUANTITY = 1;

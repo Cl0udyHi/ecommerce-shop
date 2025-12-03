@@ -2,26 +2,50 @@
 
 import AddIcon from "@/public/icons/add.svg";
 import RemoveIcon from "@/public/icons/remove.svg";
-import { forwardRef, useImperativeHandle, useState } from "react";
+import {
+  Dispatch,
+  forwardRef,
+  SetStateAction,
+  useImperativeHandle,
+  useState,
+} from "react";
 
 type QuantityProps = {
   min?: number;
   max?: number;
   defaultValue?: number;
+  onChange?: (value: number) => void;
+  value: number;
+  setValue: Dispatch<SetStateAction<number>>;
 };
 
 const Quantity = forwardRef(function Quantity(
-  { min = 1, max = 10, defaultValue = min }: QuantityProps,
+  {
+    min = 1,
+    max = 10,
+    defaultValue = min,
+    onChange,
+    value,
+    setValue,
+  }: QuantityProps,
   ref
 ) {
-  const [value, setValue] = useState(defaultValue);
-
   const handleIncrease = () => {
-    if (value < max) setValue?.(value + 1);
+    if (value < max) {
+      const newValue = value + 1;
+
+      onChange?.(newValue);
+      setValue?.(newValue);
+    }
   };
 
   const handleDecrease = () => {
-    if (value > min) setValue?.(value - 1);
+    if (value > min) {
+      const newValue = value - 1;
+
+      onChange?.(newValue);
+      setValue?.(newValue);
+    }
   };
 
   useImperativeHandle(ref, () => ({
