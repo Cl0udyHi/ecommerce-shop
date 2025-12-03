@@ -85,7 +85,7 @@ const TestimonialCard = ({ testimonial }: { testimonial: TestimonialType }) => {
   return (
     <div
       className={classNames(
-        "flex flex-col gap-4 p-4 bg-natural-200 rounded-lg"
+        "flex flex-col h-full gap-4 p-4 bg-natural-200 rounded-lg"
       )}
     >
       <div className="flex gap-2">
