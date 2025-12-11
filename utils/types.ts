@@ -1,7 +1,4 @@
-// import { Product } from "@/lib/shopify/types";
 import { StaticImageData } from "next/image";
-
-export type AnyObject = Record<string, any>;
 
 export type ProductImage = {
   id: string;
@@ -21,11 +18,7 @@ export type ProductSelectedOption = { name: string; value: string };
 export type ProductOptionValue = {
   id: string;
   name: string;
-  firstSelectableVariant: {
-    availableForSale: boolean;
-    quantityAvailable: bigint;
-    selectedOptions: ProductSelectedOption[];
-  };
+  firstSelectableVariant: ProductVariant;
 };
 
 export type ProductOptions = {
@@ -37,8 +30,12 @@ export type ProductOptions = {
 export type ProductVariant = {
   id: string;
   title: string;
+  availableForSale: boolean;
+  quantityAvailable: number;
   image: ProductImage;
   selectedOptions: ProductSelectedOption[];
+  product: Product;
+  price: ProductPrice;
 };
 
 export type Product = {
@@ -99,9 +96,35 @@ export type Collections = {
   products: ProductType[];
 }[];
 
-export type CartItem = {
+export type Money = {
+  amount: string;
+  currencyCode: string;
+};
+
+export type CartLineCost = {
+  subtotalAmount: Money;
+  totalAmount: Money;
+};
+
+export type CartLine = {
   id: string;
-  variantId: string;
-  product: Product;
   quantity: number;
+  cost: CartLineCost;
+  merchandise: ProductVariant; // assuming your store uses only variants
+};
+
+export type CartUpdateLine = {
+  id?: string;
+  quantity?: number;
+  merchandiseId?: string;
+};
+
+export type Cart = {
+  id: string;
+  checkoutUrl: string;
+  cost: {
+    subtotalAmount: Money;
+    totalAmount: Money;
+  };
+  lines: CartLine[];
 };

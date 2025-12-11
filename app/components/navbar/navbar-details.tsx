@@ -1,0 +1,134 @@
+"use client";
+
+import classNames from "classnames";
+import Link from "next/link";
+import { Suspense, useContext, useEffect, useState } from "react";
+import LangDropdown from "./components/LangDropdown";
+import CurrencyDropDown from "./components/CurrencyDropdown";
+import MenuIcon from "@/public/icons/menu.svg";
+import CloseIcon from "@/public/icons/close.svg";
+import Bag from "@/public/icons/bag.svg";
+import { CartPanelOpenStateContext } from "../providers";
+import { NAVIGATION_LINKS } from "../../../utils/data";
+import { usePathname } from "next/navigation";
+import { Cart } from "@/utils/types";
+
+export default function NavbarDetails({ cart }: { cart: Cart }) {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 0);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    handleScroll();
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  const openContext = useContext(CartPanelOpenStateContext);
+  if (!openContext) {
+    throw new Error("CartOpenContext is not available");
+  }
+  const [, setIsOpen] = openContext;
+
+  return (
+    <nav
+      className={classNames(
+        "w-full grid grid-rows-1 gap-4 items-center sm:px-16 px-8 py-4 sticky top-0 z-50 bg-natural-100",
+        "grid-cols-2 lg:grid-cols-3",
+        {
+          "shadow-shadow-100 shadow-sm transition-shadow": isScrolled,
+        }
+      )}
+    >
+      <div className="col-start-1 row-start-1">
+        <Link className="text-2xl text-primary-400 font-black" href={"/"}>
+          WAVIN
+        </Link>
+      </div>
+
+      <Suspense>
+        <Navigation isOpen={isMenuOpen} />
+      </Suspense>
+
+      <div
+        className={classNames(
+          "lg:col-start-3 lg:row-start-1 col-start-2 row-start-2 shrink-0 w-full lg:flex! flex justify-end gap-2",
+          { hidden: !isMenuOpen }
+        )}
+      >
+        <CurrencyDropDown />
+        <LangDropdown />
+        <button
+          aria-label="Cart Menu"
+          onClick={() => setIsOpen(true)}
+          className="relative p-2 rounded-sm cursor-pointer bg-accent-500 hover:bg-accent-400"
+        >
+          <Bag className="w-5 h-auto fill-accent-100" />
+          {cart.lines.length > 0 && (
+            <span className="p-2 min-w-6 h-6 max-h-6 flex justify-center items-center rounded-full bg-accent-100 text-natural-700 absolute -top-2 -right-3">
+              {cart.lines.length > 9 ? "9+" : cart.lines.length}
+            </span>
+          )}
+        </button>
+      </div>
+
+      <button
+        aria-label="Navigation Menu"
+        onClick={() => setIsMenuOpen((prev) => !prev)}
+        className={classNames(
+          "col-start-2 ml-auto w-max row-start-1 p-2 rounded-sm cursor-pointer bg-natural-200 hover:bg-natural-300",
+          "lg:hidden!"
+        )}
+      >
+        {isMenuOpen ? (
+          <CloseIcon className="w-5 h-auto fill-natural-700" />
+        ) : (
+          <MenuIcon className="w-5 h-auto fill-natural-700" />
+        )}
+      </button>
+    </nav>
+  );
+}
+
+const Navigation = ({ isOpen = true }: { isOpen: boolean }) => {
+  const pathname = usePathname();
+
+  return (
+    <ul
+      className={classNames(
+        "lg:col-start-2 lg:justify-between lg:gap-x-2 lg:row-start-1 lg:col-span-1 lg:flex-nowrap lg:flex! md:row-start-2 flex gap-x-16 gap-y-2 flex-wrap row-start-3 col-start-1 col-span-2",
+        { hidden: !isOpen }
+      )}
+    >
+      {NAVIGATION_LINKS.map((link, index) => {
+        const isActive = link.exact
+          ? pathname === link.href
+          : pathname.startsWith(link.href);
+
+        return (
+          <li key={index}>
+            <Link
+              className={classNames(
+                "text-sm text-natural-700 hover:text-natural-600 font-semibold hover:border-b-2 border-natural-700 hover:border-natural-600 border-offset-8",
+                {
+                  "text-primary-500 border-b-2 hover:text-primary-400 border-primary-500 hover:border-primary-400":
+                    isActive,
+                }
+              )}
+              href={link.href}
+            >
+              {link.name}
+            </Link>
+          </li>
+        );
+      })}
+    </ul>
+  );
+};

@@ -1,85 +1,81 @@
 "use client";
 
+import useDebounce from "@/hooks/use-debounce";
 import AddIcon from "@/public/icons/add.svg";
 import RemoveIcon from "@/public/icons/remove.svg";
-import {
-  Dispatch,
-  forwardRef,
-  SetStateAction,
-  useImperativeHandle,
-  useState,
-} from "react";
+import classNames from "classnames";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
-type QuantityProps = {
+function Quantity({
+  disabled = false,
+  min,
+  max,
+  defaultValue,
+  name,
+  onChange,
+}: {
+  disabled?: boolean;
   min?: number;
   max?: number;
-  defaultValue?: number;
+  defaultValue: number;
+  name: string;
   onChange?: (value: number) => void;
-  value: number;
-  setValue: Dispatch<SetStateAction<number>>;
-};
+}) {
+  const [value, setValue] = useState<number>(defaultValue);
+  const debouncedValue = useDebounce(value, 300);
 
-const Quantity = forwardRef(function Quantity(
-  {
-    min = 1,
-    max = 10,
-    defaultValue = min,
-    onChange,
-    value,
-    setValue,
-  }: QuantityProps,
-  ref
-) {
-  const handleIncrease = () => {
-    if (value < max) {
-      const newValue = value + 1;
+  const handleChange = (action: "increment" | "decrement") => {
+    if (disabled) return;
 
-      onChange?.(newValue);
-      setValue?.(newValue);
+    let clampedValue = (i: number) => Math.max(Math.min(i, max), min);
+    let newValue = clampedValue(value);
+
+    if (action === "increment") {
+      newValue = clampedValue(value + 1);
+      setValue(newValue);
+    } else {
+      newValue = clampedValue(value - 1);
+      setValue(newValue);
     }
   };
 
-  const handleDecrease = () => {
-    if (value > min) {
-      const newValue = value - 1;
-
-      onChange?.(newValue);
-      setValue?.(newValue);
-    }
-  };
-
-  useImperativeHandle(ref, () => ({
-    setValueFromOutside(newVal: number) {
-      // Clamp the value
-      const clamped = Math.min(max, Math.max(min, newVal));
-      setValue(clamped);
-    },
-    getValue() {
-      return value;
-    },
-  }));
+  useEffect(() => {
+    onChange?.(debouncedValue);
+  }, [debouncedValue]);
 
   return (
     <div className="w-fit flex items-center bg-natural-200 p-2 rounded">
-      <input
-        type="number"
-        name="quantity"
-        value={value}
-        onChange={() => {}}
-        hidden
-        required
-      />
-      <button aria-label="Minus" type="button" onClick={handleDecrease}>
+      <button
+        aria-label="Minus"
+        aria-disabled={disabled}
+        type="button"
+        onClick={() => handleChange("decrement")}
+        className={classNames({ "opacity-50 cursor-not-allowed!": disabled })}
+      >
         <RemoveIcon className="w-5 aspect-square fill-natural-700" />
       </button>
       <span className="flex w-5 justify-center items-center aspect-square">
         {value}
+        <input
+          name={name}
+          type="number"
+          hidden
+          onChange={() => {}}
+          value={value}
+          required
+        />
       </span>
-      <button aria-label="Plus" type="button" onClick={handleIncrease}>
+      <button
+        aria-label="Plus"
+        aria-disabled={disabled}
+        type="button"
+        onClick={() => handleChange("increment")}
+        className={classNames({ "opacity-50 cursor-not-allowed!": disabled })}
+      >
         <AddIcon className="w-5 aspect-square fill-natural-700" />
       </button>
     </div>
   );
-});
+}
 
 export default Quantity;

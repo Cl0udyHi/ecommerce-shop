@@ -1,28 +1,33 @@
-import axios from "axios";
-import { AnyObject } from "../types";
+import { cookies } from "next/headers";
+import { createCart } from "./api";
 
-const SHOPIFY_URL = `https://${process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN}/api/2025-10/graphql.json`;
+const SHOPIFY_URL = `https://${process.env.NEXT_PUBLIC_STORE_NAME}.myshopify.com/api/2025-10/graphql.json`;
 
-export async function shopifyFetch<T>(
+export async function shopifyFetch(
   query: string,
-  variables?: Record<string, any>
+  variables?: any,
+  tags?: string[]
 ) {
-  if (!SHOPIFY_URL) throw new Error("SHOPIFY_URL is not defined");
-
-  const response = await fetch(SHOPIFY_URL, {
+  const res = await fetch(SHOPIFY_URL, {
     method: "POST",
     headers: {
-      "X-Shopify-Storefront-Access-Token":
-        process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN!,
       "Content-Type": "application/json",
+      "X-Shopify-Storefront-Access-Token":
+        process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN!,
     },
     body: JSON.stringify({ query, variables }),
+    cache: "no-store",
+    next: { tags: tags || [] },
   });
 
-  const data = await response.json();
+  if (!res.ok) {
+    throw new Error(`Shopify fetch failed: ${res.status}`);
+  }
 
-  return data;
+  return res.json();
 }
+
+type AnyObject = Record<string, any>;
 
 export function unwrapEdges(data: AnyObject): AnyObject {
   if (Array.isArray(data)) {
@@ -43,5 +48,3 @@ export function unwrapEdges(data: AnyObject): AnyObject {
 
   return data;
 }
-
-export function getVariantId() {}

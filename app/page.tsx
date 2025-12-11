@@ -1,9 +1,6 @@
 import heroBanner from "@/public/images/Banner.png";
 import Image from "next/image";
-import TestimonialsContainer from "@/components/Testimonials";
-import { fetchCollections } from "@/hooks/shopify/useCollections";
-import Collection from "@/app/components/collections-section/collection";
-import type { Collection as CollectionType } from "@/utils/types";
+import TestimonialsContainer from "@/app/components/Testimonials";
 import CollectionsSection from "./components/collections-section/collections-section";
 import { Suspense } from "react";
 import CollectionsSkeleton from "./components/collections-section/collections-fallback";

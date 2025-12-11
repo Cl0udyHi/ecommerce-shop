@@ -1,104 +1,41 @@
 "use client";
 
-import { addToCart } from "@/utils/shopify/actions";
-import { CartItem, Product, ProductOptions } from "@/utils/types";
+import { Cart, CartLine, Product } from "@/utils/types";
 import classNames from "classnames";
-import { useRouter, useSearchParams } from "next/navigation";
-import { FormEvent, useActionState, useRef, useState } from "react";
-import Quantity from "@/components/Quantity";
-import { useCart, useCartPanel } from "@/app/components/providers";
-import { v4 as uuid } from "uuid";
+import { useActionState, useState } from "react";
+// import Quantity from "@/components/Quantity";
+import { useCartPanelOpenState } from "@/app/components/providers";
 import { MAX_QUANTITY, MIN_QUANTITY } from "@/utils/data";
+import { addCartLine } from "@/app/actions/cart-actions";
+import AddIcon from "@/public/icons/add.svg";
+import RemoveIcon from "@/public/icons/remove.svg";
 
-type Props = {
+export default function ProductForm({
+  product,
+  cart,
+}: {
   product: Product;
-};
+  cart: Cart;
+}) {
+  const [open, setOpen] = useCartPanelOpenState();
+  const [state, action, pending] = useActionState(addCartLine, null);
 
-export default function ProductForm({ product }: Props) {
-  const quantityInput = useRef(null);
-  const searchParams = useSearchParams();
-
-  const router = useRouter();
-
-  const [state, formAction, pending] = useActionState(addToCart, {});
-  const [open, setOpen] = useCartPanel();
-  const [cart, setCart] = useCart();
-
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-
-    const formData = new FormData(event.currentTarget);
-    const color = formData.get("Color");
-    const size = formData.get("Size");
-    const quantity = Number(formData.get("quantity"));
-
-    const variantId = product.variants.filter(
-      (variant) =>
-        variant.selectedOptions.filter((option) => option.name == "Color")[0]
-          .value == color &&
-        variant.selectedOptions.filter((option) => option.name == "Size")[0]
-          .value == size
-    )[0]?.id;
-
-    if (cart.find((item) => item.variantId === variantId)) {
-      const quantityLimit = (quantity: number) => {
-        return Math.min(Math.max(quantity, MIN_QUANTITY), MAX_QUANTITY);
-      };
-
-      setCart((prev) =>
-        prev.map((item) =>
-          item.variantId === variantId
-            ? {
-                ...item,
-                quantity: quantityLimit(item.quantity + quantity),
-              }
-            : item
-        )
-      );
-    } else {
-      const newItem: CartItem = {
-        id: uuid(),
-        product: product,
-        quantity: quantity,
-        variantId: variantId,
-      };
-
-      setCart((prev) => {
-        return [...prev, newItem];
+  async function serverAction(formData: FormData) {
+    const variant = product.variants.find((variant) => {
+      return variant.selectedOptions.every((selectedOption) => {
+        const formValue = formData.get(selectedOption.name);
+        return formValue === selectedOption.value;
       });
-    }
+    });
 
-    setOpen(true);
+    formData.set("variantId", variant.id);
+
+    action(formData);
   }
-
-  // function handleSubmit(event: FormEvent<HTMLFormElement>) {
-  //   event.preventDefault();
-
-  //   const formData = new FormData(event.currentTarget);
-  //   const color = formData.get("Color");
-  //   const size = formData.get("Size");
-
-  //   const variantId = product.variants.filter(
-  //     (variant) =>
-  //       variant.selectedOptions.filter((option) => option.name == "Color")[0]
-  //         .value == color &&
-  //       variant.selectedOptions.filter((option) => option.name == "Size")[0]
-  //         .value == size
-  //   )[0]?.id;
-
-  //   formData.append("variantId", variantId);
-
-  //   startTransition(() => {
-  //     formAction(formData);
-  //   });
-  // }
-
-  const [value, setValue] = useState<number>(1);
 
   return (
     <form
-      onSubmit={handleSubmit}
-      action={formAction}
+      action={serverAction}
       className={classNames(
         "px-8 flex flex-col gap-4",
         "md:col-start-2 md:row-start-1 md:px-0",
@@ -116,24 +53,23 @@ export default function ProductForm({ product }: Props) {
             className={classNames("grid grid-cols-3 gap-1", "lg:grid-cols-4")}
           >
             {option.optionValues.map((optionValue, index) => {
-              const available =
-                optionValue.firstSelectableVariant.availableForSale;
-
               return (
                 <label key={index} className="block">
                   <input
                     type="radio"
                     name={option.name}
                     value={optionValue.name}
-                    defaultChecked={index == 0}
+                    defaultChecked={
+                      state?.inputs
+                        ? state.inputs[option.name] == optionValue.name
+                        : index == 0
+                    }
                     required
                     className="peer hidden"
-                    disabled={!available}
                   />
                   <span
                     className={classNames(
-                      "block rounded py-3 text-center text-sm font-semibold cursor-pointer bg-primary-100 text-primary-500 peer-checked:bg-primary-400 peer-checked:text-natural-100 peer-checked:hover:bg-primary-500 peer-checked:hover:text-primary-100 hover:bg-primary-200 hover:text-primary-500",
-                      { "opacity-50 cursor-not-allowed!": !available }
+                      "block rounded py-3 text-center text-sm font-semibold cursor-pointer bg-primary-100 text-primary-500 peer-checked:bg-primary-400 peer-checked:text-natural-100 peer-checked:hover:bg-primary-500 peer-checked:hover:text-primary-100 hover:bg-primary-200 hover:text-primary-500"
                     )}
                   >
                     {optionValue.name}
@@ -146,13 +82,7 @@ export default function ProductForm({ product }: Props) {
       ))}
 
       <div className={classNames("flex gap-2", "md:mt-auto")}>
-        <Quantity
-          ref={quantityInput}
-          min={1}
-          max={10}
-          value={value}
-          setValue={setValue}
-        />
+        <Quantity defaultValue={1} />
         <div className="flex flex-col size-full">
           <button
             type="submit"
@@ -162,10 +92,44 @@ export default function ProductForm({ product }: Props) {
             )}
             disabled={pending}
           >
-            {pending ? "Adding to Cart..." : "Add to Cart"}
+            {pending ? "Adding..." : "Add to Cart"}
           </button>
         </div>
       </div>
     </form>
+  );
+}
+
+function Quantity({ defaultValue = 1 }: { defaultValue: number }) {
+  const [value, setValue] = useState(defaultValue);
+
+  const handleIncrease = () => {
+    setValue((prev) => Math.min(MAX_QUANTITY, prev + 1));
+  };
+
+  const handleDecrease = () => {
+    setValue((prev) => Math.max(MIN_QUANTITY, prev - 1));
+  };
+
+  return (
+    <div className="w-fit flex items-center bg-natural-200 p-2 rounded">
+      <button aria-label="Minus" type="button" onClick={handleDecrease}>
+        <RemoveIcon className="w-5 aspect-square fill-natural-700" />
+      </button>
+      <span className="flex w-5 justify-center items-center aspect-square">
+        {value}
+        <input
+          type="number"
+          hidden
+          name="quantity"
+          onChange={() => {}}
+          value={value}
+          required
+        />
+      </span>
+      <button aria-label="Plus" type="button" onClick={handleIncrease}>
+        <AddIcon className="w-5 aspect-square fill-natural-700" />
+      </button>
+    </div>
   );
 }

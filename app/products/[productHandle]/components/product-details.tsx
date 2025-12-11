@@ -1,20 +1,18 @@
 import classNames from "classnames";
 import ProductImages from "./product-images";
 import ProductForm from "./product-form";
-import { cacheLife } from "next/cache";
-import { fetchProduct } from "@/hooks/shopify/useProduct";
+import { getCart, getProduct } from "@/lib/shopify/api";
 import { ProductError } from "./product-fallback";
+import { TEMP_CARTID } from "@/utils/data";
 
-export default async function ProductInfo({
+export default async function ProductDetails({
   params,
 }: {
   params: Promise<{ productHandle: string; color: string; size: string }>;
 }) {
-  "use cache";
-  cacheLife("hours");
-
   const { productHandle } = await params;
-  const product = await fetchProduct(productHandle);
+  const product = await getProduct(productHandle);
+  const cart = await getCart(TEMP_CARTID);
 
   if (!product) {
     return (
@@ -74,7 +72,7 @@ export default async function ProductInfo({
         </div>
 
         {/* Select Options */}
-        <ProductForm product={product} />
+        <ProductForm product={product} cart={cart} />
       </div>
     </div>
   );

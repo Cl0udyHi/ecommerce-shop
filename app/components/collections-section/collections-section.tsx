@@ -1,13 +1,10 @@
-import { fetchCollections } from "@/hooks/shopify/useCollections";
+import { getCollections } from "@/lib/shopify/api";
 import Collection from "./collection";
 import type { Collection as CollectionType } from "@/utils/types";
 import { cacheLife } from "next/cache";
 
 export default async function CollectionsSection() {
-  "use cache";
-  cacheLife("hours");
-
-  const collections = await fetchCollections();
+  const collections = await getCollections();
 
   return (
     <>

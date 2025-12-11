@@ -1,4 +1,4 @@
-import ProductInfo from "./components/product-info";
+import ProductDetails from "./components/product-details";
 import { Suspense } from "react";
 import { ProductSkeleton } from "./components/product-fallback";
 
@@ -10,7 +10,7 @@ export default async function Product({
   return (
     <main className="min-h-screen flex flex-col gap-8 mb-16 mt-px">
       <Suspense fallback={<ProductSkeleton />}>
-        <ProductInfo params={params} />
+        <ProductDetails params={params} />
       </Suspense>
     </main>
   );

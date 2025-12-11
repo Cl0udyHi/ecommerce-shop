@@ -1,6 +1,6 @@
 "use client";
 
-import { CartItem, CartProduct } from "@/utils/types";
+import { CartLine } from "@/utils/types";
 import React, {
   createContext,
   Dispatch,
@@ -8,14 +8,11 @@ import React, {
   useContext,
   useState,
 } from "react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { getQueryClient } from "@/lib/get-query-client";
 
-export const CartPanelContext = createContext<
+export const CartPanelOpenStateContext = createContext<
   [boolean, Dispatch<SetStateAction<boolean>>] | null
->(null);
-
-export const CartContext = createContext<
-  [CartItem[], Dispatch<SetStateAction<CartItem[]>>] | null
 >(null);
 
 export default function Providers({
@@ -23,34 +20,23 @@ export default function Providers({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const [queryClient] = useState(() => new QueryClient());
+  const queryClient = getQueryClient();
+
   const [cartOpen, setCartOpen] = useState<boolean>(false);
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
   return (
-    <CartContext value={[cartItems, setCartItems]}>
-      <CartPanelContext value={[cartOpen, setCartOpen]}>
-        <QueryClientProvider client={queryClient}>
-          {children}
-        </QueryClientProvider>
-      </CartPanelContext>
-    </CartContext>
+    <CartPanelOpenStateContext value={[cartOpen, setCartOpen]}>
+      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    </CartPanelOpenStateContext>
   );
 }
 
-export function useCart() {
-  const context = useContext(CartContext);
+export function useCartPanelOpenState() {
+  const context = useContext(CartPanelOpenStateContext);
   if (!context) {
-    throw new Error("useCart must be used within CartContext");
-  }
-
-  return context;
-}
-
-export function useCartPanel() {
-  const context = useContext(CartPanelContext);
-  if (!context) {
-    throw new Error("useCartPanel must be used within CartPanelContext");
+    throw new Error(
+      "useCartPanelOpenState must be used within CartPanelContext"
+    );
   }
 
   return context;

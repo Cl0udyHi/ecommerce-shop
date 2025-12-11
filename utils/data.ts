@@ -122,5 +122,8 @@ export const NAVIGATION_LINKS: {
   { name: "About Us", href: "/about" },
 ];
 
+export const TEMP_CARTID =
+  "gid://shopify/Cart/hWN6354Gws3t4Wr6ufcNbxLv?key=bca60c5961a0c113b66de70f5bffabb2";
+
 export const MAX_QUANTITY = 10;
 export const MIN_QUANTITY = 1;

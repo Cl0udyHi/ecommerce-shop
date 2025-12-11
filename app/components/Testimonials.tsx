@@ -15,8 +15,8 @@ import {
   CarouselApi,
   CarouselContent,
   CarouselItem,
-} from "./shadcn/ui/carousel";
-import { Button } from "./shadcn/ui/button";
+} from "@/components/shadcn/ui/carousel";
+import { Button } from "@/components/shadcn/ui/button";
 import Autoplay from "embla-carousel-autoplay";
 
 export default function TestimonialsContainer(props: { className?: string }) {
