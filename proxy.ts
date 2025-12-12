@@ -22,6 +22,7 @@ export async function proxy(request: NextRequest) {
       });
     } catch (err) {
       console.error("Failed to create Shopify cart:", err);
+      return response;
     }
   }
 
