@@ -1,20 +1,17 @@
-import { cookies } from "next/headers";
-import { createCart } from "./api";
-
-const SHOPIFY_URL = `https://${process.env.NEXT_PUBLIC_STORE_NAME}.myshopify.com/api/2025-10/graphql.json`;
-
 export async function shopifyFetch(
   query: string,
   variables?: any,
   tags?: string[]
 ) {
+  const SHOPIFY_URL = `https://${process.env.STORE_NAME}.myshopify.com/api/2025-10/graphql.json`;
+
   try {
     const res = await fetch(SHOPIFY_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         "X-Shopify-Storefront-Access-Token":
-          process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN!,
+          process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN!,
       },
       body: JSON.stringify({ query, variables }),
       cache: "no-store",
@@ -27,7 +24,7 @@ export async function shopifyFetch(
 
     return res.json();
   } catch (error) {
-    throw error;
+    throw new Error("Failed to fetch Shypify GraphQL", { cause: error });
   }
 }
 
