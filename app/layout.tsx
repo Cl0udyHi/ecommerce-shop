@@ -5,10 +5,10 @@ import Navbar from "@/app/components/navbar/Navbar";
 import { Metadata } from "next";
 import Cart from "./components/cart/cart";
 import { Toaster } from "@/components/shadcn/ui/sonner";
-import { Suspense } from "react";
-import CartDetails, { CartSkeleton } from "./components/cart/cart-details";
-import { getCart } from "@/lib/shopify/api";
-import { TEMP_CARTID } from "@/utils/data";
+import { cookies } from "next/headers";
+import { startTransition, Suspense } from "react";
+import { createCartCookie } from "./actions/cart-actions";
+import { CartSkeleton } from "./components/cart/cart-details";
 
 export const metadata: Metadata = {
   title: "Wavin",
@@ -30,7 +30,9 @@ export default async function RootLayout({
           <main>{children}</main>
           <Footer />
 
-          <Cart />
+          <Suspense fallback={<CartSkeleton />}>
+            <Cart />
+          </Suspense>
         </Providers>
         <Toaster className="z-100" />
       </body>

@@ -30,24 +30,23 @@ export async function getCartId() {
     const cookieStore = await cookies();
     return cookieStore.get("cartId")?.value;
   } catch (error) {
-    return null;
+    throw error;
   }
 }
 
 export async function getCart(cartId?: string) {
-  if (!cartId) cartId = await getCartId();
-
   try {
-    const cookieStore = await cookies();
-    const cartId = cookieStore.get("cartId")?.value;
+    if (!cartId) {
+      cartId = await getCartId();
+    }
 
     const data = await shopifyFetch(GET_CART, { cartId: cartId }, [
       `cart-${cartId}`,
     ]);
 
-    return unwrapEdges(data.data.cart) as Cart;
+    return unwrapEdges(data?.data?.cart) as Cart;
   } catch (error) {
-    throw new Error("Failed to fetch cart", { cause: error });
+    throw error;
   }
 }
 

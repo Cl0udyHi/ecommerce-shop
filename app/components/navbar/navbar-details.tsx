@@ -71,9 +71,9 @@ export default function NavbarDetails({ cart }: { cart: Cart }) {
           className="relative p-2 rounded-sm cursor-pointer bg-accent-500 hover:bg-accent-400"
         >
           <Bag className="w-5 h-auto fill-accent-100" />
-          {cart.lines.length > 0 && (
+          {cart?.lines.length > 0 && (
             <span className="p-2 min-w-6 h-6 max-h-6 flex justify-center items-center rounded-full bg-accent-100 text-natural-700 absolute -top-2 -right-3">
-              {cart.lines.length > 9 ? "9+" : cart.lines.length}
+              {cart?.lines.length > 9 ? "9+" : cart?.lines.length}
             </span>
           )}
         </button>

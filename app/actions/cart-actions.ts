@@ -1,6 +1,6 @@
 "use server";
 
-import { getCartId } from "@/lib/shopify/api";
+import { createCart, getCartId } from "@/lib/shopify/api";
 import { shopifyFetch } from "@/lib/shopify/client";
 import {
   ADD_CART_LINES,
@@ -9,6 +9,8 @@ import {
 } from "@/lib/shopify/queries";
 import { CartUpdateLine } from "@/utils/types";
 import { updateTag } from "next/cache";
+import { cookies } from "next/headers";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function deleteItem(previousState: any, formData: FormData) {
   const cartId = await getCartId();
@@ -83,4 +85,13 @@ export async function updateCartLineQuantity(
   const res = await shopifyFetch(UPDATE_CART_LINES, variables);
   console.log(res);
   updateTag(`cart-${cartId}`);
+}
+
+export async function createCartCookie() {
+  const cookieStore = await cookies();
+
+  const cartId = await createCart();
+  cookieStore.set("cartId", cartId);
+
+  return cartId;
 }

@@ -8,23 +8,27 @@ export async function shopifyFetch(
   variables?: any,
   tags?: string[]
 ) {
-  const res = await fetch(SHOPIFY_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "X-Shopify-Storefront-Access-Token":
-        process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN!,
-    },
-    body: JSON.stringify({ query, variables }),
-    cache: "no-store",
-    next: { tags: tags || [] },
-  });
+  try {
+    const res = await fetch(SHOPIFY_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Shopify-Storefront-Access-Token":
+          process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN!,
+      },
+      body: JSON.stringify({ query, variables }),
+      cache: "no-store",
+      next: { tags: tags || [] },
+    });
 
-  if (!res.ok) {
-    throw new Error(`Shopify fetch failed: ${res.status}`);
+    if (!res.ok) {
+      throw new Error(`Shopify fetch failed: ${res.status}`);
+    }
+
+    return res.json();
+  } catch (error) {
+    throw error;
   }
-
-  return res.json();
 }
 
 type AnyObject = Record<string, any>;

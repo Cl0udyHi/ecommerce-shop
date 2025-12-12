@@ -15,13 +15,13 @@ import {
   useState,
 } from "react";
 import Image from "next/image";
+import ErrorIcon from "@/public/icons/error.svg";
 import DeleteIcon from "@/public/icons/delete.svg";
 import SpinnerIcon from "@/public/icons/loading.svg";
 import { useCartPanelOpenState } from "@/app/components/providers";
 import { deleteItem, updateCartLineQuantity } from "@/app/actions/cart-actions";
 import { useOnClickOutside } from "usehooks-ts";
 import Quantity from "@/components/Quantity";
-import { redirect, RedirectType } from "next/navigation";
 import Link from "next/link";
 
 export default function CartDetails({ cart }: { cart: Cart }) {
@@ -29,8 +29,6 @@ export default function CartDetails({ cart }: { cart: Cart }) {
   const ref = useRef<HTMLDivElement>(null);
 
   useOnClickOutside(ref, () => setIsOpen(false));
-
-  const { lines } = cart;
 
   return (
     <div
@@ -53,6 +51,18 @@ export default function CartDetails({ cart }: { cart: Cart }) {
         </button>
       </section>
 
+      <CartContent cart={cart} />
+    </div>
+  );
+}
+
+function CartContent({ cart }: { cart: Cart }) {
+  if (!cart?.lines) return <ErrorCart />;
+
+  if (cart.lines.length < 1) return <EmptyCart />;
+
+  return (
+    <>
       <section
         className={classNames(
           "relative flex flex-col gap-4 overflow-y-scroll -mx-8 px-8 h-full scrollbar-invisible"
@@ -60,24 +70,18 @@ export default function CartDetails({ cart }: { cart: Cart }) {
         style={{ scrollbarGutter: "stable" }}
       >
         <AnimatePresence>
-          {lines.length > 0 ? (
-            <>
-              {lines.map((line, index) => (
-                <motion.div
-                  key={line.id}
-                  layout
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.95 }}
-                  transition={{ duration: 0.15 }}
-                >
-                  <Product line={line} />
-                </motion.div>
-              ))}
-            </>
-          ) : (
-            <EmptyCart />
-          )}
+          {cart?.lines.map((line, index) => (
+            <motion.div
+              key={line.id}
+              layout
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ duration: 0.15 }}
+            >
+              <Product line={line} />
+            </motion.div>
+          ))}
         </AnimatePresence>
       </section>
 
@@ -88,27 +92,27 @@ export default function CartDetails({ cart }: { cart: Cart }) {
               Total:
             </span>
             <span className="text-base text-natural-700 font-bold">
-              {cart.cost.totalAmount.amount}
-              {cart.cost.totalAmount.currencyCode}
+              {cart?.cost.totalAmount.amount ?? 0}
+              {cart?.cost.totalAmount.currencyCode ?? ""}
             </span>
           </section>
         </section>
 
-        <Link href={cart.checkoutUrl}>
+        <Link href={cart?.checkoutUrl ?? ""}>
           <button
             className={classNames(
               "w-full py-2 bg-accent-300 hover:bg-accent-200 text-natural-100 text-sm font-semibold rounded transition-opacity",
               {
-                "opacity-50 cursor-not-allowed!": lines.length < 1,
+                "opacity-50 cursor-not-allowed!": cart?.lines.length < 1,
               }
             )}
-            aria-disabled={lines.length < 1}
+            aria-disabled={cart?.lines.length < 1}
           >
             Checkout
           </button>
         </Link>
       </section>
-    </div>
+    </>
   );
 }
 
@@ -221,6 +225,15 @@ function Product({ line }: { line: CartLine }) {
         </div>
       )}
     </>
+  );
+}
+
+function ErrorCart() {
+  return (
+    <div className="absolute inset-0 m-auto w-full h-max shrink-0 flex flex-col justify-center items-center gap-4">
+      <ErrorIcon className="w-10 h-10 fill-natural-700" />
+      <span>sorry an unexpected error has occurred</span>
+    </div>
   );
 }
 
