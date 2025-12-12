@@ -27,9 +27,7 @@ export default async function RootLayout({
         <Providers>
           <Navbar />
 
-          <main className="w-full *:max-w-7xl flex justify-center">
-            {children}
-          </main>
+          <main>{children}</main>
           <Footer />
 
           <Suspense fallback={<CartSkeleton />}>

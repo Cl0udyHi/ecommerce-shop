@@ -38,63 +38,61 @@ export default function NavbarDetails({ cart }: { cart: Cart }) {
   const [, setIsOpen] = openContext;
 
   return (
-    <nav className={"w-full flex justify-center"}>
+    <nav
+      className={classNames(
+        "w-full grid grid-rows-1 gap-4 items-center sm:px-16 px-8 py-4 sticky top-0 z-50 bg-natural-100",
+        "grid-cols-2 lg:grid-cols-3",
+        {
+          "shadow-shadow-100 shadow-sm transition-shadow": isScrolled,
+        }
+      )}
+    >
+      <div className="col-start-1 row-start-1">
+        <Link className="text-2xl text-primary-400 font-black" href={"/"}>
+          WAVIN
+        </Link>
+      </div>
+
+      <Suspense>
+        <Navigation isOpen={isMenuOpen} />
+      </Suspense>
+
       <div
         className={classNames(
-          "w-full max-w-7xl grid grid-rows-1 gap-4 items-center sm:px-16 px-8 py-4 sticky top-0 z-50 bg-natural-100",
-          "grid-cols-2 lg:grid-cols-3",
-          {
-            "shadow-shadow-100 shadow-sm transition-shadow": isScrolled,
-          }
+          "lg:col-start-3 lg:row-start-1 col-start-2 row-start-2 shrink-0 w-full lg:flex! flex justify-end gap-2",
+          { hidden: !isMenuOpen }
         )}
       >
-        <div className="col-start-1 row-start-1">
-          <Link className="text-2xl text-primary-400 font-black" href={"/"}>
-            WAVIN
-          </Link>
-        </div>
-
-        <Suspense>
-          <Navigation isOpen={isMenuOpen} />
-        </Suspense>
-
-        <div
-          className={classNames(
-            "lg:col-start-3 lg:row-start-1 col-start-2 row-start-2 shrink-0 w-full lg:flex! flex justify-end gap-2",
-            { hidden: !isMenuOpen }
-          )}
-        >
-          <CurrencyDropDown />
-          <LangDropdown />
-          <button
-            aria-label="Cart Menu"
-            onClick={() => setIsOpen(true)}
-            className="relative p-2 rounded-sm cursor-pointer bg-accent-500 hover:bg-accent-400"
-          >
-            <Bag className="w-5 h-auto fill-accent-100" />
-            {cart?.lines.length > 0 && (
-              <span className="p-2 min-w-6 h-6 max-h-6 flex justify-center items-center rounded-full bg-accent-100 text-natural-700 absolute -top-2 -right-3">
-                {cart?.lines.length > 9 ? "9+" : cart?.lines.length}
-              </span>
-            )}
-          </button>
-        </div>
-
+        <CurrencyDropDown />
+        <LangDropdown />
         <button
-          aria-label="Navigation Menu"
-          onClick={() => setIsMenuOpen((prev) => !prev)}
-          className={classNames(
-            "col-start-2 ml-auto w-max row-start-1 p-2 rounded-sm cursor-pointer bg-natural-200 hover:bg-natural-300",
-            "lg:hidden!"
-          )}
+          aria-label="Cart Menu"
+          onClick={() => setIsOpen(true)}
+          className="relative p-2 rounded-sm cursor-pointer bg-accent-500 hover:bg-accent-400"
         >
-          {isMenuOpen ? (
-            <CloseIcon className="w-5 h-auto fill-natural-700" />
-          ) : (
-            <MenuIcon className="w-5 h-auto fill-natural-700" />
+          <Bag className="w-5 h-auto fill-accent-100" />
+          {cart?.lines.length > 0 && (
+            <span className="p-2 min-w-6 h-6 max-h-6 flex justify-center items-center rounded-full bg-accent-100 text-natural-700 absolute -top-2 -right-3">
+              {cart?.lines.length > 9 ? "9+" : cart?.lines.length}
+            </span>
           )}
         </button>
       </div>
+
+      <button
+        aria-label="Navigation Menu"
+        onClick={() => setIsMenuOpen((prev) => !prev)}
+        className={classNames(
+          "col-start-2 ml-auto w-max row-start-1 p-2 rounded-sm cursor-pointer bg-natural-200 hover:bg-natural-300",
+          "lg:hidden!"
+        )}
+      >
+        {isMenuOpen ? (
+          <CloseIcon className="w-5 h-auto fill-natural-700" />
+        ) : (
+          <MenuIcon className="w-5 h-auto fill-natural-700" />
+        )}
+      </button>
     </nav>
   );
 }

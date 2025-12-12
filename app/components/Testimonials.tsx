@@ -72,7 +72,7 @@ export default function TestimonialsContainer(props: { className?: string }) {
           {Testimonials.map((testimonial, index) => (
             <CarouselItem
               key={index}
-              className="basis-full sm:basis-1/2 lg:basis-1/3"
+              className="basis-full sm:basis-1/2 lg:basis-1/3 2xl:basis-1/4"
             >
               <TestimonialCard testimonial={testimonial} key={index} />
             </CarouselItem>

@@ -17,7 +17,7 @@ export default function Collection({ collection }: { collection: Collection }) {
   const [api, setApi] = useState<CarouselApi>();
 
   return (
-    <div className={"flex flex-col gap-4 -mx-auto"}>
+    <div className={"flex flex-col gap-4"}>
       <div className={"w-full flex justify-between items-center sm:px-16 px-8"}>
         <h1 className="col-start-1 row-start-1 font-bold text-2xl">
           {collection.title}
@@ -63,7 +63,7 @@ export default function Collection({ collection }: { collection: Collection }) {
           {collection.products.map((product: any, index: number) => (
             <CarouselItem
               key={index}
-              className="basis-full sm:basis-1/2 lg:basis-1/3"
+              className="basis-full sm:basis-1/2 lg:basis-1/3 2xl:basis-1/4"
             >
               <Product product={product} />
             </CarouselItem>
