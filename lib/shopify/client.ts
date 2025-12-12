@@ -3,7 +3,7 @@ export async function shopifyFetch(
   variables?: any,
   tags?: string[]
 ) {
-  const SHOPIFY_URL = `https://${process.env.STORE_NAME}.myshopify.com/api/2025-10/graphql.json`;
+  const SHOPIFY_URL = `https://${process.env.SHOPIFY_STORE_NAME}.myshopify.com/api/2025-10/graphql.json`;
 
   try {
     const res = await fetch(SHOPIFY_URL, {
